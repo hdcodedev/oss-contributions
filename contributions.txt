@@ -13,3 +13,6 @@ https://github.com/Kilo-Org/kilocode/pull/5167
 https://github.com/Kilo-Org/kilocode/pull/5161
 https://github.com/Kilo-Org/kilocode/pull/5150
 https://github.com/Kilo-Org/kilocode/pull/5162
+
+# Obtainium
+https://github.com/ImranR98/Obtainium/pull/2728

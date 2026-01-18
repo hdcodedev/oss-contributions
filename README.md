@@ -12,7 +12,8 @@
 
 | Status | Repository | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix(terminal): allow killing detached processes](https://github.com/Kilo-Org/kilocode/pull/5167) (#5167) |
+| 🟢 | [**ImranR98/Obtainium**](https://github.com/ImranR98/Obtainium) | Dart | [fix: ensure apps with unknown release dates sort to the bottom in descending order](https://github.com/ImranR98/Obtainium/pull/2728) (#2728) |
+| 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix(cli): allow killing detached processes](https://github.com/Kilo-Org/kilocode/pull/5167) (#5167) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix: preserve images when editing messages with checkpoint](https://github.com/Kilo-Org/kilocode/pull/5162) (#5162) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [feat(core): support .kiloignore as alias for .kilocodeignore](https://github.com/Kilo-Org/kilocode/pull/5161) (#5161) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests](https://github.com/Kilo-Org/kilocode/pull/5150) (#5150) |
