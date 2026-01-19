@@ -1,0 +1,39 @@
+name: Update README from Google Sheet
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at 00:00 UTC
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run generation script
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          python3 generate_readme.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "docs: update contributions README"
+          title: "docs: update contributions README"
+          body: "This PR updates the README with the latest contributions from the Google Sheet."
+          branch: "update-readme-${{ github.run_id }}"
+          base: "main"
+          delete-branch: true

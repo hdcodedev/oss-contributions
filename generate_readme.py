@@ -3,6 +3,9 @@ import re
 import json
 from collections import defaultdict
 from urllib.parse import urlparse
+import csv
+import urllib.request
+import io
 
 def get_pr_details(url):
     """
@@ -160,13 +163,36 @@ def generate_markdown(contributions_by_date, output_file="README.md"):
                 
                 f.write("\n")
 
+def fetch_urls_from_sheet(csv_url):
+    """
+    Fetches URLs from a published Google Sheet CSV.
+    Assumes the sheet has a column that contains GitHub PR URLs.
+    """
+    response = urllib.request.urlopen(csv_url)
+    csv_content = response.read().decode('utf-8')
+    reader = csv.DictReader(io.StringIO(csv_content))
+    
+    urls = []
+    for row in reader:
+        # Check if 'PR' column exists and has a valid content
+        if 'PR' in row and row['PR']:
+            value = row['PR'].strip()
+            if value and "github.com" in value and "/pull/" in value:
+                urls.append(value)
+    return urls
+
 def main():
-    # Read URLs from file
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfuJK1dGU8Exl0svlqdwVVn2tsdNjjs-bvDgMFJxFgfLkCbMzNWhM5QF7cIZvr6T2mt56pO9tagm3h/pub?gid=0&single=true&output=csv" 
+
+    if not SHEET_URL:
+        print("Error: SHEET_URL is not set. Please publish your Google Sheet as CSV and set the URL in the script.")
+        return
+
+    print(f"Fetching URLs from Google Sheet...")
     try:
-        with open("contributions.txt", "r") as f:
-            urls = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
-    except FileNotFoundError:
-        print("contributions.txt not found.")
+        urls = fetch_urls_from_sheet(SHEET_URL)
+    except Exception as e:
+        print(f"Error fetching from Google Sheet: {e}")
         return
 
     print(f"Found {len(urls)} URLs. Fetching details...")
