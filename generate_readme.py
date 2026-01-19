@@ -148,7 +148,7 @@ def generate_markdown(contributions_by_date, output_file="README.md"):
                 
                 # Sort PRs by Repository Name (asc) then Date (desc)
                 prs.sort(key=lambda x: x['createdAt'], reverse=True)
-                prs.sort(key=lambda x: x['repository']['nameWithOwner'])
+                prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
 
                 for pr in prs:
                     repo_name = pr['repository']['nameWithOwner']
@@ -173,12 +173,19 @@ def fetch_urls_from_sheet(csv_url):
     reader = csv.DictReader(io.StringIO(csv_content))
     
     urls = []
-    for row in reader:
+    for i, row in enumerate(reader):
         # Check if 'PR' column exists and has a valid content
-        if 'PR' in row and row['PR']:
-            value = row['PR'].strip()
-            if value and "github.com" in value and "/pull/" in value:
+        if 'PR' in row:
+            value = (row['PR'] or "").strip()
+            if not value:
+                continue
+                
+            if "github.com" in value and "/pull/" in value:
                 urls.append(value)
+            else:
+                print(f"Warning: Skipping invalid URL at row {i+2}: '{value}' (must contain 'github.com' and '/pull/')")
+        else:
+             print(f"Warning: Row {i+2} missing 'PR' column.")
     return urls
 
 def main():
