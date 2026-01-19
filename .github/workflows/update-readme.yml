@@ -34,6 +34,6 @@ jobs:
           commit-message: "docs: update contributions README"
           title: "docs: update contributions README"
           body: "This PR updates the README with the latest contributions from the Google Sheet."
-          branch: "update-readme-${{ github.run_id }}"
+          branch: "update-readme"
           base: "main"
-          delete-branch: true
+          delete-branch: false
