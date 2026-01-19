@@ -176,7 +176,7 @@ def fetch_urls_from_sheet(csv_url):
     for i, row in enumerate(reader):
         # Check if 'PR' column exists and has a valid content
         if 'PR' in row:
-            value = row['PR'].strip()
+            value = (row['PR'] or "").strip()
             if not value:
                 continue
                 
