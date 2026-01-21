@@ -92,12 +92,17 @@ def get_repo_details(repo_name):
         print(f"Error fetching repo info for {repo_name}: {e}")
         return {'description': '', 'tech_stack': ''}
 
-def fetch_urls(urls):
+def fetch_urls(url_data):
     contributions_by_date = defaultdict(lambda: defaultdict(list))
+    featured_repos = {} # repo_name -> min_order
     
     from datetime import datetime
 
-    for url in urls:
+    for entry in url_data:
+        url = entry['url']
+        is_featured = entry.get('featured', False)
+        featured_order = entry.get('featured_order', float('inf'))
+        
         print(f"Processing {url}...")
         details = get_pr_details(url)
         if details:
@@ -113,20 +118,38 @@ def fetch_urls(urls):
                 if repo_name:
                     repo_info = get_repo_details(repo_name)
                     details['repo_info'] = repo_info
+                    if is_featured:
+                        # Keep the lowest order found for this repo
+                        current_order = featured_repos.get(repo_name, float('inf'))
+                        if repo_name not in featured_repos or featured_order < current_order:
+                            featured_repos[repo_name] = featured_order
             
             # Store tuple of (month_number, month_name) for sorting keys properly later
             contributions_by_date[year][(month_sort, month_name)].append(details)
             
-    return contributions_by_date
+    return contributions_by_date, featured_repos
 
-def generate_markdown(contributions_by_date, output_file="README.md"):
+def generate_markdown(contributions_by_date, featured_repos, output_file="README.md"):
     # Generate README
     with open(output_file, "w") as f:
         f.write("# OSS Contributions\n\n")
-        f.write("## Status\n\n")
-        f.write("- 🟢 **Open**: The pull request is currently open and active.\n")
-        f.write("- 🟣 **Merged**: The pull request has been merged into the codebase.\n")
-        f.write("- 🔴 **Closed**: The pull request was closed without being merged.\n\n")
+
+        # Featured Section
+        if featured_repos:
+            f.write("## Featured Projects\n\n")
+            f.write("<p float=\"left\">\n")
+            # Sort by order, then alphabetically by repo name
+            sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
+            
+            for repo, order in sorted_featured:
+                 # Assuming owner is the first part of the repo name
+                 owner = repo.split('/')[0]
+                 f.write(f"  <a href=\"https://github.com/{repo}\">\n")
+                 f.write(f"    <img src=\"https://github.com/{owner}.png\" width=\"60\" title=\"{repo}\" alt=\"{repo}\" />\n")
+                 f.write("  </a>\n")
+            f.write("</p>\n\n")
+
+
 
         # Sort years descending
         sorted_years = sorted(contributions_by_date.keys(), reverse=True)
@@ -163,6 +186,12 @@ def generate_markdown(contributions_by_date, output_file="README.md"):
                 
                 f.write("\n")
 
+        f.write("## Status\n\n")
+        f.write("- 🟢 **Open**: The pull request is currently open and active.\n")
+        f.write("- 🟣 **Merged**: The pull request has been merged into the codebase.\n")
+        f.write("- 🔴 **Closed**: The pull request was closed without being merged.\n\n")
+
+
 def fetch_urls_from_sheet(csv_url):
     """
     Fetches URLs from a published Google Sheet CSV.
@@ -172,7 +201,7 @@ def fetch_urls_from_sheet(csv_url):
     csv_content = response.read().decode('utf-8')
     reader = csv.DictReader(io.StringIO(csv_content))
     
-    urls = []
+    url_data = [] # List of dicts {url: str, featured: bool, featured_order: float}
     for i, row in enumerate(reader):
         # Check if 'PR' column exists and has a valid content
         if 'PR' in row:
@@ -181,12 +210,24 @@ def fetch_urls_from_sheet(csv_url):
                 continue
                 
             if "github.com" in value and "/pull/" in value:
-                urls.append(value)
+                is_featured = False
+                featured_order = float('inf')
+                
+                if 'Featured' in row and row['Featured'] and row['Featured'].upper() == 'YES':
+                     is_featured = True
+                
+                if 'FeaturedOrder' in row and row['FeaturedOrder']:
+                    try:
+                        featured_order = float(row['FeaturedOrder'])
+                    except ValueError:
+                         pass # Keep default infinity
+                         
+                url_data.append({'url': value, 'featured': is_featured, 'featured_order': featured_order})
             else:
                 print(f"Warning: Skipping invalid URL at row {i+2}: '{value}' (must contain 'github.com' and '/pull/')")
         else:
              print(f"Warning: Row {i+2} missing 'PR' column.")
-    return urls
+    return url_data
 
 def main():
     SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfuJK1dGU8Exl0svlqdwVVn2tsdNjjs-bvDgMFJxFgfLkCbMzNWhM5QF7cIZvr6T2mt56pO9tagm3h/pub?gid=0&single=true&output=csv" 
@@ -197,15 +238,15 @@ def main():
 
     print(f"Fetching URLs from Google Sheet...")
     try:
-        urls = fetch_urls_from_sheet(SHEET_URL)
+        url_data = fetch_urls_from_sheet(SHEET_URL)
     except Exception as e:
         print(f"Error fetching from Google Sheet: {e}")
         return
 
-    print(f"Found {len(urls)} URLs. Fetching details...")
+    print(f"Found {len(url_data)} URLs. Fetching details...")
 
-    data = fetch_urls(urls)
-    generate_markdown(data)
+    data, featured_repos = fetch_urls(url_data)
+    generate_markdown(data, featured_repos)
 
     print("Done! README.md updated.")
 
