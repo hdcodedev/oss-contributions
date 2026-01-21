@@ -1,14 +1,22 @@
 # OSS Contributions
 
-## Status
+## Featured Projects
 
-- 🟢 **Open**: The pull request is currently open and active.
-- 🟣 **Merged**: The pull request has been merged into the codebase.
-- 🔴 **Closed**: The pull request was closed without being merged.
+<p float="left">
+  <a href="https://github.com/openai/codex">
+    <img src="https://github.com/openai.png" width="60" title="openai/codex" alt="openai/codex" />
+  </a>
+  <a href="https://github.com/Kilo-Org/kilocode">
+    <img src="https://github.com/Kilo-Org.png" width="60" title="Kilo-Org/kilocode" alt="Kilo-Org/kilocode" />
+  </a>
+  <a href="https://github.com/home-assistant/android">
+    <img src="https://github.com/home-assistant.png" width="60" title="home-assistant/android" alt="home-assistant/android" />
+  </a>
+</p>
 
-## 2026
+# 2026
 
-### January
+## January
 
 | Status | Repository | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
@@ -17,17 +25,24 @@
 | 🟣 | [**home-assistant/android**](https://github.com/home-assistant/android) | Kotlin, Jetpack Compose | [Add connectivity check feature for troubleshooting server connections ](https://github.com/home-assistant/android/pull/6237) (#6237) |
 | 🟢 | [**ImranR98/Obtainium**](https://github.com/ImranR98/Obtainium) | Dart | [feat: Detect GitHub repo renames](https://github.com/ImranR98/Obtainium/pull/2742) (#2742) |
 | 🟣 | [**ImranR98/Obtainium**](https://github.com/ImranR98/Obtainium) | Dart | [fix: ensure apps with unknown release dates sort to the bottom in descending order](https://github.com/ImranR98/Obtainium/pull/2728) (#2728) |
+| 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [feat(cli): add cli status command](https://github.com/Kilo-Org/kilocode/pull/5275) (#5275) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix(extension): allow killing detached processes](https://github.com/Kilo-Org/kilocode/pull/5167) (#5167) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix: preserve images when editing messages with checkpoint](https://github.com/Kilo-Org/kilocode/pull/5162) (#5162) |
 | 🔴 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [feat(core): support .kiloignore as alias for .kilocodeignore](https://github.com/Kilo-Org/kilocode/pull/5161) (#5161) |
 | 🟢 | [**Kilo-Org/kilocode**](https://github.com/Kilo-Org/kilocode) | TypeScript | [fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests](https://github.com/Kilo-Org/kilocode/pull/5150) (#5150) |
 | 🟣 | [**metabrainz/listenbrainz-android**](https://github.com/metabrainz/listenbrainz-android) | Kotlin | [feat: Migrate to DataStore and add shared module](https://github.com/metabrainz/listenbrainz-android/pull/673) (#673) |
 
-## 2025
+# 2025
 
-### December
+## December
 
 | Status | Repository | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
 | 🟣 | [**openai/codex**](https://github.com/openai/codex) | Rust | [fix(core): require approval for force delete on Windows](https://github.com/openai/codex/pull/8590) (#8590) |
+
+## Status
+
+- 🟢 **Open**: The pull request is currently open and active.
+- 🟣 **Merged**: The pull request has been merged into the codebase.
+- 🔴 **Closed**: The pull request was closed without being merged.
 
