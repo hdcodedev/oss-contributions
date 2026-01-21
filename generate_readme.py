@@ -155,13 +155,13 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
         sorted_years = sorted(contributions_by_date.keys(), reverse=True)
 
         for year in sorted_years:
-            f.write(f"## {year}\n\n")
+            f.write(f"# {year}\n\n")
             
             # Sort months descending
             sorted_months = sorted(contributions_by_date[year].keys(), key=lambda x: x[0], reverse=True)
             
             for month_sort, month_name in sorted_months:
-                f.write(f"### {month_name}\n\n")
+                f.write(f"## {month_name}\n\n")
                 
                 # Table Header
                 f.write("| Status | Repository | Tech Stack | Contribution |\n")
