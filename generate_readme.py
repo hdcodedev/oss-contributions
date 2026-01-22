@@ -304,7 +304,12 @@ def main():
         return
 
     print(f"Found {len(url_data)} URLs.")
-    if allowed_statuses:
+    
+    # Treat empty set as no filtering (None)
+    if allowed_statuses is not None and len(allowed_statuses) == 0:
+        print("No status filters defined (empty set). Showing all PRs.")
+        allowed_statuses = None
+    elif allowed_statuses:
         print(f"Filtering for statuses: {allowed_statuses}")
 
     data, featured_repos = fetch_urls(url_data, allowed_statuses)
