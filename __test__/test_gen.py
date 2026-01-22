@@ -13,6 +13,7 @@ def create_mock_pr(title, url, number, state, repo, date):
         'url': url,
         'number': number,
         'state': state,
+        'status': state,  # Add status field for new logic
         'repository': {'nameWithOwner': repo},
         'createdAt': date
     }
@@ -53,7 +54,11 @@ def main():
 
     output_file = os.path.join(os.path.dirname(__file__), "TEST_README.md")
     print(f"Generating {output_file}...")
-    generate_markdown(contributions_by_date, output_file)
+    
+    # No featured repos in test
+    featured_repos = {}
+    
+    generate_markdown(contributions_by_date, featured_repos, output_file)
     print("Done.")
 
 if __name__ == "__main__":
