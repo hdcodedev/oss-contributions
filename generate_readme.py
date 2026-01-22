@@ -18,10 +18,10 @@ def get_pr_details(url):
             return None
         
         # Run gh pr view
-        # We want json output with title, url, state, createdAt, number
+        # We want json output with title, url, state, createdAt, number, isDraft
         cmd = [
             "gh", "pr", "view", url,
-            "--json", "title,url,state,createdAt,number"
+            "--json", "title,url,state,createdAt,number,isDraft"
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         data = json.loads(result.stdout)
@@ -92,7 +92,32 @@ def get_repo_details(repo_name):
         print(f"Error fetching repo info for {repo_name}: {e}")
         return {'description': '', 'tech_stack': ''}
 
-def fetch_urls(url_data):
+
+def fetch_allowed_statuses(csv_url):
+    """
+    Fetches allowed statuses from a Google Sheet CSV.
+    Expected columns: Status, Value (1 for allowed, 0 for hidden)
+    """
+    if not csv_url:
+        print("Warning: FILTER_SHEET_URL is not set. All statuses will be allowed.")
+        return None
+
+    try:
+        response = urllib.request.urlopen(csv_url)
+        csv_content = response.read().decode('utf-8')
+        reader = csv.DictReader(io.StringIO(csv_content))
+        
+        allowed = set()
+        for row in reader:
+            if 'Status' in row and 'Value' in row:
+                if row['Value'].strip() == '1':
+                    allowed.add(row['Status'].strip().upper())
+        return allowed
+    except Exception as e:
+        print(f"Error fetching allowed statuses: {e}")
+        return None
+
+def fetch_urls(url_data, allowed_statuses=None):
     contributions_by_date = defaultdict(lambda: defaultdict(list))
     featured_repos = {} # repo_name -> min_order
     
@@ -106,7 +131,21 @@ def fetch_urls(url_data):
         print(f"Processing {url}...")
         details = get_pr_details(url)
         if details:
-             # Parse date
+            # Use API status (mapped to upper case)
+            if details.get('isDraft'):
+                status = 'DRAFT'
+            else:
+                status = details['state'].upper()
+            
+            # Filter based on allowed statuses
+            if allowed_statuses is not None:
+                if status not in allowed_statuses:
+                    print(f"Skipping {url} (Status: {status} not in allowed list)")
+                    continue
+
+            details['status'] = status
+            
+            # Parse date
             created_at = datetime.strptime(details['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
             year = created_at.year
             month_name = created_at.strftime("%B") # Full month name
@@ -175,7 +214,17 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
                 for pr in prs:
                     repo_name = pr['repository']['nameWithOwner']
-                    icon = "🟢" if pr['state'] == "OPEN" else "🟣" if pr['state'] == "MERGED" else "🔴"
+                    
+                    status = pr.get('status', 'OPEN').upper()
+                    if status == "MERGED":
+                        icon = "🟣"
+                    elif status == "OPEN":
+                        icon = "🟢"
+                    elif status == "DRAFT":
+                        icon = "🚧"
+                    else:
+                        icon = "🔴"
+                    
                     title = pr['title']
                     pr_url = pr['url']
                     pr_number = pr['number']
@@ -185,11 +234,13 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                     f.write(f"| {icon} | [**{repo_name}**](https://github.com/{repo_name}) | {tech_stack} | [{title}]({pr_url}) (#{pr_number}) |\n")
                 
                 f.write("\n")
-
+        
         f.write("## Status\n\n")
         f.write("- 🟢 **Open**: The pull request is currently open and active.\n")
         f.write("- 🟣 **Merged**: The pull request has been merged into the codebase.\n")
+        f.write("- 🚧 **Draft**: The pull request is a work in progress.\n")
         f.write("- 🔴 **Closed**: The pull request was closed without being merged.\n\n")
+
 
 
 def fetch_urls_from_sheet(csv_url):
@@ -202,7 +253,17 @@ def fetch_urls_from_sheet(csv_url):
     reader = csv.DictReader(io.StringIO(csv_content))
     
     url_data = [] # List of dicts {url: str, featured: bool, featured_order: float}
+    allowed = set()
+
     for i, row in enumerate(reader):
+        # 1. Parse Status Logic (Columns E and F usually)
+        if 'Status' in row and 'Value' in row:
+             status_key = row['Status'].strip().upper()
+             value_val = row['Value'].strip()
+             if status_key and value_val == '1':
+                 allowed.add(status_key)
+
+        # 2. Parse PR Data (Column B)
         # Check if 'PR' column exists and has a valid content
         if 'PR' in row:
             value = (row['PR'] or "").strip()
@@ -225,9 +286,8 @@ def fetch_urls_from_sheet(csv_url):
                 url_data.append({'url': value, 'featured': is_featured, 'featured_order': featured_order})
             else:
                 print(f"Warning: Skipping invalid URL at row {i+2}: '{value}' (must contain 'github.com' and '/pull/')")
-        else:
-             print(f"Warning: Row {i+2} missing 'PR' column.")
-    return url_data
+                
+    return url_data, allowed
 
 def main():
     SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfuJK1dGU8Exl0svlqdwVVn2tsdNjjs-bvDgMFJxFgfLkCbMzNWhM5QF7cIZvr6T2mt56pO9tagm3h/pub?gid=0&single=true&output=csv" 
@@ -238,14 +298,16 @@ def main():
 
     print(f"Fetching URLs from Google Sheet...")
     try:
-        url_data = fetch_urls_from_sheet(SHEET_URL)
+        url_data, allowed_statuses = fetch_urls_from_sheet(SHEET_URL)
     except Exception as e:
         print(f"Error fetching from Google Sheet: {e}")
         return
 
-    print(f"Found {len(url_data)} URLs. Fetching details...")
+    print(f"Found {len(url_data)} URLs.")
+    if allowed_statuses:
+        print(f"Filtering for statuses: {allowed_statuses}")
 
-    data, featured_repos = fetch_urls(url_data)
+    data, featured_repos = fetch_urls(url_data, allowed_statuses)
     generate_markdown(data, featured_repos)
 
     print("Done! README.md updated.")
