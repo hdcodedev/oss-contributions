@@ -127,6 +127,7 @@ def fetch_urls(url_data, allowed_statuses=None):
         url = entry['url']
         is_featured = entry.get('featured', False)
         featured_order = entry.get('featured_order', float('inf'))
+        sheet_index = entry.get('sheet_index', 0)  # Preserve sheet order
         
         print(f"Processing {url}...")
         details = get_pr_details(url)
@@ -144,6 +145,7 @@ def fetch_urls(url_data, allowed_statuses=None):
                     continue
 
             details['status'] = status
+            details['sheet_index'] = sheet_index  # Store sheet order
             
             # Parse date
             created_at = datetime.strptime(details['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
@@ -167,6 +169,57 @@ def fetch_urls(url_data, allowed_statuses=None):
             contributions_by_date[year][(month_sort, month_name)].append(details)
             
     return contributions_by_date, featured_repos
+
+def get_pr_emoji(title):
+    """
+    Detects emoji based on PR title using conventional commit prefixes or keywords.
+    """
+    title_lower = title.lower().strip()
+    
+    # Conventional commit emoji mapping
+    conventional_map = {
+        'feat': '✨',      # New features
+        'fix': '🐛',       # Bug fixes
+        'refactor': '♻️',  # Code refactoring
+        'docs': '📝',      # Documentation
+        'style': '💄',     # Styling/formatting
+        'test': '✅',      # Tests
+        'chore': '🔧',     # Maintenance
+        'perf': '⚡',      # Performance
+        'ci': '👷',        # CI/CD
+        'build': '📦',     # Build system
+        'revert': '⏪',    # Reverts
+    }
+    
+    # Check for conventional commit prefix (e.g., "feat:", "fix(core):")
+    import re
+    match = re.match(r'^(\w+)(?:\([^)]+\))?:', title_lower)
+    if match:
+        prefix = match.group(1)
+        if prefix in conventional_map:
+            return conventional_map[prefix]
+    
+    # Fallback: keyword detection
+    keyword_map = {
+        'add': '✨',
+        'update': '🔄',
+        'remove': '🗑️',
+        'delete': '🗑️',
+        'migrate': '🚚',
+        'improve': '⚡',
+        'enhance': '⚡',
+        'optimize': '⚡',
+        'bump': '⬆️',
+        'upgrade': '⬆️',
+        'deprecate': '🚨',
+    }
+    
+    for keyword, emoji in keyword_map.items():
+        if title_lower.startswith(keyword):
+            return emoji
+    
+    # Default fallback
+    return '🔨'
 
 def generate_markdown(contributions_by_date, featured_repos, output_file="README.md"):
     # Generate README
@@ -203,19 +256,25 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                 f.write(f"## {month_name}\n\n")
                 
                 # Table Header
-                f.write("| Status | Repository | Tech Stack | Contribution |\n")
+                f.write("| Status | Project | Tech Stack | Contribution |\n")
                 f.write("| :---: | :--- | :---: | :--- |\n")
 
                 prs = contributions_by_date[year][(month_sort, month_name)]
                 
-                # Sort PRs by Repository Name (asc) then Date (desc)
-                prs.sort(key=lambda x: x['createdAt'], reverse=True)
+                # Sort PRs by Repository Name (asc) then Sheet Order (asc)
+                prs.sort(key=lambda x: x.get('sheet_index', 0))
                 prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
 
-                for pr in prs:
-                    repo_name = pr['repository']['nameWithOwner']
+                # Group PRs by repository
+                from itertools import groupby
+                grouped_prs = groupby(prs, key=lambda x: x['repository']['nameWithOwner'])
+                
+                for repo_name, repo_prs in grouped_prs:
+                    repo_prs_list = list(repo_prs)
                     
-                    status = pr.get('status', 'OPEN').upper()
+                    # Use the status of the first PR (most recent)
+                    first_pr = repo_prs_list[0]
+                    status = first_pr.get('status', 'OPEN').upper()
                     if status == "MERGED":
                         icon = "🟣"
                     elif status == "OPEN":
@@ -225,13 +284,40 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                     else:
                         icon = "🔴"
                     
-                    title = pr['title']
-                    pr_url = pr['url']
-                    pr_number = pr['number']
+                    tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
                     
-                    tech_stack = pr.get('repo_info', {}).get('tech_stack', '')
+                    # Get owner for logo
+                    owner = repo_name.split('/')[0]
                     
-                    f.write(f"| {icon} | [**{repo_name}**](https://github.com/{repo_name}) | {tech_stack} | [{title}]({pr_url}) (#{pr_number}) |\n")
+                    # Special logo mapping for repos with custom project logos
+                    custom_logos = {
+                        'ImranR98/Obtainium': 'https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png'
+                    }
+                    
+                    # Use custom logo if available, otherwise use owner avatar
+                    if repo_name in custom_logos:
+                        logo_url = custom_logos[repo_name]
+                    else:
+                        logo_url = f"https://github.com/{owner}.png"
+                    
+                    # Build repository display with just clickable logo
+                    repo_display = f"<a href=\"https://github.com/{repo_name}\"><img src=\"{logo_url}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/></a>"
+                    
+                    # Build contributions list
+                    if len(repo_prs_list) == 1:
+                        # Single contribution
+                        pr = repo_prs_list[0]
+                        emoji = get_pr_emoji(pr['title'])
+                        contribution = f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})"
+                    else:
+                        # Multiple contributions - use bullets with line breaks
+                        contributions = []
+                        for pr in repo_prs_list:
+                            emoji = get_pr_emoji(pr['title'])
+                            contributions.append(f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})")
+                        contribution = "<br>".join(contributions)
+                    
+                    f.write(f"| {icon} | {repo_display} | {tech_stack} | {contribution} |\n")
                 
                 f.write("\n")
         
@@ -283,7 +369,7 @@ def fetch_urls_from_sheet(csv_url):
                     except ValueError:
                          pass # Keep default infinity
                          
-                url_data.append({'url': value, 'featured': is_featured, 'featured_order': featured_order})
+                url_data.append({'url': value, 'featured': is_featured, 'featured_order': featured_order, 'sheet_index': i})
             else:
                 print(f"Warning: Skipping invalid URL at row {i+2}: '{value}' (must contain 'github.com' and '/pull/')")
                 
