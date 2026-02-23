@@ -16,6 +16,12 @@
 
 # 2026
 
+## February
+
+| Status | Project | Tech Stack | Contribution |
+| :---: | :--- | :---: | :--- |
+| 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#5990: fix(providers): avoid duplicate /v1 in OpenAI Responses fallback URL](https://github.com/Kilo-Org/kilocode/pull/5990) |
+
 ## January
 
 | Status | Project | Tech Stack | Contribution |
