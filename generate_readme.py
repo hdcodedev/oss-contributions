@@ -265,23 +265,22 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                 prs.sort(key=lambda x: x.get('sheet_index', 0))
                 prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
 
-                # Group PRs by repository
+                # Group PRs by repository AND status
                 from itertools import groupby
-                grouped_prs = groupby(prs, key=lambda x: x['repository']['nameWithOwner'])
+                grouped_prs = groupby(prs, key=lambda x: (x['repository']['nameWithOwner'], x.get('status', 'OPEN').upper()))
                 
-                for repo_name, repo_prs in grouped_prs:
+                for (repo_name, group_status), repo_prs in grouped_prs:
                     repo_prs_list = list(repo_prs)
-                    
-                    # Use the status of the first PR (most recent)
                     first_pr = repo_prs_list[0]
-                    status = first_pr.get('status', 'OPEN').upper()
-                    if status == "MERGED":
-                        icon = "🟣"
-                    elif status == "OPEN":
-                        icon = "🟢"
-                    elif status == "DRAFT":
+                    
+                    # Set icon based on group status
+                    if group_status == "DRAFT":
                         icon = "🚧"
-                    else:
+                    elif group_status == "OPEN":
+                        icon = "🟢"
+                    elif group_status == "MERGED":
+                        icon = "🟣"
+                    elif group_status == "CLOSED":
                         icon = "🔴"
                     
                     tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
