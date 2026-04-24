@@ -20,7 +20,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | ♻️ [#9445: refactor(vscode): split webview messages.ts into per-domain files](https://github.com/Kilo-Org/kilocode/pull/9445) |
+| 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | ♻️ [#9445: refactor(vscode): split webview messages.ts into per-domain files](https://github.com/Kilo-Org/kilocode/pull/9445)<br>🐛 [#9457: fix(vscode): harden message contract union extraction](https://github.com/Kilo-Org/kilocode/pull/9457) |
 
 ## March
 
