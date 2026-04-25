@@ -26,8 +26,8 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#6726: fix(docs): correct package paths in CONTRIBUTING.md](https://github.com/Kilo-Org/kilocode/pull/6726) |
-| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#6729: fix(docs): add Kilo Code logo to README.md](https://github.com/Kilo-Org/kilocode/pull/6729)<br>🐛 [#6824: fix(cli): stop hardcoding opencode in kilo pr](https://github.com/Kilo-Org/kilocode/pull/6824) |
+| 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#6726: fix(docs): correct package paths in CONTRIBUTING.md](https://github.com/Kilo-Org/kilocode/pull/6726)<br>🐛 [#6729: fix(docs): add Kilo Code logo to README.md](https://github.com/Kilo-Org/kilocode/pull/6729) |
+| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#6824: fix(cli): stop hardcoding opencode in kilo pr](https://github.com/Kilo-Org/kilocode/pull/6824) |
 
 ## February
 
