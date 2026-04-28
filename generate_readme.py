@@ -265,9 +265,13 @@ def build_readme_model(contributions_by_date, featured_repos):
         for month_sort, month_name in sorted_months:
             prs = list(contributions_by_date[year][(month_sort, month_name)])
 
-            # Preserve existing behavior: repository sort first, then sheet order within repo.
-            prs.sort(key=lambda x: x.get('sheet_index', 0))
-            prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
+            # Sort by (repo, normalized status, sheet_index) so that groupby produces one
+            # group per (repo, status) pair even when statuses are interleaved by sheet order.
+            prs.sort(key=lambda x: (
+                x['repository']['nameWithOwner'].lower(),
+                x.get('status', 'OPEN').upper(),
+                x.get('sheet_index', 0),
+            ))
 
             month_rows = []
             from itertools import groupby
