@@ -221,110 +221,207 @@ def get_pr_emoji(title):
     # Default fallback
     return '🔨'
 
+def build_readme_model(contributions_by_date, featured_repos):
+    """
+    Builds a deterministic model used by both markdown and JSON outputs.
+    """
+    custom_logos = {
+        'ImranR98/Obtainium': 'https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png'
+    }
+
+    status_icons = {
+        'DRAFT': '🚧',
+        'OPEN': '🟢',
+        'MERGED': '🟣',
+        'CLOSED': '🔴',
+    }
+
+    status_legend = [
+        {'status': 'OPEN', 'icon': '🟢', 'label': 'Open', 'description': 'The pull request is currently open and active.'},
+        {'status': 'MERGED', 'icon': '🟣', 'label': 'Merged', 'description': 'The pull request has been merged into the codebase.'},
+        {'status': 'DRAFT', 'icon': '🚧', 'label': 'Draft', 'description': 'The pull request is a work in progress.'},
+        {'status': 'CLOSED', 'icon': '🔴', 'label': 'Closed', 'description': 'The pull request was closed without being merged.'},
+    ]
+
+    featured_projects = []
+    if featured_repos:
+        sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
+        for repo, order in sorted_featured:
+            owner = repo.split('/')[0]
+            featured_projects.append({
+                'repo_name': repo,
+                'order': order,
+                'repo_url': f"https://github.com/{repo}",
+                'avatar_url': f"https://github.com/{owner}.png",
+            })
+
+    years = []
+    sorted_years = sorted(contributions_by_date.keys(), reverse=True)
+
+    for year in sorted_years:
+        months = []
+        sorted_months = sorted(contributions_by_date[year].keys(), key=lambda x: x[0], reverse=True)
+
+        for month_sort, month_name in sorted_months:
+            prs = list(contributions_by_date[year][(month_sort, month_name)])
+
+            # Preserve existing behavior: repository sort first, then sheet order within repo.
+            prs.sort(key=lambda x: x.get('sheet_index', 0))
+            prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
+
+            month_rows = []
+            from itertools import groupby
+            grouped_prs = groupby(prs, key=lambda x: (x['repository']['nameWithOwner'], x.get('status', 'OPEN').upper()))
+
+            for (repo_name, group_status), repo_prs in grouped_prs:
+                repo_prs_list = list(repo_prs)
+                first_pr = repo_prs_list[0]
+
+                icon = status_icons.get(group_status, '🔨')
+                tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
+                owner = repo_name.split('/')[0]
+                logo_url = custom_logos.get(repo_name, f"https://github.com/{owner}.png")
+
+                contributions = []
+                for pr in repo_prs_list:
+                    emoji = get_pr_emoji(pr['title'])
+                    contributions.append({
+                        'emoji': emoji,
+                        'number': pr['number'],
+                        'title': pr['title'],
+                        'url': pr['url'],
+                        'markdown': f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})",
+                    })
+
+                month_rows.append({
+                    'status': group_status,
+                    'status_icon': icon,
+                    'repo_name': repo_name,
+                    'repo_url': f"https://github.com/{repo_name}",
+                    'logo_url': logo_url,
+                    'tech_stack': tech_stack,
+                    'contributions': contributions,
+                    'contribution_markdown': "<br>".join(item['markdown'] for item in contributions),
+                })
+
+            months.append({
+                'month_number': month_sort,
+                'month_name': month_name,
+                'rows': month_rows,
+            })
+
+        years.append({
+            'year': year,
+            'months': months,
+        })
+
+    return {
+        'title': 'OSS Contributions',
+        'featured_projects': featured_projects,
+        'years': years,
+        'status_legend': status_legend,
+    }
+
+
 def generate_markdown(contributions_by_date, featured_repos, output_file="README.md"):
+    model = build_readme_model(contributions_by_date, featured_repos)
+
     # Generate README
     with open(output_file, "w") as f:
         f.write("# OSS Contributions\n\n")
 
         # Featured Section
-        if featured_repos:
+        if model['featured_projects']:
             f.write("## Featured Projects\n\n")
             f.write("<p float=\"left\">\n")
-            # Sort by order, then alphabetically by repo name
-            sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
-            
-            for repo, order in sorted_featured:
-                 # Assuming owner is the first part of the repo name
-                 owner = repo.split('/')[0]
-                 f.write(f"  <a href=\"https://github.com/{repo}\">\n")
-                 f.write(f"    <img src=\"https://github.com/{owner}.png\" width=\"60\" title=\"{repo}\" alt=\"{repo}\" />\n")
+            for project in model['featured_projects']:
+                 repo = project['repo_name']
+                 f.write(f"  <a href=\"{project['repo_url']}\">\n")
+                 f.write(f"    <img src=\"{project['avatar_url']}\" width=\"60\" title=\"{repo}\" alt=\"{repo}\" />\n")
                  f.write("  </a>\n")
             f.write("</p>\n\n")
 
-
-
-        # Sort years descending
-        sorted_years = sorted(contributions_by_date.keys(), reverse=True)
-
-        for year in sorted_years:
+        for year_data in model['years']:
+            year = year_data['year']
             f.write(f"# {year}\n\n")
-            
-            # Sort months descending
-            sorted_months = sorted(contributions_by_date[year].keys(), key=lambda x: x[0], reverse=True)
-            
-            for month_sort, month_name in sorted_months:
+
+            for month_data in year_data['months']:
+                month_name = month_data['month_name']
                 f.write(f"## {month_name}\n\n")
-                
+
                 # Table Header
                 f.write("| Status | Project | Tech Stack | Contribution |\n")
                 f.write("| :---: | :--- | :---: | :--- |\n")
 
-                prs = contributions_by_date[year][(month_sort, month_name)]
-                
-                # Sort PRs by Repository Name (asc) then Sheet Order (asc)
-                prs.sort(key=lambda x: x.get('sheet_index', 0))
-                prs.sort(key=lambda x: x['repository']['nameWithOwner'].lower())
-
-                # Group PRs by repository AND status
-                from itertools import groupby
-                grouped_prs = groupby(prs, key=lambda x: (x['repository']['nameWithOwner'], x.get('status', 'OPEN').upper()))
-                
-                for (repo_name, group_status), repo_prs in grouped_prs:
-                    repo_prs_list = list(repo_prs)
-                    first_pr = repo_prs_list[0]
-                    
-                    # Set icon based on group status
-                    if group_status == "DRAFT":
-                        icon = "🚧"
-                    elif group_status == "OPEN":
-                        icon = "🟢"
-                    elif group_status == "MERGED":
-                        icon = "🟣"
-                    elif group_status == "CLOSED":
-                        icon = "🔴"
-                    
-                    tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
-                    
-                    # Get owner for logo
-                    owner = repo_name.split('/')[0]
-                    
-                    # Special logo mapping for repos with custom project logos
-                    custom_logos = {
-                        'ImranR98/Obtainium': 'https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png'
-                    }
-                    
-                    # Use custom logo if available, otherwise use owner avatar
-                    if repo_name in custom_logos:
-                        logo_url = custom_logos[repo_name]
-                    else:
-                        logo_url = f"https://github.com/{owner}.png"
-                    
-                    # Build repository display with just clickable logo
-                    repo_display = f"<a href=\"https://github.com/{repo_name}\"><img src=\"{logo_url}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/></a>"
-                    
-                    # Build contributions list
-                    if len(repo_prs_list) == 1:
-                        # Single contribution
-                        pr = repo_prs_list[0]
-                        emoji = get_pr_emoji(pr['title'])
-                        contribution = f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})"
-                    else:
-                        # Multiple contributions - use bullets with line breaks
-                        contributions = []
-                        for pr in repo_prs_list:
-                            emoji = get_pr_emoji(pr['title'])
-                            contributions.append(f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})")
-                        contribution = "<br>".join(contributions)
-                    
-                    f.write(f"| {icon} | {repo_display} | {tech_stack} | {contribution} |\n")
+                for row in month_data['rows']:
+                    repo_display = (
+                        f"<a href=\"{row['repo_url']}\">"
+                        f"<img src=\"{row['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/>"
+                        "</a>"
+                    )
+                    f.write(
+                        f"| {row['status_icon']} | {repo_display} | {row['tech_stack']} | {row['contribution_markdown']} |\n"
+                    )
                 
                 f.write("\n")
         
         f.write("## Status\n\n")
-        f.write("- 🟢 **Open**: The pull request is currently open and active.\n")
-        f.write("- 🟣 **Merged**: The pull request has been merged into the codebase.\n")
-        f.write("- 🚧 **Draft**: The pull request is a work in progress.\n")
-        f.write("- 🔴 **Closed**: The pull request was closed without being merged.\n\n")
+        for item in model['status_legend']:
+            f.write(f"- {item['icon']} **{item['label']}**: {item['description']}\n")
+        f.write("\n")
+
+
+def generate_json_snapshot(contributions_by_date, featured_repos, output_file="README_DATA.json"):
+    """
+    Writes a machine-readable snapshot of the same data shown in README.
+    """
+    model = build_readme_model(contributions_by_date, featured_repos)
+    json_model = {
+        'title': model['title'],
+        'featured_projects': model['featured_projects'],
+        'years': [],
+    }
+
+    for year_data in model['years']:
+        json_year = {
+            'year': year_data['year'],
+            'months': [],
+        }
+
+        for month_data in year_data['months']:
+            json_month = {
+                'month_number': month_data['month_number'],
+                'month_name': month_data['month_name'],
+                'rows': [],
+            }
+
+            for row in month_data['rows']:
+                plain_contributions = []
+                for item in row['contributions']:
+                    plain_contributions.append({
+                        'number': item['number'],
+                        'title': item['title'],
+                        'url': item['url'],
+                        'text': f"#{item['number']}: {item['title']}",
+                    })
+
+                json_month['rows'].append({
+                    'status': row['status'],
+                    'repo_name': row['repo_name'],
+                    'repo_url': row['repo_url'],
+                    'logo_url': row['logo_url'],
+                    'tech_stack': row['tech_stack'],
+                    'contributions': plain_contributions,
+                    'contribution_text': " | ".join(item['text'] for item in plain_contributions),
+                })
+
+            json_year['months'].append(json_month)
+
+        json_model['years'].append(json_year)
+
+    with open(output_file, "w") as f:
+        json.dump(json_model, f, indent=2, ensure_ascii=False)
+        f.write("\n")
 
 
 
@@ -399,8 +496,9 @@ def main():
 
     data, featured_repos = fetch_urls(url_data, allowed_statuses)
     generate_markdown(data, featured_repos)
+    generate_json_snapshot(data, featured_repos)
 
-    print("Done! README.md updated.")
+    print("Done! README.md and README_DATA.json updated.")
 
 if __name__ == "__main__":
     main()

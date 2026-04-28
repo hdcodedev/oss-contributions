@@ -5,7 +5,7 @@ from collections import defaultdict
 # Add parent directory to path to import generate_readme
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from generate_readme import generate_markdown
+from generate_readme import generate_markdown, generate_json_snapshot
 
 def create_mock_pr(title, url, number, state, repo, date):
     return {
@@ -53,12 +53,14 @@ def main():
         contributions_by_date[year][(month_num, month_name)].append(item)
 
     output_file = os.path.join(os.path.dirname(__file__), "TEST_README.md")
+    output_json = os.path.join(os.path.dirname(__file__), "TEST_README_DATA.json")
     print(f"Generating {output_file}...")
     
     # No featured repos in test
     featured_repos = {}
     
     generate_markdown(contributions_by_date, featured_repos, output_file)
+    generate_json_snapshot(contributions_by_date, featured_repos, output_json)
     print("Done.")
 
 if __name__ == "__main__":
