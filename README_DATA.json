@@ -25,6 +25,28 @@
       "year": 2026,
       "months": [
         {
+          "month_number": 5,
+          "month_name": "May",
+          "rows": [
+            {
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode-legacy",
+              "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 140,
+                  "title": "fix(jetbrains): use application-scoped commit message service",
+                  "url": "https://github.com/Kilo-Org/kilocode-legacy/pull/140",
+                  "text": "#140: fix(jetbrains): use application-scoped commit message service"
+                }
+              ],
+              "contribution_text": "#140: fix(jetbrains): use application-scoped commit message service"
+            }
+          ]
+        },
+        {
           "month_number": 4,
           "month_name": "April",
           "rows": [
