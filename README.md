@@ -20,7 +20,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | <a href="https://github.com/Kilo-Org/kilocode-legacy"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#140: fix(jetbrains): use application-scoped commit message service](https://github.com/Kilo-Org/kilocode-legacy/pull/140) |
+| 🟣 | <a href="https://github.com/Kilo-Org/kilocode-legacy"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#140: fix(jetbrains): use application-scoped commit message service](https://github.com/Kilo-Org/kilocode-legacy/pull/140) |
 
 ## April
 

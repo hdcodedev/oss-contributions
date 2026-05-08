@@ -29,7 +29,7 @@
           "month_name": "May",
           "rows": [
             {
-              "status": "OPEN",
+              "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode-legacy",
               "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
               "logo_url": "https://github.com/Kilo-Org.png",
