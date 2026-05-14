@@ -71,22 +71,6 @@
                 }
               ],
               "contribution_text": "#9445: refactor(vscode): split webview messages.ts into per-domain files | #9457: fix(vscode): harden message contract union extraction"
-            },
-            {
-              "status": "OPEN",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 9579,
-                  "title": "refactor(cli): extract PR cli resolver to kilocode paths",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/9579",
-                  "text": "#9579: refactor(cli): extract PR cli resolver to kilocode paths"
-                }
-              ],
-              "contribution_text": "#9579: refactor(cli): extract PR cli resolver to kilocode paths"
             }
           ]
         },
