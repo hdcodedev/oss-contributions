@@ -16,6 +16,12 @@
 
 # 2026
 
+## July
+
+| Status | Project | Tech Stack | Contribution |
+| :---: | :--- | :---: | :--- |
+| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | ✨ [#12370: feat(vscode): support deleting queued chat messages](https://github.com/Kilo-Org/kilocode/pull/12370) |
+
 ## May
 
 | Status | Project | Tech Stack | Contribution |
