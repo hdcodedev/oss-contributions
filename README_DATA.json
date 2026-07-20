@@ -29,6 +29,38 @@
           "month_name": "July",
           "rows": [
             {
+              "status": "MERGED",
+              "repo_name": "home-assistant/android",
+              "repo_url": "https://github.com/home-assistant/android",
+              "logo_url": "https://github.com/home-assistant.png",
+              "tech_stack": "Kotlin, Jetpack Compose",
+              "contributions": [
+                {
+                  "number": 7195,
+                  "title": "Make HaShortcutManager internal",
+                  "url": "https://github.com/home-assistant/android/pull/7195",
+                  "text": "#7195: Make HaShortcutManager internal"
+                }
+              ],
+              "contribution_text": "#7195: Make HaShortcutManager internal"
+            },
+            {
+              "status": "OPEN",
+              "repo_name": "home-assistant/android",
+              "repo_url": "https://github.com/home-assistant/android",
+              "logo_url": "https://github.com/home-assistant.png",
+              "tech_stack": "Kotlin, Jetpack Compose",
+              "contributions": [
+                {
+                  "number": 7204,
+                  "title": "Add HAFloatingActionButton component",
+                  "url": "https://github.com/home-assistant/android/pull/7204",
+                  "text": "#7204: Add HAFloatingActionButton component"
+                }
+              ],
+              "contribution_text": "#7204: Add HAFloatingActionButton component"
+            },
+            {
               "status": "OPEN",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
