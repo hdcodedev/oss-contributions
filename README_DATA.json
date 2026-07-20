@@ -62,9 +62,9 @@
             },
             {
               "status": "OPEN",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -84,9 +84,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "Kilo-Org/kilocode-legacy",
-              "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode-legacy",
+              "repo_url": "https://github.com/kilo-org/kilocode-legacy",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -106,9 +106,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -134,9 +134,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -168,9 +168,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -218,9 +218,9 @@
             },
             {
               "status": "MERGED",
-              "repo_name": "ImranR98/Obtainium",
-              "repo_url": "https://github.com/ImranR98/Obtainium",
-              "logo_url": "https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png",
+              "repo_name": "imranr98/obtainium",
+              "repo_url": "https://github.com/imranr98/obtainium",
+              "logo_url": "https://github.com/imranr98.png",
               "tech_stack": "Dart",
               "contributions": [
                 {
@@ -240,9 +240,9 @@
             },
             {
               "status": "MERGED",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
