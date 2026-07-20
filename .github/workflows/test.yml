@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: ['*']
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-progress runs for the same ref (e.g. a new push to an open PR).
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+
+      - name: Run tests
+        run: python3 -m unittest discover -s __test__ -p 'test_*.py' -v

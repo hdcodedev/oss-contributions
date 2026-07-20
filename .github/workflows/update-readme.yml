@@ -5,9 +5,15 @@ on:
   schedule:
     - cron: '0 0 * * *' # Daily at 00:00 UTC
 
+# Cancel in-progress runs for the same ref.
+concurrency:
+  group: update-readme-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: write
 
@@ -31,6 +37,13 @@ jobs:
         run: |
           git status --porcelain
           git diff --stat
+
+      - name: Validate generated artifacts
+        run: |
+          set -e
+          test -s README.md || { echo "README.md is empty"; exit 1; }
+          python3 -c "import json,sys; d=json.load(open('README_DATA.json')); sys.exit(1 if not d.get('years') else 0)" \
+            || { echo "README_DATA.json is empty or invalid"; exit 1; }
 
       - name: Commit and push changes
         run: |
