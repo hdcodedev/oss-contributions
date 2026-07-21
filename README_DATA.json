@@ -1,25 +1,6 @@
 {
   "title": "OSS Contributions",
-  "featured_projects": [
-    {
-      "repo_name": "openai/codex",
-      "order": 1.0,
-      "repo_url": "https://github.com/openai/codex",
-      "avatar_url": "https://github.com/openai.png"
-    },
-    {
-      "repo_name": "Kilo-Org/kilocode",
-      "order": 2.0,
-      "repo_url": "https://github.com/Kilo-Org/kilocode",
-      "avatar_url": "https://github.com/Kilo-Org.png"
-    },
-    {
-      "repo_name": "home-assistant/android",
-      "order": 3.0,
-      "repo_url": "https://github.com/home-assistant/android",
-      "avatar_url": "https://github.com/home-assistant.png"
-    }
-  ],
+  "featured_projects": [],
   "years": [
     {
       "year": 2026,
@@ -40,31 +21,15 @@
                   "title": "Make HaShortcutManager internal",
                   "url": "https://github.com/home-assistant/android/pull/7195",
                   "text": "#7195: Make HaShortcutManager internal"
-                }
-              ],
-              "contribution_text": "#7195: Make HaShortcutManager internal"
-            },
-            {
-              "status": "OPEN",
-              "repo_name": "home-assistant/android",
-              "repo_url": "https://github.com/home-assistant/android",
-              "logo_url": "https://github.com/home-assistant.png",
-              "tech_stack": "Kotlin, Jetpack Compose",
-              "contributions": [
+                },
                 {
                   "number": 7204,
                   "title": "Add HAFloatingActionButton component",
                   "url": "https://github.com/home-assistant/android/pull/7204",
                   "text": "#7204: Add HAFloatingActionButton component"
-                },
-                {
-                  "number": 7219,
-                  "title": "Add Shortcuts V2 data contracts and models",
-                  "url": "https://github.com/home-assistant/android/pull/7219",
-                  "text": "#7219: Add Shortcuts V2 data contracts and models"
                 }
               ],
-              "contribution_text": "#7204: Add HAFloatingActionButton component | #7219: Add Shortcuts V2 data contracts and models"
+              "contribution_text": "#7195: Make HaShortcutManager internal | #7204: Add HAFloatingActionButton component"
             },
             {
               "status": "OPEN",
