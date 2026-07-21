@@ -24,22 +24,6 @@
                 }
               ],
               "contribution_text": "#7204: Add HAFloatingActionButton component"
-            },
-            {
-              "status": "OPEN",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 12370,
-                  "title": "feat(vscode): support deleting queued chat messages",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/12370",
-                  "text": "#12370: feat(vscode): support deleting queued chat messages"
-                }
-              ],
-              "contribution_text": "#12370: feat(vscode): support deleting queued chat messages"
             }
           ]
         },
