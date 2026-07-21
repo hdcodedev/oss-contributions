@@ -6,7 +6,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟣 | <a href="https://github.com/home-assistant/android"><img src="https://github.com/home-assistant.png" width="24" height="24" style="vertical-align:middle;"/></a> | Kotlin, Jetpack Compose | 🔨 [#7195: Make HaShortcutManager internal](https://github.com/home-assistant/android/pull/7195)<br>✨ [#7204: Add HAFloatingActionButton component](https://github.com/home-assistant/android/pull/7204) |
+| 🟣 | <a href="https://github.com/home-assistant/android"><img src="https://github.com/home-assistant.png" width="24" height="24" style="vertical-align:middle;"/></a> | Kotlin, Jetpack Compose | ✨ [#7204: Add HAFloatingActionButton component](https://github.com/home-assistant/android/pull/7204) |
 | 🟢 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | ✨ [#12370: feat(vscode): support deleting queued chat messages](https://github.com/Kilo-Org/kilocode/pull/12370) |
 
 ## May
