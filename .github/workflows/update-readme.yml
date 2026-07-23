@@ -3,7 +3,7 @@ name: Update README from Google Sheet
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Daily at 00:00 UTC
+    - cron: '0 0 * * 0' # Weekly on Sunday at 00:00 UTC
 
 # Cancel in-progress runs for the same ref.
 concurrency:
