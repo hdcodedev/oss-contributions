@@ -102,6 +102,7 @@ def build_readme_model(contributions_by_date, featured_repos):
             prs.sort(key=lambda x: (
                 x['repository']['nameWithOwner'].lower(),
                 x.get('status', 'OPEN').upper(),
+                -datetime.strptime(x['createdAt'], "%Y-%m-%dT%H:%M:%SZ").timestamp(),
                 x.get('sheet_index', 0),
             ))
 
@@ -139,7 +140,14 @@ def build_readme_model(contributions_by_date, featured_repos):
                     'tech_stack': tech_stack,
                     'contributions': contributions,
                     'contribution_markdown': "<br>".join(item['markdown'] for item in contributions),
+                    'newest_at': max(
+                        datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+                        for pr in repo_prs_list
+                    ),
                 })
+
+            month_rows.sort(key=lambda row: row['newest_at'], reverse=True)
+            month_rows = [{k: v for k, v in row.items() if k != 'newest_at'} for row in month_rows]
 
             months.append({
                 'month_number': month_sort,
