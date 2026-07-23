@@ -17,6 +17,12 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 12486,
+                  "title": "fix(vscode): ignore Enter when no list result is highlighted",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12486",
+                  "text": "#12486: fix(vscode): ignore Enter when no list result is highlighted"
+                },
+                {
                   "number": 12462,
                   "title": "feat(vscode): add searchable session tab switcher",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/12462",
@@ -29,7 +35,7 @@
                   "text": "#12370: feat(vscode): support deleting queued chat messages"
                 }
               ],
-              "contribution_text": "#12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
+              "contribution_text": "#12486: fix(vscode): ignore Enter when no list result is highlighted | #12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
             },
             {
               "status": "MERGED",
