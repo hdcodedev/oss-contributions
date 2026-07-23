@@ -11,6 +11,28 @@
           "rows": [
             {
               "status": "MERGED",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 12462,
+                  "title": "feat(vscode): add searchable session tab switcher",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12462",
+                  "text": "#12462: feat(vscode): add searchable session tab switcher"
+                },
+                {
+                  "number": 12370,
+                  "title": "feat(vscode): support deleting queued chat messages",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12370",
+                  "text": "#12370: feat(vscode): support deleting queued chat messages"
+                }
+              ],
+              "contribution_text": "#12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
+            },
+            {
+              "status": "MERGED",
               "repo_name": "home-assistant/android",
               "repo_url": "https://github.com/home-assistant/android",
               "logo_url": "https://github.com/home-assistant.png",
@@ -24,28 +46,6 @@
                 }
               ],
               "contribution_text": "#7204: Add HAFloatingActionButton component"
-            },
-            {
-              "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 12370,
-                  "title": "feat(vscode): support deleting queued chat messages",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/12370",
-                  "text": "#12370: feat(vscode): support deleting queued chat messages"
-                },
-                {
-                  "number": 12462,
-                  "title": "feat(vscode): add searchable session tab switcher",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/12462",
-                  "text": "#12462: feat(vscode): add searchable session tab switcher"
-                }
-              ],
-              "contribution_text": "#12370: feat(vscode): support deleting queued chat messages | #12462: feat(vscode): add searchable session tab switcher"
             }
           ]
         },
@@ -83,19 +83,19 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
-                  "number": 9445,
-                  "title": "refactor(vscode): split webview messages.ts into per-domain files",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/9445",
-                  "text": "#9445: refactor(vscode): split webview messages.ts into per-domain files"
-                },
-                {
                   "number": 9457,
                   "title": "fix(vscode): harden message contract union extraction",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/9457",
                   "text": "#9457: fix(vscode): harden message contract union extraction"
+                },
+                {
+                  "number": 9445,
+                  "title": "refactor(vscode): split webview messages.ts into per-domain files",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/9445",
+                  "text": "#9445: refactor(vscode): split webview messages.ts into per-domain files"
                 }
               ],
-              "contribution_text": "#9445: refactor(vscode): split webview messages.ts into per-domain files | #9457: fix(vscode): harden message contract union extraction"
+              "contribution_text": "#9457: fix(vscode): harden message contract union extraction | #9445: refactor(vscode): split webview messages.ts into per-domain files"
             }
           ]
         },
@@ -111,10 +111,10 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
-                  "number": 6726,
-                  "title": "fix(docs): correct package paths in CONTRIBUTING.md",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/6726",
-                  "text": "#6726: fix(docs): correct package paths in CONTRIBUTING.md"
+                  "number": 6824,
+                  "title": "fix(cli): stop hardcoding opencode in kilo pr",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/6824",
+                  "text": "#6824: fix(cli): stop hardcoding opencode in kilo pr"
                 },
                 {
                   "number": 6729,
@@ -123,13 +123,13 @@
                   "text": "#6729: fix(docs): add Kilo Code logo to README.md"
                 },
                 {
-                  "number": 6824,
-                  "title": "fix(cli): stop hardcoding opencode in kilo pr",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/6824",
-                  "text": "#6824: fix(cli): stop hardcoding opencode in kilo pr"
+                  "number": 6726,
+                  "title": "fix(docs): correct package paths in CONTRIBUTING.md",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/6726",
+                  "text": "#6726: fix(docs): correct package paths in CONTRIBUTING.md"
                 }
               ],
-              "contribution_text": "#6726: fix(docs): correct package paths in CONTRIBUTING.md | #6729: fix(docs): add Kilo Code logo to README.md | #6824: fix(cli): stop hardcoding opencode in kilo pr"
+              "contribution_text": "#6824: fix(cli): stop hardcoding opencode in kilo pr | #6729: fix(docs): add Kilo Code logo to README.md | #6726: fix(docs): correct package paths in CONTRIBUTING.md"
             }
           ]
         },
@@ -161,16 +161,38 @@
           "rows": [
             {
               "status": "MERGED",
+              "repo_name": "imranr98/obtainium",
+              "repo_url": "https://github.com/imranr98/obtainium",
+              "logo_url": "https://github.com/imranr98.png",
+              "tech_stack": "Dart",
+              "contributions": [
+                {
+                  "number": 2742,
+                  "title": "feat: Detect GitHub repo renames",
+                  "url": "https://github.com/ImranR98/Obtainium/pull/2742",
+                  "text": "#2742: feat: Detect GitHub repo renames"
+                },
+                {
+                  "number": 2728,
+                  "title": "fix: ensure apps with unknown release dates sort to the bottom in descending order",
+                  "url": "https://github.com/ImranR98/Obtainium/pull/2728",
+                  "text": "#2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
+                }
+              ],
+              "contribution_text": "#2742: feat: Detect GitHub repo renames | #2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
+            },
+            {
+              "status": "MERGED",
               "repo_name": "home-assistant/android",
               "repo_url": "https://github.com/home-assistant/android",
               "logo_url": "https://github.com/home-assistant.png",
               "tech_stack": "Kotlin, Jetpack Compose",
               "contributions": [
                 {
-                  "number": 6237,
-                  "title": "Add connectivity check feature for troubleshooting server connections ",
-                  "url": "https://github.com/home-assistant/android/pull/6237",
-                  "text": "#6237: Add connectivity check feature for troubleshooting server connections "
+                  "number": 6287,
+                  "title": "Refactor: reuse modifier and text styles in connectivity checks section",
+                  "url": "https://github.com/home-assistant/android/pull/6287",
+                  "text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section"
                 },
                 {
                   "number": 6247,
@@ -179,35 +201,13 @@
                   "text": "#6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and…"
                 },
                 {
-                  "number": 6287,
-                  "title": "Refactor: reuse modifier and text styles in connectivity checks section",
-                  "url": "https://github.com/home-assistant/android/pull/6287",
-                  "text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section"
+                  "number": 6237,
+                  "title": "Add connectivity check feature for troubleshooting server connections ",
+                  "url": "https://github.com/home-assistant/android/pull/6237",
+                  "text": "#6237: Add connectivity check feature for troubleshooting server connections "
                 }
               ],
-              "contribution_text": "#6237: Add connectivity check feature for troubleshooting server connections  | #6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and… | #6287: Refactor: reuse modifier and text styles in connectivity checks section"
-            },
-            {
-              "status": "MERGED",
-              "repo_name": "imranr98/obtainium",
-              "repo_url": "https://github.com/imranr98/obtainium",
-              "logo_url": "https://github.com/imranr98.png",
-              "tech_stack": "Dart",
-              "contributions": [
-                {
-                  "number": 2728,
-                  "title": "fix: ensure apps with unknown release dates sort to the bottom in descending order",
-                  "url": "https://github.com/ImranR98/Obtainium/pull/2728",
-                  "text": "#2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
-                },
-                {
-                  "number": 2742,
-                  "title": "feat: Detect GitHub repo renames",
-                  "url": "https://github.com/ImranR98/Obtainium/pull/2742",
-                  "text": "#2742: feat: Detect GitHub repo renames"
-                }
-              ],
-              "contribution_text": "#2728: fix: ensure apps with unknown release dates sort to the bottom in descending order | #2742: feat: Detect GitHub repo renames"
+              "contribution_text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section | #6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and… | #6237: Add connectivity check feature for troubleshooting server connections "
             },
             {
               "status": "MERGED",
@@ -223,19 +223,19 @@
                   "text": "#5167: fix(extension): allow killing detached processes"
                 },
                 {
-                  "number": 5150,
-                  "title": "fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/5150",
-                  "text": "#5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests"
-                },
-                {
                   "number": 5162,
                   "title": "fix: preserve images when editing messages with checkpoint",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/5162",
                   "text": "#5162: fix: preserve images when editing messages with checkpoint"
+                },
+                {
+                  "number": 5150,
+                  "title": "fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/5150",
+                  "text": "#5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests"
                 }
               ],
-              "contribution_text": "#5167: fix(extension): allow killing detached processes | #5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests | #5162: fix: preserve images when editing messages with checkpoint"
+              "contribution_text": "#5167: fix(extension): allow killing detached processes | #5162: fix: preserve images when editing messages with checkpoint | #5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests"
             },
             {
               "status": "MERGED",
