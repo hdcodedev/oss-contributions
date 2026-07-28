@@ -10,6 +10,34 @@
           "month_name": "July",
           "rows": [
             {
+              "status": "OPEN",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 12611,
+                  "title": "chore(jetbrains): use durations in backend app service tests",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12611",
+                  "text": "#12611: chore(jetbrains): use durations in backend app service tests"
+                },
+                {
+                  "number": 12608,
+                  "title": "chore(jetbrains): centralize test dependency versions",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12608",
+                  "text": "#12608: chore(jetbrains): centralize test dependency versions"
+                },
+                {
+                  "number": 12607,
+                  "title": "chore(jetbrains): remove unused compose compiler plugin",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/12607",
+                  "text": "#12607: chore(jetbrains): remove unused compose compiler plugin"
+                }
+              ],
+              "contribution_text": "#12611: chore(jetbrains): use durations in backend app service tests | #12608: chore(jetbrains): centralize test dependency versions | #12607: chore(jetbrains): remove unused compose compiler plugin"
+            },
+            {
               "status": "MERGED",
               "repo_name": "kilo-org/kilocode",
               "repo_url": "https://github.com/kilo-org/kilocode",
