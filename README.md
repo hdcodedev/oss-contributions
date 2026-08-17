@@ -6,7 +6,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#13142: fix(vscode): apply the selected agent instead of the stale session agent](https://github.com/Kilo-Org/kilocode/pull/13142) |
+| 🟣 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#13142: fix(vscode): apply the selected agent instead of the stale session agent](https://github.com/Kilo-Org/kilocode/pull/13142) |
 
 ## July
 

@@ -10,7 +10,7 @@
           "month_name": "August",
           "rows": [
             {
-              "status": "OPEN",
+              "status": "MERGED",
               "repo_name": "kilo-org/kilocode",
               "repo_url": "https://github.com/kilo-org/kilocode",
               "logo_url": "https://github.com/kilo-org.png",
