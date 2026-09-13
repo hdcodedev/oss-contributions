@@ -43,15 +43,9 @@
                   "title": "feat(jetbrains): add ktlint",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/12676",
                   "text": "#12676: feat(jetbrains): add ktlint"
-                },
-                {
-                  "number": 12611,
-                  "title": "chore(jetbrains): use durations in backend app service tests",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/12611",
-                  "text": "#12611: chore(jetbrains): use durations in backend app service tests"
                 }
               ],
-              "contribution_text": "#12676: feat(jetbrains): add ktlint | #12611: chore(jetbrains): use durations in backend app service tests"
+              "contribution_text": "#12676: feat(jetbrains): add ktlint"
             },
             {
               "status": "MERGED",
