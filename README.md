@@ -2,6 +2,12 @@
 
 # 2026
 
+## September
+
+| Status | Project | Tech Stack | Contribution |
+| :---: | :--- | :---: | :--- |
+| 🟣 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14236: fix(cli): recover shared board reads from invalid cursors](https://github.com/Kilo-Org/kilocode/pull/14236) |
+
 ## August
 
 | Status | Project | Tech Stack | Contribution |

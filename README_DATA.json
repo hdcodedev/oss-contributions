@@ -6,6 +6,28 @@
       "year": 2026,
       "months": [
         {
+          "month_number": 9,
+          "month_name": "September",
+          "rows": [
+            {
+              "status": "MERGED",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 14236,
+                  "title": "fix(cli): recover shared board reads from invalid cursors",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14236",
+                  "text": "#14236: fix(cli): recover shared board reads from invalid cursors"
+                }
+              ],
+              "contribution_text": "#14236: fix(cli): recover shared board reads from invalid cursors"
+            }
+          ]
+        },
+        {
           "month_number": 8,
           "month_name": "August",
           "rows": [
