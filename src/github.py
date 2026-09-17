@@ -24,14 +24,14 @@ def fetch_repo_prs(repo_name: str) -> List[Dict[str, Any]]:
     """Fetch all PRs for a repo via ``gh pr list`` with pagination."""
     all_prs = []
     per_page = 100  # GitHub API max per page
-    page = 1
 
     while True:
         cmd = [
             "gh", "pr", "list", "--repo", repo_name,
             "--state", "all",
+            "--author", "@me",
             "--limit", str(per_page),
-            "--json", "title,url,state,createdAt,number,isDraft",
+            "--json", "title,url,state,createdAt,number,isDraft,author",
         ]
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, check=True, env=_gh_env(), timeout=120)
