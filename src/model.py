@@ -14,70 +14,67 @@ from .config import (
     STATUS_ICONS,
     STATUS_LEGEND,
 )
-from .github import get_pr_details, get_repo_details
+from .github import fetch_repo_prs, get_repo_details
 
 
 def get_pr_emoji(title):
-    """Detect an emoji for a PR based on its title."""
     title_lower = title.lower().strip()
-
     match = re.match(r'^(\w+)(?:\([^)]+\))?:', title_lower)
     if match:
         prefix = match.group(1)
         if prefix in CONVENTIONAL_EMOJI:
             return CONVENTIONAL_EMOJI[prefix]
-
     for keyword, emoji in KEYWORD_EMOJI.items():
         if title_lower.startswith(keyword):
             return emoji
-
     return DEFAULT_PR_EMOJI
 
 
-def fetch_urls(url_data, allowed_statuses=None):
-    """Fetch PR details and group them by year -> month."""
+def fetch_from_config(config):
+    """Fetch PRs for configured repos and group by year -> month."""
+    repos = config.get("repos", [])
+    statuses = config.get("statuses", ["MERGED", "OPEN"])
+    # Empty statuses list means no filtering (show all)
+    allowed_statuses = set(statuses) if statuses else None
+    featured_list = config.get("featured_projects", [])
+    featured_repos = {repo: i for i, repo in enumerate(featured_list)}
+
     contributions_by_date = defaultdict(lambda: defaultdict(list))
-    featured_repos = {}
 
-    for entry in url_data:
-        url = entry['url']
-        is_featured = entry.get('featured', False)
-        featured_order = entry.get('featured_order', float('inf'))
-        sheet_index = entry.get('sheet_index', 0)
+    for repo_name in repos:
+        print(f"Fetching PRs from {repo_name}...")
+        prs = fetch_repo_prs(repo_name)
+        repo_info = get_repo_details(repo_name)
 
-        print(f"Processing {url}...")
-        details = get_pr_details(url)
-        if details:
-            status = 'DRAFT' if details.get('isDraft') else details['state'].upper()
+        for pr in prs:
+            is_draft = pr.get('isDraft', False)
+            status = 'DRAFT' if is_draft else pr['state'].upper()
 
             if allowed_statuses is not None and status not in allowed_statuses:
-                print(f"Skipping {url} (Status: {status} not in allowed list)")
                 continue
 
-            details['status'] = status
-            details['sheet_index'] = sheet_index
+            pr['status'] = status
+            pr['repo_info'] = repo_info
 
-            created_at = datetime.strptime(details['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+            try:
+                created_at = datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+            except ValueError:
+                print(f"Skipping PR with invalid date: {pr['title']}")
+                continue
+
+            # Store parsed datetime for reuse in build_readme_model
+            pr['created_at'] = created_at
+
             year = created_at.year
             month_name = created_at.strftime("%B")
             month_sort = created_at.month
 
-            if 'repository' in details:
-                repo_name = details['repository'].get('nameWithOwner')
-                if repo_name:
-                    details['repo_info'] = get_repo_details(repo_name)
-                    if is_featured:
-                        current_order = featured_repos.get(repo_name, float('inf'))
-                        if repo_name not in featured_repos or featured_order < current_order:
-                            featured_repos[repo_name] = featured_order
-
-            contributions_by_date[year][(month_sort, month_name)].append(details)
+            contributions_by_date[year][(month_sort, month_name)].append(pr)
 
     return contributions_by_date, featured_repos
 
 
 def build_readme_model(contributions_by_date, featured_repos):
-    """Build a deterministic model consumed by both renderers."""
     featured_projects = []
     if featured_repos:
         sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
@@ -99,11 +96,11 @@ def build_readme_model(contributions_by_date, featured_repos):
 
         for month_sort, month_name in sorted_months:
             prs = list(contributions_by_date[year][(month_sort, month_name)])
+            # created_at is already validated and stored in fetch_from_config
             prs.sort(key=lambda x: (
                 x['repository']['nameWithOwner'].lower(),
                 x.get('status', 'OPEN').upper(),
-                -datetime.strptime(x['createdAt'], "%Y-%m-%dT%H:%M:%SZ").timestamp(),
-                x.get('sheet_index', 0),
+                -x['created_at'].timestamp(),
             ))
 
             month_rows = []
@@ -141,7 +138,7 @@ def build_readme_model(contributions_by_date, featured_repos):
                     'contributions': contributions,
                     'contribution_markdown': "<br>".join(item['markdown'] for item in contributions),
                     'newest_at': max(
-                        datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+                        pr['created_at']
                         for pr in repo_prs_list
                     ),
                 })
