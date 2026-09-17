@@ -108,44 +108,6 @@
                 }
               ],
               "contribution_text": "#12608: chore(jetbrains): centralize test dependency versions | #12607: chore(jetbrains): remove unused compose compiler plugin | #12486: fix(vscode): ignore Enter when no list result is highlighted | #12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
-            },
-            {
-              "status": "MERGED",
-              "repo_name": "home-assistant/android",
-              "repo_url": "https://github.com/home-assistant/android",
-              "logo_url": "https://github.com/home-assistant.png",
-              "tech_stack": "Kotlin, Jetpack Compose",
-              "contributions": [
-                {
-                  "number": 7204,
-                  "title": "Add HAFloatingActionButton component",
-                  "url": "https://github.com/home-assistant/android/pull/7204",
-                  "text": "#7204: Add HAFloatingActionButton component"
-                }
-              ],
-              "contribution_text": "#7204: Add HAFloatingActionButton component"
-            }
-          ]
-        },
-        {
-          "month_number": 5,
-          "month_name": "May",
-          "rows": [
-            {
-              "status": "MERGED",
-              "repo_name": "kilo-org/kilocode-legacy",
-              "repo_url": "https://github.com/kilo-org/kilocode-legacy",
-              "logo_url": "https://github.com/kilo-org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 140,
-                  "title": "fix(jetbrains): use application-scoped commit message service",
-                  "url": "https://github.com/Kilo-Org/kilocode-legacy/pull/140",
-                  "text": "#140: fix(jetbrains): use application-scoped commit message service"
-                }
-              ],
-              "contribution_text": "#140: fix(jetbrains): use application-scoped commit message service"
             }
           ]
         },
@@ -239,56 +201,6 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "imranr98/obtainium",
-              "repo_url": "https://github.com/imranr98/obtainium",
-              "logo_url": "https://github.com/imranr98.png",
-              "tech_stack": "Dart",
-              "contributions": [
-                {
-                  "number": 2742,
-                  "title": "feat: Detect GitHub repo renames",
-                  "url": "https://github.com/ImranR98/Obtainium/pull/2742",
-                  "text": "#2742: feat: Detect GitHub repo renames"
-                },
-                {
-                  "number": 2728,
-                  "title": "fix: ensure apps with unknown release dates sort to the bottom in descending order",
-                  "url": "https://github.com/ImranR98/Obtainium/pull/2728",
-                  "text": "#2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
-                }
-              ],
-              "contribution_text": "#2742: feat: Detect GitHub repo renames | #2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
-            },
-            {
-              "status": "MERGED",
-              "repo_name": "home-assistant/android",
-              "repo_url": "https://github.com/home-assistant/android",
-              "logo_url": "https://github.com/home-assistant.png",
-              "tech_stack": "Kotlin, Jetpack Compose",
-              "contributions": [
-                {
-                  "number": 6287,
-                  "title": "Refactor: reuse modifier and text styles in connectivity checks section",
-                  "url": "https://github.com/home-assistant/android/pull/6287",
-                  "text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section"
-                },
-                {
-                  "number": 6247,
-                  "title": "Add MIUI-specific DiskReadViolation ignore rules for FontSettings and…",
-                  "url": "https://github.com/home-assistant/android/pull/6247",
-                  "text": "#6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and…"
-                },
-                {
-                  "number": 6237,
-                  "title": "Add connectivity check feature for troubleshooting server connections ",
-                  "url": "https://github.com/home-assistant/android/pull/6237",
-                  "text": "#6237: Add connectivity check feature for troubleshooting server connections "
-                }
-              ],
-              "contribution_text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section | #6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and… | #6237: Add connectivity check feature for troubleshooting server connections "
-            },
-            {
-              "status": "MERGED",
               "repo_name": "kilo-org/kilocode",
               "repo_url": "https://github.com/kilo-org/kilocode",
               "logo_url": "https://github.com/kilo-org.png",
@@ -314,49 +226,6 @@
                 }
               ],
               "contribution_text": "#5167: fix(extension): allow killing detached processes | #5162: fix: preserve images when editing messages with checkpoint | #5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests"
-            },
-            {
-              "status": "MERGED",
-              "repo_name": "metabrainz/listenbrainz-android",
-              "repo_url": "https://github.com/metabrainz/listenbrainz-android",
-              "logo_url": "https://github.com/metabrainz.png",
-              "tech_stack": "Kotlin",
-              "contributions": [
-                {
-                  "number": 673,
-                  "title": "feat: Migrate to DataStore and add shared module",
-                  "url": "https://github.com/metabrainz/listenbrainz-android/pull/673",
-                  "text": "#673: feat: Migrate to DataStore and add shared module"
-                }
-              ],
-              "contribution_text": "#673: feat: Migrate to DataStore and add shared module"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "year": 2025,
-      "months": [
-        {
-          "month_number": 12,
-          "month_name": "December",
-          "rows": [
-            {
-              "status": "MERGED",
-              "repo_name": "openai/codex",
-              "repo_url": "https://github.com/openai/codex",
-              "logo_url": "https://github.com/openai.png",
-              "tech_stack": "Rust",
-              "contributions": [
-                {
-                  "number": 8590,
-                  "title": "fix(core): require approval for force delete on Windows",
-                  "url": "https://github.com/openai/codex/pull/8590",
-                  "text": "#8590: fix(core): require approval for force delete on Windows"
-                }
-              ],
-              "contribution_text": "#8590: fix(core): require approval for force delete on Windows"
             }
           ]
         }
