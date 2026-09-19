@@ -137,9 +137,37 @@
                   "title": "Add HAFloatingActionButton component",
                   "url": "https://github.com/home-assistant/android/pull/7204",
                   "text": "#7204: Add HAFloatingActionButton component"
+                },
+                {
+                  "number": 7195,
+                  "title": "Make HaShortcutManager internal",
+                  "url": "https://github.com/home-assistant/android/pull/7195",
+                  "text": "#7195: Make HaShortcutManager internal"
                 }
               ],
-              "contribution_text": "#7204: Add HAFloatingActionButton component"
+              "contribution_text": "#7204: Add HAFloatingActionButton component | #7195: Make HaShortcutManager internal"
+            }
+          ]
+        },
+        {
+          "month_number": 6,
+          "month_name": "June",
+          "rows": [
+            {
+              "status": "MERGED",
+              "repo_name": "home-assistant/android",
+              "repo_url": "https://github.com/home-assistant/android",
+              "logo_url": "https://github.com/home-assistant.png",
+              "tech_stack": "Kotlin, Jetpack Compose",
+              "contributions": [
+                {
+                  "number": 7082,
+                  "title": "Move shortcuts to legacy package",
+                  "url": "https://github.com/home-assistant/android/pull/7082",
+                  "text": "#7082: Move shortcuts to legacy package"
+                }
+              ],
+              "contribution_text": "#7082: Move shortcuts to legacy package"
             }
           ]
         },
@@ -346,33 +374,6 @@
                 }
               ],
               "contribution_text": "#673: feat: Migrate to DataStore and add shared module"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "year": 2025,
-      "months": [
-        {
-          "month_number": 12,
-          "month_name": "December",
-          "rows": [
-            {
-              "status": "MERGED",
-              "repo_name": "openai/codex",
-              "repo_url": "https://github.com/openai/codex",
-              "logo_url": "https://github.com/openai.png",
-              "tech_stack": "Rust",
-              "contributions": [
-                {
-                  "number": 8590,
-                  "title": "fix(core): require approval for force delete on Windows",
-                  "url": "https://github.com/openai/codex/pull/8590",
-                  "text": "#8590: fix(core): require approval for force delete on Windows"
-                }
-              ],
-              "contribution_text": "#8590: fix(core): require approval for force delete on Windows"
             }
           ]
         }

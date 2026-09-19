@@ -1,18 +1,14 @@
-"""Shared constants and lookup maps for the OSS contributions generator."""
+"""Shared constants and config loading for the OSS contributions generator."""
 
-from urllib.parse import urlparse
-
-SHEET_URL = (
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfuJK1dGU8Exl0svlqdwVVn2tsdNjjs-"
-    "bvDgMFJxFgfLkCbMzNWhM5QF7cIZvr6T2mt56pO9tagm3h/pub?gid=0&single=true&output=csv"
-)
+import json
+import os
+import re
 
 GITHUB_HOST = "github.com"
+CONFIG_FILE = os.environ.get("OSS_CONFIG", "oss-contributions.json")
+REPO_PATTERN = re.compile(r'^[\w.-]+/[\w.-]+$')
+VALID_STATUSES = {'DRAFT', 'OPEN', 'MERGED', 'CLOSED'}
 
-# Marker that a URL points at a pull request (path segment).
-PR_PATH_MARKER = "/pull/"
-
-# Human-friendly topic aliases pulled from repo topics.
 TOPIC_MAP = {
     'compose': 'Jetpack Compose',
     'react': 'React',
@@ -87,6 +83,33 @@ KEYWORD_EMOJI = {
 DEFAULT_PR_EMOJI = '🔨'
 
 
-def is_github_url(url):
-    """Return True if ``url`` points at github.com."""
-    return urlparse(url).netloc == GITHUB_HOST
+def load_config(config_file=None):
+    path = config_file or CONFIG_FILE
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"Config file not found: {path}")
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Config file is not valid JSON: {e}")
+    repos = data.get("repos", [])
+    statuses = data.get("statuses", ["MERGED", "OPEN"])
+    featured = data.get("featured_projects", [])
+    if not isinstance(repos, list):
+        raise ValueError("'repos' must be a list")
+    if not isinstance(statuses, list):
+        raise ValueError("'statuses' must be a list")
+    if not isinstance(featured, list):
+        raise ValueError("'featured_projects' must be a list")
+    statuses = [s.upper() for s in statuses]
+    for repo in repos + featured:
+        if not REPO_PATTERN.match(repo):
+            raise ValueError(f"Invalid repo name '{repo}' in config. Expected format: owner/repo")
+    for status in statuses:
+        if status not in VALID_STATUSES:
+            raise ValueError(f"Invalid status '{status}' in config. Valid: {sorted(VALID_STATUSES)}")
+    return {
+        "repos": repos,
+        "statuses": statuses,
+        "featured_projects": featured,
+    }

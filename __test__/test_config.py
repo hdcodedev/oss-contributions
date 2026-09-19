@@ -1,8 +1,23 @@
-"""Tests for emoji detection and GitHub URL validation (src.config / model)."""
+"""Tests for config loading and emoji detection (src.config / model)."""
 
 import unittest
 
 from src import config, model
+
+
+class TestConfigLoad(unittest.TestCase):
+    def test_load_valid_config(self):
+        cfg = config.load_config("oss-contributions.json")
+        self.assertIn("repos", cfg)
+        self.assertIn("statuses", cfg)
+        self.assertIn("featured_projects", cfg)
+        self.assertIsInstance(cfg["repos"], list)
+        self.assertIsInstance(cfg["statuses"], list)
+        self.assertIsInstance(cfg["featured_projects"], list)
+
+    def test_load_missing_file(self):
+        with self.assertRaises(FileNotFoundError):
+            config.load_config("/nonexistent/path.json")
 
 
 class TestPrEmoji(unittest.TestCase):
@@ -17,16 +32,6 @@ class TestPrEmoji(unittest.TestCase):
 
     def test_default_fallback(self):
         self.assertEqual(model.get_pr_emoji("misc change"), config.DEFAULT_PR_EMOJI)
-
-
-class TestGithubUrl(unittest.TestCase):
-    def test_valid(self):
-        self.assertTrue(config.is_github_url("https://github.com/o/r/pull/1"))
-        self.assertTrue(config.is_github_url("http://github.com/o/r"))
-
-    def test_invalid(self):
-        self.assertFalse(config.is_github_url("https://gitlab.com/o/r/pull/1"))
-        self.assertFalse(config.is_github_url("not a url"))
 
 
 if __name__ == "__main__":

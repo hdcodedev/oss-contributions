@@ -1,39 +1,69 @@
-"""Tests for data fetching/filtering in src.model.fetch_urls."""
+"""Tests for data fetching/filtering in src.model.fetch_from_config."""
 
 import contextlib
 import io
+import os
 import unittest
+from unittest.mock import patch
+
+# Ensure token env doesn't interfere with test isolation.
+os.environ.pop("OSS_CONTRIBUTIONS_TOKEN", None)
 
 from src import model
 
 
-class TestFetchUrlsFiltering(unittest.TestCase):
+class TestFetchFromConfigFiltering(unittest.TestCase):
     def test_status_filtering_excludes_disallowed(self):
-        url_data = [
-            {'url': 'https://github.com/o/r/pull/1', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 0},
-            {'url': 'https://github.com/o/r/pull/2', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 1},
-        ]
+        config = {
+            "repos": ["o/r"],
+            "statuses": ["OPEN"],
+            "featured_projects": [],
+        }
 
-        def fake_pr_details(url):
-            num = 1 if 'pull/1' in url else 2
-            state = 'OPEN' if num == 1 else 'CLOSED'
-            return {
-                'title': f'PR {num}', 'url': url, 'number': num,
-                'state': state, 'isDraft': False,
-                'repository': {'nameWithOwner': 'o/r'},
-                'createdAt': '2026-01-01T00:00:00Z',
-            }
+        def fake_fetch_prs(repo_name):
+            return [
+                {'title': 'PR 1', 'url': 'https://github.com/o/r/pull/1', 'number': 1,
+                 'state': 'OPEN', 'isDraft': False,
+                 'repository': {'nameWithOwner': 'o/r'},
+                 'createdAt': '2026-01-01T00:00:00Z'},
+                {'title': 'PR 2', 'url': 'https://github.com/o/r/pull/2', 'number': 2,
+                 'state': 'CLOSED', 'isDraft': False,
+                 'repository': {'nameWithOwner': 'o/r'},
+                 'createdAt': '2026-01-02T00:00:00Z'},
+            ]
 
-        model.get_pr_details = fake_pr_details
-        model.get_repo_details = lambda repo: {'description': '', 'tech_stack': 'Python'}
+        with patch('src.model.fetch_repo_prs', side_effect=fake_fetch_prs), \
+             patch('src.model.get_repo_details', return_value={'description': '', 'tech_stack': 'Python'}):
+            with contextlib.redirect_stdout(io.StringIO()):
+                data, _ = model.fetch_from_config(config)
 
-        with contextlib.redirect_stdout(io.StringIO()):
-            data, _ = model.fetch_urls(url_data, allowed_statuses={'OPEN'})
         rows = data[2026][(1, 'January')]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]['status'], 'OPEN')
+
+    def test_draft_status_detection(self):
+        config = {
+            "repos": ["o/r"],
+            "statuses": ["DRAFT", "OPEN"],
+            "featured_projects": [],
+        }
+
+        def fake_fetch_prs(repo_name):
+            return [
+                {'title': 'Draft PR', 'url': 'https://github.com/o/r/pull/1', 'number': 1,
+                 'state': 'OPEN', 'isDraft': True,
+                 'repository': {'nameWithOwner': 'o/r'},
+                 'createdAt': '2026-01-01T00:00:00Z'},
+            ]
+
+        with patch('src.model.fetch_repo_prs', side_effect=fake_fetch_prs), \
+             patch('src.model.get_repo_details', return_value={'description': '', 'tech_stack': 'Python'}):
+            with contextlib.redirect_stdout(io.StringIO()):
+                data, _ = model.fetch_from_config(config)
+
+        rows = data[2026][(1, 'January')]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['status'], 'DRAFT')
 
 
 if __name__ == "__main__":
