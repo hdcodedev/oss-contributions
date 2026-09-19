@@ -10,6 +10,22 @@
           "month_name": "September",
           "rows": [
             {
+              "status": "OPEN",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 14319,
+                  "title": "fix: report git errors when a revert or redo fails ",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
+                  "text": "#14319: fix: report git errors when a revert or redo fails "
+                }
+              ],
+              "contribution_text": "#14319: fix: report git errors when a revert or redo fails "
+            },
+            {
               "status": "MERGED",
               "repo_name": "kilo-org/kilocode",
               "repo_url": "https://github.com/kilo-org/kilocode",
