@@ -2,6 +2,8 @@
 
 import unittest
 
+from datetime import datetime
+
 from src import config, model
 from helpers import SAMPLE_DATA, grouped_mock
 
@@ -40,53 +42,36 @@ class TestBuildModel(unittest.TestCase):
 
     def test_prs_sorted_newest_first_within_group(self):
         url_data = [
-            {'url': 'https://github.com/o/r/pull/1', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 0},
-            {'url': 'https://github.com/o/r/pull/2', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 0},
+            {'title': 'PR 1', 'url': 'https://github.com/o/r/pull/1', 'number': 1,
+             'state': 'MERGED', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/r'},
+             'createdAt': '2026-01-10T00:00:00Z',
+             'created_at': datetime(2026, 1, 10, 0, 0, 0)},
+            {'title': 'PR 2', 'url': 'https://github.com/o/r/pull/2', 'number': 2,
+             'state': 'MERGED', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/r'},
+             'createdAt': '2026-01-15T00:00:00Z',
+             'created_at': datetime(2026, 1, 15, 0, 0, 0)},
         ]
-
-        def fake_pr_details(url):
-            num = 1 if 'pull/1' in url else 2
-            return {
-                'title': f'PR {num}', 'url': url, 'number': num,
-                'state': 'MERGED', 'isDraft': False,
-                'repository': {'nameWithOwner': 'o/r'},
-                'createdAt': '2026-01-10T00:00:00Z' if num == 1 else '2026-01-15T00:00:00Z',
-            }
-
-        model.get_pr_details = fake_pr_details
-        model.get_repo_details = lambda repo: {'description': '', 'tech_stack': 'Python'}
-
-        import contextlib, io
-        with contextlib.redirect_stdout(io.StringIO()):
-            data, _ = model.fetch_urls(url_data)
+        data, _ = grouped_mock(url_data)
         m = model.build_readme_model(data, {})
         row = m['years'][0]['months'][0]['rows'][0]
         self.assertEqual([c['number'] for c in row['contributions']], [2, 1])
 
     def test_month_rows_sorted_by_newest_pr(self):
         url_data = [
-            {'url': 'https://github.com/o/x/pull/1', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 0},
-            {'url': 'https://github.com/o/y/pull/2', 'featured': False,
-             'featured_order': float('inf'), 'sheet_index': 0},
+            {'title': 't', 'url': 'https://github.com/o/x/pull/1', 'number': 1,
+             'state': 'MERGED', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/x'},
+             'createdAt': '2026-01-05T00:00:00Z',
+             'created_at': datetime(2026, 1, 5, 0, 0, 0)},
+            {'title': 't', 'url': 'https://github.com/o/y/pull/2', 'number': 2,
+             'state': 'MERGED', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/y'},
+             'createdAt': '2026-01-15T00:00:00Z',
+             'created_at': datetime(2026, 1, 15, 0, 0, 0)},
         ]
-
-        def fake_pr_details(url):
-            return {
-                'title': 't', 'url': url, 'number': 1 if 'x/' in url else 2,
-                'state': 'MERGED', 'isDraft': False,
-                'repository': {'nameWithOwner': 'o/x' if 'x/' in url else 'o/y'},
-                'createdAt': '2026-01-05T00:00:00Z' if 'x/' in url else '2026-01-15T00:00:00Z',
-            }
-
-        model.get_pr_details = fake_pr_details
-        model.get_repo_details = lambda repo: {'description': '', 'tech_stack': 'Python'}
-
-        import contextlib, io
-        with contextlib.redirect_stdout(io.StringIO()):
-            data, _ = model.fetch_urls(url_data)
+        data, _ = grouped_mock(url_data)
         m = model.build_readme_model(data, {})
         rows = m['years'][0]['months'][0]['rows']
         self.assertEqual([r['repo_name'] for r in rows], ['o/y', 'o/x'])
@@ -103,21 +88,19 @@ class TestRenderConsistency(unittest.TestCase):
 class TestBuildModelFeatured(unittest.TestCase):
     def test_featured_projects_sorted_by_order(self):
         url_data = [
-            {'url': 'https://github.com/o/b/pull/1', 'featured': True,
-             'featured_order': 5.0, 'sheet_index': 0},
-            {'url': 'https://github.com/o/a/pull/2', 'featured': True,
-             'featured_order': 2.0, 'sheet_index': 1},
+            {'title': 't', 'url': 'https://github.com/o/b/pull/1', 'number': 1,
+             'state': 'OPEN', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/b'},
+             'createdAt': '2026-01-01T00:00:00Z',
+             'created_at': datetime(2026, 1, 1, 0, 0, 0)},
+            {'title': 't', 'url': 'https://github.com/o/a/pull/2', 'number': 2,
+             'state': 'OPEN', 'isDraft': False,
+             'repository': {'nameWithOwner': 'o/a'},
+             'createdAt': '2026-01-01T00:00:00Z',
+             'created_at': datetime(2026, 1, 1, 0, 0, 0)},
         ]
-        model.get_pr_details = lambda url: {
-            'title': 't', 'url': url, 'number': 1, 'state': 'OPEN',
-            'isDraft': False, 'repository': {'nameWithOwner': 'o/b' if 'b/' in url else 'o/a'},
-            'createdAt': '2026-01-01T00:00:00Z',
-        }
-        model.get_repo_details = lambda repo: {'description': '', 'tech_stack': 'Python'}
-
-        import contextlib, io
-        with contextlib.redirect_stdout(io.StringIO()):
-            data, featured = model.fetch_urls(url_data)
+        data, _ = grouped_mock(url_data)
+        featured = {'o/b': 5.0, 'o/a': 2.0}
         m = model.build_readme_model(data, featured)
         names = [p['repo_name'] for p in m['featured_projects']]
         self.assertEqual(names, ['o/a', 'o/b'])

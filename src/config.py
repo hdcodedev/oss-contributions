@@ -1,18 +1,10 @@
-"""Shared constants and lookup maps for the OSS contributions generator."""
+"""Shared constants and config loading for the OSS contributions generator."""
 
-from urllib.parse import urlparse
+import json
+import os
 
-SHEET_URL = (
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfuJK1dGU8Exl0svlqdwVVn2tsdNjjs-"
-    "bvDgMFJxFgfLkCbMzNWhM5QF7cIZvr6T2mt56pO9tagm3h/pub?gid=0&single=true&output=csv"
-)
+CONFIG_FILE = os.environ.get("OSS_CONFIG", "oss-contributions.json")
 
-GITHUB_HOST = "github.com"
-
-# Marker that a URL points at a pull request (path segment).
-PR_PATH_MARKER = "/pull/"
-
-# Human-friendly topic aliases pulled from repo topics.
 TOPIC_MAP = {
     'compose': 'Jetpack Compose',
     'react': 'React',
@@ -28,6 +20,16 @@ CUSTOM_LOGOS = {
         'assets/graphics/icon_small.png'
     )
 }
+
+# Case-insensitive index; repo names reach us in GitHub's canonical casing,
+# which need not match how a key is spelled above.
+_CUSTOM_LOGOS_LOWER = {repo.lower(): url for repo, url in CUSTOM_LOGOS.items()}
+
+
+def custom_logo(repo_name):
+    """Return the logo override for ``repo_name``, ignoring case."""
+    return _CUSTOM_LOGOS_LOWER.get(repo_name.lower())
+
 
 # Emoji shown next to each PR status (single source for both table and legend).
 STATUS_ICONS = {
@@ -87,6 +89,14 @@ KEYWORD_EMOJI = {
 DEFAULT_PR_EMOJI = '🔨'
 
 
-def is_github_url(url):
-    """Return True if ``url`` points at github.com."""
-    return urlparse(url).netloc == GITHUB_HOST
+def load_config(config_file=None):
+    """Read the JSON config. A malformed config raises and the run fails."""
+    with open(config_file or CONFIG_FILE) as f:
+        data = json.load(f)
+    return {
+        "repos": data.get("repos", []),
+        "statuses": [status.upper() for status in data.get("statuses", ["MERGED", "OPEN"])],
+        "featured_projects": data.get("featured_projects", []),
+        # None means "whoever the gh token belongs to".
+        "username": data.get("username"),
+    }

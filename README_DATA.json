@@ -11,9 +11,9 @@
           "rows": [
             {
               "status": "OPEN",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -39,9 +39,9 @@
             },
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -61,9 +61,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -83,9 +83,9 @@
           "rows": [
             {
               "status": "OPEN",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -99,9 +99,9 @@
             },
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -149,9 +149,37 @@
                   "title": "Add HAFloatingActionButton component",
                   "url": "https://github.com/home-assistant/android/pull/7204",
                   "text": "#7204: Add HAFloatingActionButton component"
+                },
+                {
+                  "number": 7195,
+                  "title": "Make HaShortcutManager internal",
+                  "url": "https://github.com/home-assistant/android/pull/7195",
+                  "text": "#7195: Make HaShortcutManager internal"
                 }
               ],
-              "contribution_text": "#7204: Add HAFloatingActionButton component"
+              "contribution_text": "#7204: Add HAFloatingActionButton component | #7195: Make HaShortcutManager internal"
+            }
+          ]
+        },
+        {
+          "month_number": 6,
+          "month_name": "June",
+          "rows": [
+            {
+              "status": "MERGED",
+              "repo_name": "home-assistant/android",
+              "repo_url": "https://github.com/home-assistant/android",
+              "logo_url": "https://github.com/home-assistant.png",
+              "tech_stack": "Kotlin, Jetpack Compose",
+              "contributions": [
+                {
+                  "number": 7082,
+                  "title": "Move shortcuts to legacy package",
+                  "url": "https://github.com/home-assistant/android/pull/7082",
+                  "text": "#7082: Move shortcuts to legacy package"
+                }
+              ],
+              "contribution_text": "#7082: Move shortcuts to legacy package"
             }
           ]
         },
@@ -161,9 +189,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode-legacy",
-              "repo_url": "https://github.com/kilo-org/kilocode-legacy",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode-legacy",
+              "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -183,9 +211,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -211,9 +239,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -245,9 +273,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {
@@ -267,9 +295,9 @@
           "rows": [
             {
               "status": "MERGED",
-              "repo_name": "imranr98/obtainium",
-              "repo_url": "https://github.com/imranr98/obtainium",
-              "logo_url": "https://github.com/imranr98.png",
+              "repo_name": "ImranR98/Obtainium",
+              "repo_url": "https://github.com/ImranR98/Obtainium",
+              "logo_url": "https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png",
               "tech_stack": "Dart",
               "contributions": [
                 {
@@ -317,9 +345,9 @@
             },
             {
               "status": "MERGED",
-              "repo_name": "kilo-org/kilocode",
-              "repo_url": "https://github.com/kilo-org/kilocode",
-              "logo_url": "https://github.com/kilo-org.png",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
               "tech_stack": "TypeScript",
               "contributions": [
                 {

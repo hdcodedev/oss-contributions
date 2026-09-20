@@ -2,10 +2,9 @@
 
 import sys
 
-from .config import SHEET_URL
-from .model import build_readme_model, fetch_urls
+from .config import load_config
+from .model import fetch_from_config, build_readme_model
 from .render import generate_json_snapshot, generate_markdown
-from .sheet import fetch_urls_from_sheet
 
 
 def _count_contributions(model):
@@ -18,29 +17,14 @@ def _count_contributions(model):
 
 
 def main():
-    if not SHEET_URL:
-        print("Error: SHEET_URL is not set. Please publish your Google Sheet as CSV "
-              "and set the URL in the script.")
-        return 1
+    config = load_config()
+    # Repo names are never logged: a tracked repo may be private, and this
+    # runs in a public repo's Actions log.
+    print(f"Tracking {len(config['repos'])} repo(s), statuses: {config['statuses']}")
+    if config['featured_projects']:
+        print(f"Featured projects: {len(config['featured_projects'])}")
 
-    print("Fetching URLs from Google Sheet...")
-    try:
-        url_data, allowed_statuses = fetch_urls_from_sheet(SHEET_URL)
-    except Exception as e:
-        print(f"Error fetching from Google Sheet: {e}")
-        return 1
-
-    print(f"Found {len(url_data)} URLs.")
-
-    # An empty set means "no filtering" (treat as None).
-    if allowed_statuses is not None and len(allowed_statuses) == 0:
-        print("No status filters defined (empty set). Showing all PRs.")
-        allowed_statuses = None
-    elif allowed_statuses:
-        print(f"Filtering for statuses: {allowed_statuses}")
-
-    data, featured_repos = fetch_urls(url_data, allowed_statuses)
-
+    data, featured_repos = fetch_from_config(config)
     model = build_readme_model(data, featured_repos)
 
     if _count_contributions(model) == 0:

@@ -3,12 +3,11 @@
 import os
 import sys
 from collections import defaultdict
+from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src import model
-
-import datetime as _dt
 
 
 def mock_pr(title, url, number, state, repo, date, is_draft=False):
@@ -21,18 +20,18 @@ def mock_pr(title, url, number, state, repo, date, is_draft=False):
         'status': 'DRAFT' if is_draft else state,
         'repository': {'nameWithOwner': repo},
         'createdAt': date,
-        'sheet_index': 0,
+        'created_at': datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ"),
         'repo_info': {'description': '', 'tech_stack': 'Python'},
     }
 
 
 def grouped_mock(data):
-    """Mirror the grouping done by model.fetch_urls."""
+    """Mirror the grouping done by model.fetch_from_config."""
     contributions_by_date = defaultdict(lambda: defaultdict(list))
     for item in data:
         year = int(item['createdAt'][:4])
         month_num = int(item['createdAt'][5:7])
-        month_name = _dt.datetime(year, month_num, 1).strftime('%B')
+        month_name = datetime(year, month_num, 1).strftime('%B')
         contributions_by_date[year][(month_num, month_name)].append(item)
     return contributions_by_date, {}
 

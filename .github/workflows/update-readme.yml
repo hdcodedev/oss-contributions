@@ -1,4 +1,4 @@
-name: Update README from Google Sheet
+name: Update README from JSON config
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ concurrency:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     permissions:
       contents: write
 
@@ -28,7 +28,7 @@ jobs:
 
       - name: Run generation script
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OSS_CONTRIBUTIONS_TOKEN: ${{ secrets.OSS_CONTRIBUTIONS_TOKEN }}
         run: |
           set -e
           python3 generate_readme.py
