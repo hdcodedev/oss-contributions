@@ -23,10 +23,10 @@
                   "text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted"
                 },
                 {
-                  "number": 14322,
-                  "title": "feat(vscode): persist diff viewer unified/split style",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/14322",
-                  "text": "#14322: feat(vscode): persist diff viewer unified/split style"
+                  "number": 14324,
+                  "title": "fix(vscode): anchor markdown review comments to the right list item",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14324",
+                  "text": "#14324: fix(vscode): anchor markdown review comments to the right list item"
                 },
                 {
                   "number": 14319,
@@ -35,7 +35,7 @@
                   "text": "#14319: fix: report git errors when a revert or redo fails "
                 }
               ],
-              "contribution_text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted | #14322: feat(vscode): persist diff viewer unified/split style | #14319: fix: report git errors when a revert or redo fails "
+              "contribution_text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14319: fix: report git errors when a revert or redo fails "
             },
             {
               "status": "MERGED",
