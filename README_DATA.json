@@ -17,13 +17,25 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 14333,
+                  "title": "fix(vscode): keep the right backing when a paste chip is deleted",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14333",
+                  "text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted"
+                },
+                {
+                  "number": 14322,
+                  "title": "feat(vscode): persist diff viewer unified/split style",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14322",
+                  "text": "#14322: feat(vscode): persist diff viewer unified/split style"
+                },
+                {
                   "number": 14319,
                   "title": "fix: report git errors when a revert or redo fails ",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
                   "text": "#14319: fix: report git errors when a revert or redo fails "
                 }
               ],
-              "contribution_text": "#14319: fix: report git errors when a revert or redo fails "
+              "contribution_text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted | #14322: feat(vscode): persist diff viewer unified/split style | #14319: fix: report git errors when a revert or redo fails "
             },
             {
               "status": "MERGED",
