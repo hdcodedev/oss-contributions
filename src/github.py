@@ -3,92 +3,122 @@
 import json
 import os
 import subprocess
-from typing import List, Dict, Any
+from typing import Any, Dict, Iterable, List, Optional
 
 from .config import TOPIC_MAP
 
 repo_cache = {}
 
+# GraphQL connections cap page size at 100.
+PR_PAGE_SIZE = 100
 
-def _gh_env():
+# Authored-PR query. ``user(login:)``/``viewer`` scopes the connection to a
+# single author, so the response can only ever contain that user's PRs -- there
+# is no author filter to apply afterwards. ``gh api --paginate`` walks the
+# cursor by injecting ``$endCursor``, so the whole history is returned.
+_PR_QUERY_TEMPLATE = """
+query($endCursor: String) {
+  __AUTHOR__ {
+    pullRequests(first: __PAGE_SIZE____STATES__, after: $endCursor, orderBy: {field: CREATED_AT, direction: DESC}) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        number
+        title
+        url
+        state
+        isDraft
+        createdAt
+        repository { nameWithOwner isPrivate }
+      }
+    }
+  }
+}
+"""
+
+
+def _gh(args):
+    """Run a ``gh`` command and return stdout, surfacing gh's own error text.
+
+    Without this, a failing subprocess reports only an exit code, which makes
+    CI logs unreadable.
+    """
     env = os.environ.copy()
     token = os.environ.get("OSS_CONTRIBUTIONS_TOKEN")
-    if not token:
-        print("Warning: OSS_CONTRIBUTIONS_TOKEN not set; gh will run unauthenticated (rate limited)")
-    else:
+    if token:
         env["GH_TOKEN"] = token
-    return env
+
+    result = subprocess.run(args, capture_output=True, text=True, env=env)
+    if result.returncode:
+        raise RuntimeError(f"{' '.join(args[:3])} failed: {result.stderr.strip()}")
+    return result.stdout
 
 
-def fetch_repo_prs(repo_name: str) -> List[Dict[str, Any]]:
-    """Fetch all PRs for a repo via ``gh pr list`` with pagination."""
-    all_prs = []
-    per_page = 100  # GitHub API max per page
+def build_pr_query(username: Optional[str] = None, states: Optional[Iterable[str]] = None) -> str:
+    """Build the authored-PR query for ``username`` (or the token owner)."""
+    author = f'user(login: "{username}")' if username else "viewer"
+    states_arg = f", states: [{', '.join(sorted(states))}]" if states else ""
+    return (
+        _PR_QUERY_TEMPLATE
+        .replace("__AUTHOR__", author)
+        .replace("__PAGE_SIZE__", str(PR_PAGE_SIZE))
+        .replace("__STATES__", states_arg)
+    )
 
-    while True:
-        cmd = [
-            "gh", "pr", "list", "--repo", repo_name,
-            "--state", "all",
-            "--author", "@me",
-            "--limit", str(per_page),
-            "--json", "title,url,state,createdAt,number,isDraft,author",
-        ]
-        try:
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True, env=_gh_env(), timeout=120)
-            prs = json.loads(result.stdout)
-            for pr in prs:
-                pr['repository'] = {'nameWithOwner': repo_name}
-            all_prs.extend(prs)
-            
-            # If we got fewer than per_page, we've fetched all available PRs
-            if len(prs) < per_page:
-                break
-            
-            # gh pr list doesn't support cursor pagination easily with --json output
-            # For now, we just warn if we hit the limit
-            print(f"Warning: Hit PR limit ({per_page}) for {repo_name}; older PRs may be omitted.")
+
+def parse_paginated_json(stdout: str) -> List[Dict[str, Any]]:
+    """Split ``gh api --paginate`` output into one dict per page.
+
+    Pages arrive as concatenated top-level JSON objects rather than a list.
+    """
+    decoder = json.JSONDecoder()
+    pages = []
+    idx = 0
+    while idx < len(stdout):
+        while idx < len(stdout) and stdout[idx].isspace():
+            idx += 1
+        if idx >= len(stdout):
             break
-        except subprocess.TimeoutExpired:
-            raise RuntimeError(f"Timeout fetching PRs for {repo_name}")
-        except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"Error fetching PRs for {repo_name}: {e.stderr.strip()}")
-        except json.JSONDecodeError as e:
-            raise RuntimeError(f"Failed to parse PR data for {repo_name}: {e}")
+        page, idx = decoder.raw_decode(stdout, idx)
+        pages.append(page)
+    return pages
 
-    return all_prs
+
+def fetch_authored_prs(username: Optional[str] = None,
+                       states: Optional[Iterable[str]] = None) -> List[Dict[str, Any]]:
+    """Fetch every PR authored by ``username``, newest first.
+
+    Returns nodes carrying ``repository.nameWithOwner`` in GitHub's canonical
+    casing; filtering down to tracked repos is the caller's job.
+    """
+    stdout = _gh(["gh", "api", "graphql", "--paginate",
+                  "-f", f"query={build_pr_query(username, states)}"])
+    author_key = "user" if username else "viewer"
+    return [
+        node
+        for page in parse_paginated_json(stdout)
+        for node in page["data"][author_key]["pullRequests"]["nodes"]
+    ]
 
 
 def get_repo_details(repo_name: str) -> Dict[str, str]:
     if repo_name in repo_cache:
         return repo_cache[repo_name]
 
-    try:
-        cmd = [
-            "gh", "repo", "view", repo_name,
-            "--json", "description,primaryLanguage,repositoryTopics",
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True, env=_gh_env(), timeout=60)
-        data = json.loads(result.stdout)
+    data = json.loads(_gh([
+        "gh", "repo", "view", repo_name,
+        "--json", "description,primaryLanguage,repositoryTopics",
+    ]))
 
-        language = data.get('primaryLanguage', {}).get('name', '') if data.get('primaryLanguage') else ''
-        topics_data = data.get('repositoryTopics')
-        topics = [t['name'] for t in topics_data] if topics_data else []
+    primary_language = data.get('primaryLanguage') or {}
+    tech_stack = [primary_language['name']] if primary_language else []
+    for topic in data.get('repositoryTopics') or []:
+        name = TOPIC_MAP.get(topic['name'])
+        if name and name not in tech_stack:
+            tech_stack.append(name)
 
-        tech_stack = [language] if language else []
-        for t in topics:
-            name = TOPIC_MAP.get(t)
-            if name and name not in tech_stack:
-                tech_stack.append(name)
-
-        info = {
-            'description': data.get('description', ''),
-            'tech_stack': ", ".join(tech_stack),
-        }
-        repo_cache[repo_name] = info
-        return info
-    except subprocess.TimeoutExpired:
-        raise RuntimeError(f"Timeout fetching repo info for {repo_name}")
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Error fetching repo info for {repo_name}: {e.stderr.strip()}")
-    except json.JSONDecodeError as e:
-        raise RuntimeError(f"Failed to parse repo data for {repo_name}: {e}")
+    info = {
+        'description': data.get('description', ''),
+        'tech_stack': ", ".join(tech_stack),
+    }
+    repo_cache[repo_name] = info
+    return info

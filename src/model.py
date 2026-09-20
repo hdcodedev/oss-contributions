@@ -7,14 +7,14 @@ from itertools import groupby
 
 from .config import (
     CONVENTIONAL_EMOJI,
-    CUSTOM_LOGOS,
     DEFAULT_PR_EMOJI,
     DEFAULT_STATUS_ICON,
     KEYWORD_EMOJI,
     STATUS_ICONS,
     STATUS_LEGEND,
+    custom_logo,
 )
-from .github import fetch_repo_prs, get_repo_details
+from .github import fetch_authored_prs, get_repo_details
 
 
 def get_pr_emoji(title):
@@ -30,47 +30,79 @@ def get_pr_emoji(title):
     return DEFAULT_PR_EMOJI
 
 
+def query_states(allowed_statuses):
+    """Translate config statuses into GraphQL ``PullRequestState`` values.
+
+    DRAFT is not a state of its own -- draft PRs are OPEN -- so it widens the
+    query to OPEN and is narrowed again by the per-PR status check below.
+    """
+    if not allowed_statuses:
+        return None
+    return {'OPEN' if status == 'DRAFT' else status for status in allowed_statuses}
+
+
 def fetch_from_config(config):
-    """Fetch PRs for configured repos and group by year -> month."""
-    repos = config.get("repos", [])
-    statuses = config.get("statuses", ["MERGED", "OPEN"])
+    """Fetch the configured user's PRs and group them by year -> month.
+
+    The GraphQL connection is scoped to a single author, so every PR in the
+    response is theirs; what is filtered here is which *repos* to keep.
+    """
+    repos = config["repos"]
     # Empty statuses list means no filtering (show all)
-    allowed_statuses = set(statuses) if statuses else None
-    featured_list = config.get("featured_projects", [])
-    featured_repos = {repo: i for i, repo in enumerate(featured_list)}
+    allowed_statuses = set(config["statuses"]) or None
+    featured = config["featured_projects"]
+    username = config.get("username")
+
+    # Config may spell a repo in any casing; GitHub answers with canonical.
+    tracked = {repo.lower() for repo in repos}
+
+    print(f"Fetching pull requests authored by {username or 'the authenticated user'}...")
+    prs = fetch_authored_prs(username, query_states(allowed_statuses))
+    print(f"Fetched {len(prs)} authored PR(s); keeping those in {len(tracked)} tracked repo(s).")
 
     contributions_by_date = defaultdict(lambda: defaultdict(list))
+    matched_repos = set()
+    private_repos = set()
 
-    for repo_name in repos:
-        print(f"Fetching PRs from {repo_name}...")
-        prs = fetch_repo_prs(repo_name)
-        repo_info = get_repo_details(repo_name)
+    for pr in prs:
+        repository = pr['repository']
+        repo_name = repository['nameWithOwner']
+        if repo_name.lower() not in tracked:
+            continue
 
-        for pr in prs:
-            is_draft = pr.get('isDraft', False)
-            status = 'DRAFT' if is_draft else pr['state'].upper()
+        # Private repo names must never reach a public README -- nor the
+        # public Actions log, so only ever count them.
+        if repository['isPrivate']:
+            private_repos.add(repo_name.lower())
+            continue
 
-            if allowed_statuses is not None and status not in allowed_statuses:
-                continue
+        status = 'DRAFT' if pr['isDraft'] else pr['state'].upper()
+        if allowed_statuses is not None and status not in allowed_statuses:
+            continue
 
-            pr['status'] = status
-            pr['repo_info'] = repo_info
+        created_at = datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+        pr['status'] = status
+        pr['repo_info'] = get_repo_details(repo_name)
+        # Store parsed datetime for reuse in build_readme_model
+        pr['created_at'] = created_at
+        matched_repos.add(repo_name.lower())
 
-            try:
-                created_at = datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
-            except ValueError:
-                print(f"Skipping PR with invalid date: {pr['title']}")
-                continue
+        contributions_by_date[created_at.year][(created_at.month, created_at.strftime("%B"))].append(pr)
 
-            # Store parsed datetime for reuse in build_readme_model
-            pr['created_at'] = created_at
+    if private_repos:
+        print(f"Skipped {len(private_repos)} private repo(s).")
+    # A private repo would otherwise be named here as "missing".
+    missing = [
+        repo for repo in repos
+        if repo.lower() not in matched_repos and repo.lower() not in private_repos
+    ]
+    if missing:
+        print(f"No matching PRs found for: {', '.join(missing)}")
 
-            year = created_at.year
-            month_name = created_at.strftime("%B")
-            month_sort = created_at.month
-
-            contributions_by_date[year][(month_sort, month_name)].append(pr)
-
+    featured_repos = {
+        repo: i for i, repo in enumerate(featured)
+        if repo.lower() not in private_repos
+    }
     return contributions_by_date, featured_repos
 
 
@@ -108,24 +140,28 @@ def build_readme_model(contributions_by_date, featured_repos):
                 x['repository']['nameWithOwner'].lower(), x.get('status', 'OPEN').upper()
             ))
 
-            for (repo_name, group_status), repo_prs in grouped:
+            for (_repo_key, group_status), repo_prs in grouped:
                 repo_prs_list = list(repo_prs)
                 first_pr = repo_prs_list[0]
 
+                # Group/sort on the lowercased name, but display the canonical one.
+                repo_name = first_pr['repository']['nameWithOwner']
                 icon = STATUS_ICONS.get(group_status, DEFAULT_STATUS_ICON)
                 tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
                 owner = repo_name.split('/')[0]
-                logo_url = CUSTOM_LOGOS.get(repo_name, f"https://github.com/{owner}.png")
+                logo_url = custom_logo(repo_name) or f"https://github.com/{owner}.png"
 
                 contributions = []
                 for pr in repo_prs_list:
                     emoji = get_pr_emoji(pr['title'])
+                    # A '|' in a title would split the markdown table row.
+                    cell_title = pr['title'].replace('|', '\\|')
                     contributions.append({
                         'emoji': emoji,
                         'number': pr['number'],
                         'title': pr['title'],
                         'url': pr['url'],
-                        'markdown': f"{emoji} [#{pr['number']}: {pr['title']}]({pr['url']})",
+                        'markdown': f"{emoji} [#{pr['number']}: {cell_title}]({pr['url']})",
                     })
 
                 month_rows.append({

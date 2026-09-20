@@ -2,12 +2,8 @@
 
 import json
 import os
-import re
 
-GITHUB_HOST = "github.com"
 CONFIG_FILE = os.environ.get("OSS_CONFIG", "oss-contributions.json")
-REPO_PATTERN = re.compile(r'^[\w.-]+/[\w.-]+$')
-VALID_STATUSES = {'DRAFT', 'OPEN', 'MERGED', 'CLOSED'}
 
 TOPIC_MAP = {
     'compose': 'Jetpack Compose',
@@ -24,6 +20,16 @@ CUSTOM_LOGOS = {
         'assets/graphics/icon_small.png'
     )
 }
+
+# Case-insensitive index; repo names reach us in GitHub's canonical casing,
+# which need not match how a key is spelled above.
+_CUSTOM_LOGOS_LOWER = {repo.lower(): url for repo, url in CUSTOM_LOGOS.items()}
+
+
+def custom_logo(repo_name):
+    """Return the logo override for ``repo_name``, ignoring case."""
+    return _CUSTOM_LOGOS_LOWER.get(repo_name.lower())
+
 
 # Emoji shown next to each PR status (single source for both table and legend).
 STATUS_ICONS = {
@@ -84,32 +90,13 @@ DEFAULT_PR_EMOJI = '🔨'
 
 
 def load_config(config_file=None):
-    path = config_file or CONFIG_FILE
-    if not os.path.isfile(path):
-        raise FileNotFoundError(f"Config file not found: {path}")
-    try:
-        with open(path, "r") as f:
-            data = json.load(f)
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Config file is not valid JSON: {e}")
-    repos = data.get("repos", [])
-    statuses = data.get("statuses", ["MERGED", "OPEN"])
-    featured = data.get("featured_projects", [])
-    if not isinstance(repos, list):
-        raise ValueError("'repos' must be a list")
-    if not isinstance(statuses, list):
-        raise ValueError("'statuses' must be a list")
-    if not isinstance(featured, list):
-        raise ValueError("'featured_projects' must be a list")
-    statuses = [s.upper() for s in statuses]
-    for repo in repos + featured:
-        if not REPO_PATTERN.match(repo):
-            raise ValueError(f"Invalid repo name '{repo}' in config. Expected format: owner/repo")
-    for status in statuses:
-        if status not in VALID_STATUSES:
-            raise ValueError(f"Invalid status '{status}' in config. Valid: {sorted(VALID_STATUSES)}")
+    """Read the JSON config. A malformed config raises and the run fails."""
+    with open(config_file or CONFIG_FILE) as f:
+        data = json.load(f)
     return {
-        "repos": repos,
-        "statuses": statuses,
-        "featured_projects": featured,
+        "repos": data.get("repos", []),
+        "statuses": [status.upper() for status in data.get("statuses", ["MERGED", "OPEN"])],
+        "featured_projects": data.get("featured_projects", []),
+        # None means "whoever the gh token belongs to".
+        "username": data.get("username"),
     }

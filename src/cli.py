@@ -17,23 +17,14 @@ def _count_contributions(model):
 
 
 def main():
-    try:
-        config = load_config()
-    except (FileNotFoundError, ValueError, TypeError) as e:
-        print(f"Error: {e}")
-        return 1
-
-    print(f"Tracking {len(config['repos'])} repo(s): {config['repos']}")
-    print(f"Showing statuses: {config['statuses']}")
+    config = load_config()
+    # Repo names are never logged: a tracked repo may be private, and this
+    # runs in a public repo's Actions log.
+    print(f"Tracking {len(config['repos'])} repo(s), statuses: {config['statuses']}")
     if config['featured_projects']:
-        print(f"Featured projects: {config['featured_projects']}")
+        print(f"Featured projects: {len(config['featured_projects'])}")
 
-    try:
-        data, featured_repos = fetch_from_config(config)
-    except RuntimeError as e:
-        print(f"Error: {e}")
-        return 1
-
+    data, featured_repos = fetch_from_config(config)
     model = build_readme_model(data, featured_repos)
 
     if _count_contributions(model) == 0:
