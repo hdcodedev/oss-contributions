@@ -6,6 +6,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
+| 🟢 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14333: fix(vscode): keep the right backing when a paste chip is deleted](https://github.com/Kilo-Org/kilocode/pull/14333)<br>🐛 [#14324: fix(vscode): anchor markdown review comments to the right list item](https://github.com/Kilo-Org/kilocode/pull/14324)<br>🐛 [#14319: fix: report git errors when a revert or redo fails ](https://github.com/Kilo-Org/kilocode/pull/14319) |
 | 🟣 | <a href="https://github.com/kilo-org/kilocode"><img src="https://github.com/kilo-org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14236: fix(cli): recover shared board reads from invalid cursors](https://github.com/Kilo-Org/kilocode/pull/14236) |
 
 ## August

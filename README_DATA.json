@@ -10,6 +10,34 @@
           "month_name": "September",
           "rows": [
             {
+              "status": "OPEN",
+              "repo_name": "kilo-org/kilocode",
+              "repo_url": "https://github.com/kilo-org/kilocode",
+              "logo_url": "https://github.com/kilo-org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 14333,
+                  "title": "fix(vscode): keep the right backing when a paste chip is deleted",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14333",
+                  "text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted"
+                },
+                {
+                  "number": 14324,
+                  "title": "fix(vscode): anchor markdown review comments to the right list item",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14324",
+                  "text": "#14324: fix(vscode): anchor markdown review comments to the right list item"
+                },
+                {
+                  "number": 14319,
+                  "title": "fix: report git errors when a revert or redo fails ",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
+                  "text": "#14319: fix: report git errors when a revert or redo fails "
+                }
+              ],
+              "contribution_text": "#14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14319: fix: report git errors when a revert or redo fails "
+            },
+            {
               "status": "MERGED",
               "repo_name": "kilo-org/kilocode",
               "repo_url": "https://github.com/kilo-org/kilocode",
