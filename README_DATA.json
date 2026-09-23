@@ -17,6 +17,12 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 14502,
+                  "title": "fix(cli): keep sub-agents of a chat in use during session cleanup",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14502",
+                  "text": "#14502: fix(cli): keep sub-agents of a chat in use during session cleanup"
+                },
+                {
                   "number": 14491,
                   "title": "fix(vscode): run editor actions when the sidebar shows History",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/14491",
@@ -29,7 +35,7 @@
                   "text": "#14319: fix: report git errors when a revert or redo fails "
                 }
               ],
-              "contribution_text": "#14491: fix(vscode): run editor actions when the sidebar shows History | #14319: fix: report git errors when a revert or redo fails "
+              "contribution_text": "#14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14319: fix: report git errors when a revert or redo fails "
             },
             {
               "status": "MERGED",

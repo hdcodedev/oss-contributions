@@ -6,7 +6,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14491: fix(vscode): run editor actions when the sidebar shows History](https://github.com/Kilo-Org/kilocode/pull/14491)<br>🐛 [#14319: fix: report git errors when a revert or redo fails ](https://github.com/Kilo-Org/kilocode/pull/14319) |
+| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14502: fix(cli): keep sub-agents of a chat in use during session cleanup](https://github.com/Kilo-Org/kilocode/pull/14502)<br>🐛 [#14491: fix(vscode): run editor actions when the sidebar shows History](https://github.com/Kilo-Org/kilocode/pull/14491)<br>🐛 [#14319: fix: report git errors when a revert or redo fails ](https://github.com/Kilo-Org/kilocode/pull/14319) |
 | 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14333: fix(vscode): keep the right backing when a paste chip is deleted](https://github.com/Kilo-Org/kilocode/pull/14333)<br>🐛 [#14324: fix(vscode): anchor markdown review comments to the right list item](https://github.com/Kilo-Org/kilocode/pull/14324)<br>🐛 [#14236: fix(cli): recover shared board reads from invalid cursors](https://github.com/Kilo-Org/kilocode/pull/14236) |
 
 ## August
