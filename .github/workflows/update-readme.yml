@@ -51,7 +51,9 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md README_DATA.json
           if ! git diff --cached --quiet; then
-            git commit -m "docs: update contributions artifacts"
+            # Only generated files change here, and a bot-pushed commit would
+            # otherwise start a Tests run that waits for manual approval.
+            git commit -m "docs: update contributions artifacts [skip ci]"
             git push
           else
             echo "No changes to commit"
