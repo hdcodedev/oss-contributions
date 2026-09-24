@@ -117,18 +117,20 @@ def fetch_from_config(config):
 
 
 def build_stats(years, stats_projects):
-    """Count PRs per category for each opted-in project, in config order.
+    """Count merged PRs per category for each opted-in project, in config order.
 
     An entry is either a repo name or ``{"name": ..., "repos": [...]}``,
     whose repos are summed into one row. Built from the rendered rows, so
-    private repos and filtered-out statuses never reach the counts. Projects
-    with no PRs are left out.
+    private repos never reach the counts. Projects with no merged PRs are
+    left out.
     """
     counts = defaultdict(lambda: defaultdict(int))
     rows_by_repo = {}
     for year in years:
         for month in year['months']:
             for row in month['rows']:
+                if row['status'] != 'MERGED':
+                    continue
                 key = row['repo_name'].lower()
                 rows_by_repo[key] = row
                 for item in row['contributions']:
@@ -149,7 +151,7 @@ def build_stats(years, stats_projects):
             'name': entry['name'] or row['repo_name'],
             'repo_url': row['repo_url'],
             'logo_url': row['logo_url'],
-            'total': sum(merged.values()),
+            'total_merged': sum(merged.values()),
             'categories': {c: n for c, n in merged.items() if n},
         })
 

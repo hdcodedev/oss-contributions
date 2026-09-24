@@ -120,13 +120,21 @@ class TestStats(unittest.TestCase):
         m = model.build_readme_model(self.data, self.featured)
         self.assertEqual(m['stats'], {'columns': [], 'projects': []})
 
-    def test_counts_by_category_across_months_and_statuses(self):
+    def test_counts_merged_prs_by_category_across_months(self):
         m = model.build_readme_model(self.data, self.featured, ['org/proj'])
         [project] = m['stats']['projects']
         self.assertEqual(project['name'], 'Org/proj')
-        self.assertEqual(project['categories'], {'fix': 2, 'feat': 1, 'other': 1})
-        self.assertEqual(project['total'], 4)
+        # The OPEN fix is left out.
+        self.assertEqual(project['categories'], {'fix': 1, 'feat': 1, 'other': 1})
+        self.assertEqual(project['total_merged'], 3)
         self.assertEqual([c['category'] for c in m['stats']['columns']], ['fix', 'feat', 'other'])
+
+    def test_repo_with_only_open_prs_is_skipped(self):
+        data, featured = grouped_mock([
+            mock_pr("fix: a", "u1", 1, "OPEN", "o/r", "2026-01-01T00:00:00Z"),
+        ])
+        m = model.build_readme_model(data, featured, ['o/r'])
+        self.assertEqual(m['stats']['projects'], [])
 
     def test_repo_without_prs_is_skipped(self):
         m = model.build_readme_model(self.data, self.featured, ['nobody/here'])
@@ -138,8 +146,8 @@ class TestStats(unittest.TestCase):
         [project] = m['stats']['projects']
         self.assertEqual(project['name'], 'Org')
         self.assertEqual(project['repo_url'], 'https://github.com/Org/proj')
-        self.assertEqual(project['categories'], {'fix': 3, 'feat': 1, 'other': 1})
-        self.assertEqual(project['total'], 5)
+        self.assertEqual(project['categories'], {'fix': 2, 'feat': 1, 'other': 1})
+        self.assertEqual(project['total_merged'], 4)
 
 
 if __name__ == "__main__":

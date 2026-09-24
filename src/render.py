@@ -15,7 +15,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
         stats = model['stats']
         if stats['projects']:
-            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total"]
+            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total Merged"]
             f.write(f"| {' | '.join(header)} |\n")
             f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
             for project in stats['projects']:
@@ -26,7 +26,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                     "</a>"
                 )
                 cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
-                f.write(f"| {repo_display} | {' | '.join(cells)} | **{project['total']}** |\n")
+                f.write(f"| {repo_display} | {' | '.join(cells)} | **{project['total_merged']}** |\n")
             f.write("\n")
 
         if model['featured_projects']:
