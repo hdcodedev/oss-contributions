@@ -1,5 +1,9 @@
 # OSS Contributions
 
+| Project | 🐛 Bug fixes | ✨ Features | ♻️ Refactors | 🔧 Chores | Total Merged |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;" title="Kilo Code" alt="Kilo Code"/></a> | 14 | 2 | 1 | 2 | **19** |
+
 # 2026
 
 ## September

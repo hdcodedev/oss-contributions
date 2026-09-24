@@ -71,6 +71,24 @@ CONVENTIONAL_EMOJI = {
     'revert': '⏪',
 }
 
+# Conventional-commit prefix -> label used in the stats table.
+CATEGORY_LABELS = {
+    'fix': 'Bug fixes',
+    'feat': 'Features',
+    'refactor': 'Refactors',
+    'perf': 'Performance',
+    'docs': 'Docs',
+    'test': 'Tests',
+    'chore': 'Chores',
+    'build': 'Build',
+    'ci': 'CI',
+    'style': 'Style',
+    'revert': 'Reverts',
+}
+
+# Bucket for titles without a known conventional-commit prefix.
+OTHER_CATEGORY = 'other'
+
 # Keyword fallback -> emoji (checked against the start of the title).
 KEYWORD_EMOJI = {
     'add': '✨',
@@ -97,6 +115,9 @@ def load_config(config_file=None):
         "repos": data.get("repos", []),
         "statuses": [status.upper() for status in data.get("statuses", ["MERGED", "OPEN"])],
         "featured_projects": data.get("featured_projects", []),
+        # Repos that get a per-category merged-PR counter at the top of the README; an
+        # entry may also be {"name": ..., "repos": [...]} to sum repos into one row.
+        "stats_projects": data.get("stats_projects", []),
         # None means "whoever the gh token belongs to".
         "username": data.get("username"),
     }

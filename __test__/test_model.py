@@ -5,7 +5,7 @@ import unittest
 from datetime import datetime
 
 from src import config, model
-from helpers import SAMPLE_DATA, grouped_mock
+from helpers import SAMPLE_DATA, grouped_mock, mock_pr
 
 
 class TestBuildModel(unittest.TestCase):
@@ -104,6 +104,50 @@ class TestBuildModelFeatured(unittest.TestCase):
         m = model.build_readme_model(data, featured)
         names = [p['repo_name'] for p in m['featured_projects']]
         self.assertEqual(names, ['o/a', 'o/b'])
+
+
+class TestStats(unittest.TestCase):
+    def setUp(self):
+        self.data, self.featured = grouped_mock([
+            mock_pr("fix: a", "u1", 1, "MERGED", "Org/proj", "2026-02-01T00:00:00Z"),
+            mock_pr("fix(ui): b", "u2", 2, "OPEN", "Org/proj", "2026-01-01T00:00:00Z"),
+            mock_pr("feat: c", "u3", 3, "MERGED", "Org/proj", "2025-12-01T00:00:00Z"),
+            mock_pr("Tidy things", "u4", 4, "MERGED", "Org/proj", "2025-12-02T00:00:00Z"),
+            mock_pr("fix: d", "u5", 5, "MERGED", "other/repo", "2026-01-01T00:00:00Z"),
+        ])
+
+    def test_no_stats_unless_opted_in(self):
+        m = model.build_readme_model(self.data, self.featured)
+        self.assertEqual(m['stats'], {'columns': [], 'projects': []})
+
+    def test_counts_merged_prs_by_category_across_months(self):
+        m = model.build_readme_model(self.data, self.featured, ['org/proj'])
+        [project] = m['stats']['projects']
+        self.assertEqual(project['name'], 'Org/proj')
+        # The OPEN fix is left out.
+        self.assertEqual(project['categories'], {'fix': 1, 'feat': 1, 'other': 1})
+        self.assertEqual(project['total_merged'], 3)
+        self.assertEqual([c['category'] for c in m['stats']['columns']], ['fix', 'feat', 'other'])
+
+    def test_repo_with_only_open_prs_is_skipped(self):
+        data, featured = grouped_mock([
+            mock_pr("fix: a", "u1", 1, "OPEN", "o/r", "2026-01-01T00:00:00Z"),
+        ])
+        m = model.build_readme_model(data, featured, ['o/r'])
+        self.assertEqual(m['stats']['projects'], [])
+
+    def test_repo_without_prs_is_skipped(self):
+        m = model.build_readme_model(self.data, self.featured, ['nobody/here'])
+        self.assertEqual(m['stats']['projects'], [])
+
+    def test_group_sums_its_repos_into_one_row(self):
+        group = {'name': 'Org', 'repos': ['org/proj', 'Other/Repo', 'nobody/here']}
+        m = model.build_readme_model(self.data, self.featured, [group])
+        [project] = m['stats']['projects']
+        self.assertEqual(project['name'], 'Org')
+        self.assertEqual(project['repo_url'], 'https://github.com/Org/proj')
+        self.assertEqual(project['categories'], {'fix': 2, 'feat': 1, 'other': 1})
+        self.assertEqual(project['total_merged'], 4)
 
 
 if __name__ == "__main__":
