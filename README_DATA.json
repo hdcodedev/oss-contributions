@@ -29,10 +29,10 @@
         "name": "Kilo Code",
         "repo_url": "https://github.com/Kilo-Org/kilocode",
         "logo_url": "https://github.com/Kilo-Org.png",
-        "total": 24,
+        "total_merged": 19,
         "categories": {
-          "fix": 18,
-          "feat": 3,
+          "fix": 14,
+          "feat": 2,
           "refactor": 1,
           "chore": 2
         }
