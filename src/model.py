@@ -117,10 +117,12 @@ def fetch_from_config(config):
 
 
 def build_stats(years, stats_projects):
-    """Count PRs per category for each opted-in repo, in config order.
+    """Count PRs per category for each opted-in project, in config order.
 
-    Built from the rendered rows, so private repos and filtered-out statuses
-    never reach the counts. Repos with no PRs are left out.
+    An entry is either a repo name or ``{"name": ..., "repos": [...]}``,
+    whose repos are summed into one row. Built from the rendered rows, so
+    private repos and filtered-out statuses never reach the counts. Projects
+    with no PRs are left out.
     """
     counts = defaultdict(lambda: defaultdict(int))
     rows_by_repo = {}
@@ -134,17 +136,21 @@ def build_stats(years, stats_projects):
 
     category_order = [*CATEGORY_LABELS, OTHER_CATEGORY]
     projects = []
-    for repo in stats_projects:
-        key = repo.lower()
-        if key not in counts:
+    for entry in stats_projects:
+        if isinstance(entry, str):
+            entry = {'name': None, 'repos': [entry]}
+        keys = [repo.lower() for repo in entry['repos'] if repo.lower() in counts]
+        if not keys:
             continue
-        row = rows_by_repo[key]
+        # Link and logo come from the first repo in the entry that has PRs.
+        row = rows_by_repo[keys[0]]
+        merged = {c: sum(counts[key][c] for key in keys) for c in category_order}
         projects.append({
-            'repo_name': row['repo_name'],
+            'name': entry['name'] or row['repo_name'],
             'repo_url': row['repo_url'],
             'logo_url': row['logo_url'],
-            'total': sum(counts[key].values()),
-            'categories': {c: counts[key][c] for c in category_order if counts[key][c]},
+            'total': sum(merged.values()),
+            'categories': {c: n for c, n in merged.items() if n},
         })
 
     used = {c for project in projects for c in project['categories']}

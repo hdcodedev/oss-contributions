@@ -123,7 +123,7 @@ class TestStats(unittest.TestCase):
     def test_counts_by_category_across_months_and_statuses(self):
         m = model.build_readme_model(self.data, self.featured, ['org/proj'])
         [project] = m['stats']['projects']
-        self.assertEqual(project['repo_name'], 'Org/proj')
+        self.assertEqual(project['name'], 'Org/proj')
         self.assertEqual(project['categories'], {'fix': 2, 'feat': 1, 'other': 1})
         self.assertEqual(project['total'], 4)
         self.assertEqual([c['category'] for c in m['stats']['columns']], ['fix', 'feat', 'other'])
@@ -131,6 +131,15 @@ class TestStats(unittest.TestCase):
     def test_repo_without_prs_is_skipped(self):
         m = model.build_readme_model(self.data, self.featured, ['nobody/here'])
         self.assertEqual(m['stats']['projects'], [])
+
+    def test_group_sums_its_repos_into_one_row(self):
+        group = {'name': 'Org', 'repos': ['org/proj', 'Other/Repo', 'nobody/here']}
+        m = model.build_readme_model(self.data, self.featured, [group])
+        [project] = m['stats']['projects']
+        self.assertEqual(project['name'], 'Org')
+        self.assertEqual(project['repo_url'], 'https://github.com/Org/proj')
+        self.assertEqual(project['categories'], {'fix': 3, 'feat': 1, 'other': 1})
+        self.assertEqual(project['total'], 5)
 
 
 if __name__ == "__main__":

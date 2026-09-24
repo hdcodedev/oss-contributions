@@ -22,7 +22,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                 repo_display = (
                     f"<a href=\"{project['repo_url']}\">"
                     f"<img src=\"{project['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/>"
-                    f"</a> {project['repo_name']}"
+                    f"</a> {project['name']}"
                 )
                 cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
                 f.write(f"| {repo_display} | {' | '.join(cells)} | **{project['total']}** |\n")

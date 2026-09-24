@@ -14,7 +14,12 @@
   ],
   "featured_projects": [],
   "stats_projects": [
-    "Kilo-Org/kilocode",
-    "kilo-org/kilocode-legacy"
+    {
+      "name": "Kilo Code",
+      "repos": [
+        "Kilo-Org/kilocode",
+        "kilo-org/kilocode-legacy"
+      ]
+    }
   ]
 }

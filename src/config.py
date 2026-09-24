@@ -115,7 +115,8 @@ def load_config(config_file=None):
         "repos": data.get("repos", []),
         "statuses": [status.upper() for status in data.get("statuses", ["MERGED", "OPEN"])],
         "featured_projects": data.get("featured_projects", []),
-        # Repos that get a per-category counter at the top of the README.
+        # Repos that get a per-category counter at the top of the README; an
+        # entry may also be {"name": ..., "repos": [...]} to sum repos into one row.
         "stats_projects": data.get("stats_projects", []),
         # None means "whoever the gh token belongs to".
         "username": data.get("username"),
