@@ -17,6 +17,12 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 14536,
+                  "title": "fix(vscode): keep chat tabs for older History sessions open",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14536",
+                  "text": "#14536: fix(vscode): keep chat tabs for older History sessions open"
+                },
+                {
                   "number": 14502,
                   "title": "fix(cli): keep sub-agents of a chat in use during session cleanup",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/14502",
@@ -35,7 +41,7 @@
                   "text": "#14319: fix: report git errors when a revert or redo fails "
                 }
               ],
-              "contribution_text": "#14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14319: fix: report git errors when a revert or redo fails "
+              "contribution_text": "#14536: fix(vscode): keep chat tabs for older History sessions open | #14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14319: fix: report git errors when a revert or redo fails "
             },
             {
               "status": "MERGED",
