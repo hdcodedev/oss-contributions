@@ -1,6 +1,53 @@
 {
   "title": "OSS Contributions",
   "featured_projects": [],
+  "stats": {
+    "columns": [
+      {
+        "category": "fix",
+        "label": "Bug fixes",
+        "emoji": "🐛"
+      },
+      {
+        "category": "feat",
+        "label": "Features",
+        "emoji": "✨"
+      },
+      {
+        "category": "refactor",
+        "label": "Refactors",
+        "emoji": "♻️"
+      },
+      {
+        "category": "chore",
+        "label": "Chores",
+        "emoji": "🔧"
+      }
+    ],
+    "projects": [
+      {
+        "repo_name": "Kilo-Org/kilocode",
+        "repo_url": "https://github.com/Kilo-Org/kilocode",
+        "logo_url": "https://github.com/Kilo-Org.png",
+        "total": 23,
+        "categories": {
+          "fix": 17,
+          "feat": 3,
+          "refactor": 1,
+          "chore": 2
+        }
+      },
+      {
+        "repo_name": "Kilo-Org/kilocode-legacy",
+        "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
+        "logo_url": "https://github.com/Kilo-Org.png",
+        "total": 1,
+        "categories": {
+          "fix": 1
+        }
+      }
+    ]
+  },
   "years": [
     {
       "year": 2026,

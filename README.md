@@ -1,5 +1,10 @@
 # OSS Contributions
 
+| Project | 🐛 Bug fixes | ✨ Features | ♻️ Refactors | 🔧 Chores | Total |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> Kilo-Org/kilocode | 17 | 3 | 1 | 2 | **23** |
+| <a href="https://github.com/Kilo-Org/kilocode-legacy"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> Kilo-Org/kilocode-legacy | 1 | 0 | 0 | 0 | **1** |
+
 # 2026
 
 ## September
