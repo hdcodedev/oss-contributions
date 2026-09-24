@@ -26,24 +26,15 @@
     ],
     "projects": [
       {
-        "repo_name": "Kilo-Org/kilocode",
+        "name": "Kilo Code",
         "repo_url": "https://github.com/Kilo-Org/kilocode",
         "logo_url": "https://github.com/Kilo-Org.png",
-        "total": 23,
+        "total": 24,
         "categories": {
-          "fix": 17,
+          "fix": 18,
           "feat": 3,
           "refactor": 1,
           "chore": 2
-        }
-      },
-      {
-        "repo_name": "Kilo-Org/kilocode-legacy",
-        "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
-        "logo_url": "https://github.com/Kilo-Org.png",
-        "total": 1,
-        "categories": {
-          "fix": 1
         }
       }
     ]
