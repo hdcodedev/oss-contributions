@@ -6,8 +6,7 @@
     "home-assistant/android",
     "metabrainz/listenbrainz-android",
     "openai/codex",
-    "kilo-org/kilocode-legacy",
-    "Kilo-Org/kilo"
+    "kilo-org/kilocode-legacy"
   ],
   "statuses": [
     "MERGED",
@@ -16,7 +15,6 @@
   "featured_projects": [],
   "stats_projects": [
     "Kilo-Org/kilocode",
-    "kilo-org/kilocode-legacy",
-    "Kilo-Org/kilo"
+    "kilo-org/kilocode-legacy"
   ]
 }
