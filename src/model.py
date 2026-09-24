@@ -6,10 +6,12 @@ from datetime import datetime
 from itertools import groupby
 
 from .config import (
+    CATEGORY_LABELS,
     CONVENTIONAL_EMOJI,
     DEFAULT_PR_EMOJI,
     DEFAULT_STATUS_ICON,
     KEYWORD_EMOJI,
+    OTHER_CATEGORY,
     STATUS_ICONS,
     STATUS_LEGEND,
     custom_logo,
@@ -17,17 +19,25 @@ from .config import (
 from .github import fetch_authored_prs, get_repo_details
 
 
+def _conventional_prefix(title):
+    match = re.match(r'^(\w+)(?:\([^)]+\))?:', title.lower().strip())
+    return match.group(1) if match else None
+
+
 def get_pr_emoji(title):
+    prefix = _conventional_prefix(title)
+    if prefix in CONVENTIONAL_EMOJI:
+        return CONVENTIONAL_EMOJI[prefix]
     title_lower = title.lower().strip()
-    match = re.match(r'^(\w+)(?:\([^)]+\))?:', title_lower)
-    if match:
-        prefix = match.group(1)
-        if prefix in CONVENTIONAL_EMOJI:
-            return CONVENTIONAL_EMOJI[prefix]
     for keyword, emoji in KEYWORD_EMOJI.items():
         if title_lower.startswith(keyword):
             return emoji
     return DEFAULT_PR_EMOJI
+
+
+def get_pr_category(title):
+    prefix = _conventional_prefix(title)
+    return prefix if prefix in CATEGORY_LABELS else OTHER_CATEGORY
 
 
 def query_states(allowed_statuses):
@@ -106,7 +116,46 @@ def fetch_from_config(config):
     return contributions_by_date, featured_repos
 
 
-def build_readme_model(contributions_by_date, featured_repos):
+def build_stats(years, stats_projects):
+    """Count PRs per category for each opted-in repo, in config order.
+
+    Built from the rendered rows, so private repos and filtered-out statuses
+    never reach the counts. Repos with no PRs are left out.
+    """
+    counts = defaultdict(lambda: defaultdict(int))
+    rows_by_repo = {}
+    for year in years:
+        for month in year['months']:
+            for row in month['rows']:
+                key = row['repo_name'].lower()
+                rows_by_repo[key] = row
+                for item in row['contributions']:
+                    counts[key][item['category']] += 1
+
+    category_order = [*CATEGORY_LABELS, OTHER_CATEGORY]
+    projects = []
+    for repo in stats_projects:
+        key = repo.lower()
+        if key not in counts:
+            continue
+        row = rows_by_repo[key]
+        projects.append({
+            'repo_name': row['repo_name'],
+            'repo_url': row['repo_url'],
+            'logo_url': row['logo_url'],
+            'total': sum(counts[key].values()),
+            'categories': {c: counts[key][c] for c in category_order if counts[key][c]},
+        })
+
+    used = {c for project in projects for c in project['categories']}
+    columns = [
+        {'category': c, 'label': CATEGORY_LABELS.get(c, 'Other'), 'emoji': CONVENTIONAL_EMOJI.get(c, DEFAULT_PR_EMOJI)}
+        for c in category_order if c in used
+    ]
+    return {'columns': columns, 'projects': projects}
+
+
+def build_readme_model(contributions_by_date, featured_repos, stats_projects=()):
     featured_projects = []
     if featured_repos:
         sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
@@ -158,6 +207,7 @@ def build_readme_model(contributions_by_date, featured_repos):
                     cell_title = pr['title'].replace('|', '\\|')
                     contributions.append({
                         'emoji': emoji,
+                        'category': get_pr_category(pr['title']),
                         'number': pr['number'],
                         'title': pr['title'],
                         'url': pr['url'],
@@ -193,6 +243,7 @@ def build_readme_model(contributions_by_date, featured_repos):
     return {
         'title': 'OSS Contributions',
         'featured_projects': featured_projects,
+        'stats': build_stats(years, stats_projects),
         'years': years,
         'status_legend': STATUS_LEGEND,
     }

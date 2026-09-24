@@ -13,6 +13,21 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
     with open(output_file, "w") as f:
         f.write("# OSS Contributions\n\n")
 
+        stats = model['stats']
+        if stats['projects']:
+            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total"]
+            f.write(f"| {' | '.join(header)} |\n")
+            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
+            for project in stats['projects']:
+                repo_display = (
+                    f"<a href=\"{project['repo_url']}\">"
+                    f"<img src=\"{project['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/>"
+                    f"</a> {project['repo_name']}"
+                )
+                cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
+                f.write(f"| {repo_display} | {' | '.join(cells)} | **{project['total']}** |\n")
+            f.write("\n")
+
         if model['featured_projects']:
             f.write("## Featured Projects\n\n")
             f.write("<p float=\"left\">\n")
@@ -58,6 +73,7 @@ def generate_json_snapshot(contributions_by_date, featured_repos, output_file="R
     json_model = {
         'title': model['title'],
         'featured_projects': model['featured_projects'],
+        'stats': model['stats'],
         'years': [],
     }
 
