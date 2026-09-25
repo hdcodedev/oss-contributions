@@ -48,6 +48,28 @@
           "month_name": "September",
           "rows": [
             {
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 14590,
+                  "title": "fix(vscode): keep collapsed pastes when browsing prompt history",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14590",
+                  "text": "#14590: fix(vscode): keep collapsed pastes when browsing prompt history"
+                },
+                {
+                  "number": 14319,
+                  "title": "fix: report git errors when a revert or redo fails ",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
+                  "text": "#14319: fix: report git errors when a revert or redo fails "
+                }
+              ],
+              "contribution_text": "#14590: fix(vscode): keep collapsed pastes when browsing prompt history | #14319: fix: report git errors when a revert or redo fails "
+            },
+            {
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -92,22 +114,6 @@
                 }
               ],
               "contribution_text": "#14536: fix(vscode): keep chat tabs for older History sessions open | #14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14236: fix(cli): recover shared board reads from invalid cursors"
-            },
-            {
-              "status": "OPEN",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 14319,
-                  "title": "fix: report git errors when a revert or redo fails ",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
-                  "text": "#14319: fix: report git errors when a revert or redo fails "
-                }
-              ],
-              "contribution_text": "#14319: fix: report git errors when a revert or redo fails "
             }
           ]
         },
