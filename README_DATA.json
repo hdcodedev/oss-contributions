@@ -144,22 +144,6 @@
           "month_name": "July",
           "rows": [
             {
-              "status": "OPEN",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 12676,
-                  "title": "feat(jetbrains): add ktlint",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/12676",
-                  "text": "#12676: feat(jetbrains): add ktlint"
-                }
-              ],
-              "contribution_text": "#12676: feat(jetbrains): add ktlint"
-            },
-            {
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
