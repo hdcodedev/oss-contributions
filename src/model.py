@@ -159,7 +159,7 @@ def build_stats(years, stats_projects):
     used = {c for project in projects for c in project['categories']}
     columns = [
         {'category': c, 'label': CATEGORY_LABELS.get(c, 'Other'), 'emoji': CONVENTIONAL_EMOJI.get(c, DEFAULT_PR_EMOJI)}
-        for c in category_order if c in used
+        for c in category_order if c in used and c not in {'build', 'docs', 'revert', 'test'}
     ]
     return {'columns': columns, 'projects': projects}
 
