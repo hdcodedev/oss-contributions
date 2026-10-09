@@ -118,6 +118,12 @@ def load_config(config_file=None):
         # Repos that get a per-category merged-PR counter at the top of the README; an
         # entry may also be {"name": ..., "repos": [...]} to sum repos into one row.
         "stats_projects": data.get("stats_projects", []),
+        "stats_only_repos": [
+            repo
+            for project in data.get("stats_projects", [])
+            if isinstance(project, dict) and project.get("stats_only")
+            for repo in project.get("repos", [])
+        ],
         # None means "whoever the gh token belongs to".
         "username": data.get("username"),
     }

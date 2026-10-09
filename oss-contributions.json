@@ -20,6 +20,16 @@
         "Kilo-Org/kilocode",
         "kilo-org/kilocode-legacy"
       ]
+    },
+    {
+      "name": "HDCharts",
+      "repos": [
+        "HDCharts/charts",
+        "HDCharts/charts-playground",
+        "HDCharts/charts-docs",
+        "HDCharts/charts-gif-recorder"
+      ],
+      "stats_only": true
     }
   ]
 }

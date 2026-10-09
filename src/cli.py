@@ -25,9 +25,11 @@ def main():
         print(f"Featured projects: {len(config['featured_projects'])}")
 
     data, featured_repos = fetch_from_config(config)
-    model = build_readme_model(data, featured_repos, config['stats_projects'])
+    model = build_readme_model(
+        data, featured_repos, config['stats_projects'], config['stats_only_repos']
+    )
 
-    if _count_contributions(model) == 0:
+    if _count_contributions(model) == 0 and not model['stats']['projects']:
         print("No contributions found; refusing to overwrite existing artifacts.")
         return 1
 

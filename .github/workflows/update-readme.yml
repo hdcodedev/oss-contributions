@@ -42,7 +42,7 @@ jobs:
         run: |
           set -e
           test -s README.md || { echo "README.md is empty"; exit 1; }
-          python3 -c "import json,sys; d=json.load(open('README_DATA.json')); sys.exit(1 if not d.get('years') else 0)" \
+          python3 -c "import json,sys; d=json.load(open('README_DATA.json')); sys.exit(1 if not d.get('years') and not d.get('stats', {}).get('projects') else 0)" \
             || { echo "README_DATA.json is empty or invalid"; exit 1; }
 
       - name: Commit and push changes
