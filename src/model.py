@@ -58,13 +58,14 @@ def fetch_from_config(config):
     response is theirs; what is filtered here is which *repos* to keep.
     """
     repos = config["repos"]
+    stats_only_repos = config.get("stats_only_repos", [])
     # Empty statuses list means no filtering (show all)
     allowed_statuses = set(config["statuses"]) or None
     featured = config["featured_projects"]
     username = config.get("username")
 
     # Config may spell a repo in any casing; GitHub answers with canonical.
-    tracked = {repo.lower() for repo in repos}
+    tracked = {repo.lower() for repo in [*repos, *stats_only_repos]}
 
     print(f"Fetching pull requests authored by {username or 'the authenticated user'}...")
     prs = fetch_authored_prs(username, query_states(allowed_statuses))
@@ -163,7 +164,7 @@ def build_stats(years, stats_projects):
     return {'columns': columns, 'projects': projects}
 
 
-def build_readme_model(contributions_by_date, featured_repos, stats_projects=()):
+def build_readme_model(contributions_by_date, featured_repos, stats_projects=(), stats_only_repos=()):
     featured_projects = []
     if featured_repos:
         sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
@@ -248,10 +249,25 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=())
 
         years.append({'year': year, 'months': months})
 
+    stats = build_stats(years, stats_projects)
+    stats_only = {repo.lower() for repo in stats_only_repos}
+    if stats_only:
+        for year in years:
+            visible_months = []
+            for month in year['months']:
+                month['rows'] = [
+                    row for row in month['rows']
+                    if row['repo_name'].lower() not in stats_only
+                ]
+                if month['rows']:
+                    visible_months.append(month)
+            year['months'] = visible_months
+        years = [year for year in years if year['months']]
+
     return {
         'title': 'OSS Contributions',
         'featured_projects': featured_projects,
-        'stats': build_stats(years, stats_projects),
+        'stats': stats,
         'years': years,
         'status_legend': STATUS_LEGEND,
     }
