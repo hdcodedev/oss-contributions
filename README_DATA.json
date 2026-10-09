@@ -19,9 +19,24 @@
         "emoji": "♻️"
       },
       {
+        "category": "perf",
+        "label": "Performance",
+        "emoji": "⚡"
+      },
+      {
         "category": "chore",
         "label": "Chores",
         "emoji": "🔧"
+      },
+      {
+        "category": "ci",
+        "label": "CI",
+        "emoji": "👷"
+      },
+      {
+        "category": "other",
+        "label": "Other",
+        "emoji": "🔨"
       }
     ],
     "projects": [
@@ -35,6 +50,25 @@
           "feat": 2,
           "refactor": 1,
           "chore": 2
+        }
+      },
+      {
+        "name": "HDCharts",
+        "repo_url": "https://github.com/HDCharts/charts",
+        "logo_url": "https://github.com/HDCharts.png",
+        "total_merged": 500,
+        "categories": {
+          "fix": 111,
+          "feat": 77,
+          "refactor": 37,
+          "perf": 2,
+          "docs": 68,
+          "test": 3,
+          "chore": 82,
+          "build": 2,
+          "ci": 60,
+          "revert": 1,
+          "other": 57
         }
       }
     ]
