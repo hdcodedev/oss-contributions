@@ -61,10 +61,14 @@ CONVENTIONAL_EMOJI = {
     'feat': '✨',
     'fix': '🐛',
     'refactor': '♻️',
+    'docs': '📝',
     'style': '💄',
+    'test': '✅',
     'chore': '🔧',
     'perf': '⚡',
     'ci': '👷',
+    'build': '📦',
+    'revert': '⏪',
 }
 
 # Conventional-commit prefix -> label used in the stats table.
@@ -73,9 +77,13 @@ CATEGORY_LABELS = {
     'feat': 'Features',
     'refactor': 'Refactors',
     'perf': 'Performance',
+    'docs': 'Docs',
+    'test': 'Tests',
     'chore': 'Chores',
+    'build': 'Build',
     'ci': 'CI',
     'style': 'Style',
+    'revert': 'Reverts',
 }
 
 # Bucket for titles without a known conventional-commit prefix.
