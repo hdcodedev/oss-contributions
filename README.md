@@ -3,7 +3,7 @@
 | Project | 🐛 Bug fixes | ✨ Features | ♻️ Refactors | ⚡ Performance | 🔧 Chores | 👷 CI | 🔨 Other | Total Merged |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;" title="Kilo Code" alt="Kilo Code"/></a> | 19 | 2 | 1 | 0 | 2 | 0 | 0 | **24** |
-| <a href="https://github.com/HDCharts/charts"><img src="https://github.com/HDCharts.png" width="24" height="24" style="vertical-align:middle;" title="HDCharts" alt="HDCharts"/></a> | 111 | 77 | 37 | 2 | 82 | 60 | 57 | **500** |
+| <a href="https://github.com/HDCharts/charts"><img src="https://github.com/HDCharts.png" width="24" height="24" style="vertical-align:middle;" title="HDCharts" alt="HDCharts"/></a> | 113 | 78 | 37 | 2 | 82 | 60 | 57 | **503** |
 
 # 2026
 
