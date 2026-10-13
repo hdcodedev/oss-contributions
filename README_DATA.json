@@ -56,19 +56,19 @@
         "name": "HDCharts",
         "repo_url": "https://github.com/HDCharts/charts",
         "logo_url": "https://github.com/HDCharts.png",
-        "total_merged": 503,
+        "total_merged": 522,
         "categories": {
-          "fix": 113,
-          "feat": 78,
-          "refactor": 37,
+          "fix": 116,
+          "feat": 88,
+          "refactor": 38,
           "perf": 2,
-          "docs": 68,
-          "test": 3,
+          "docs": 71,
+          "test": 4,
           "chore": 82,
           "build": 2,
           "ci": 60,
           "revert": 1,
-          "other": 57
+          "other": 58
         }
       }
     ]
@@ -77,6 +77,28 @@
     {
       "year": 2026,
       "months": [
+        {
+          "month_number": 10,
+          "month_name": "October",
+          "rows": [
+            {
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 15041,
+                  "title": "fix(vscode): send review comments from the Changes view while History is open",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/15041",
+                  "text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
+                }
+              ],
+              "contribution_text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
+            }
+          ]
+        },
         {
           "month_number": 9,
           "month_name": "September",

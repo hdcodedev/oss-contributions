@@ -3,9 +3,15 @@
 | Project | 🐛 Bug fixes | ✨ Features | ♻️ Refactors | ⚡ Performance | 🔧 Chores | 👷 CI | 🔨 Other | Total Merged |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;" title="Kilo Code" alt="Kilo Code"/></a> | 19 | 2 | 1 | 0 | 2 | 0 | 0 | **24** |
-| <a href="https://github.com/HDCharts/charts"><img src="https://github.com/HDCharts.png" width="24" height="24" style="vertical-align:middle;" title="HDCharts" alt="HDCharts"/></a> | 113 | 78 | 37 | 2 | 82 | 60 | 57 | **503** |
+| <a href="https://github.com/HDCharts/charts"><img src="https://github.com/HDCharts.png" width="24" height="24" style="vertical-align:middle;" title="HDCharts" alt="HDCharts"/></a> | 116 | 88 | 38 | 2 | 82 | 60 | 58 | **522** |
 
 # 2026
+
+## October
+
+| Status | Project | Tech Stack | Contribution |
+| :---: | :--- | :---: | :--- |
+| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#15041: fix(vscode): send review comments from the Changes view while History is open](https://github.com/Kilo-Org/kilocode/pull/15041) |
 
 ## September
 
