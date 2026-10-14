@@ -11,7 +11,7 @@
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
-| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#15041: fix(vscode): send review comments from the Changes view while History is open](https://github.com/Kilo-Org/kilocode/pull/15041) |
+| 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree](https://github.com/Kilo-Org/kilocode/pull/15045)<br>🐛 [#15041: fix(vscode): send review comments from the Changes view while History is open](https://github.com/Kilo-Org/kilocode/pull/15041) |
 
 ## September
 

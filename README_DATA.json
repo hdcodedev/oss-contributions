@@ -89,13 +89,19 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 15045,
+                  "title": "fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/15045",
+                  "text": "#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree"
+                },
+                {
                   "number": 15041,
                   "title": "fix(vscode): send review comments from the Changes view while History is open",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/15041",
                   "text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
                 }
               ],
-              "contribution_text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
+              "contribution_text": "#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree | #15041: fix(vscode): send review comments from the Changes view while History is open"
             }
           ]
         },
