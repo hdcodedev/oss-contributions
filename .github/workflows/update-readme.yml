@@ -26,9 +26,19 @@ jobs:
         with:
           python-version: '3.x'
 
+      # The profile repo's README shows the same stats tables, so the token
+      # needs write access to it as well.
+      - name: Checkout profile repository
+        uses: actions/checkout@v7
+        with:
+          repository: hdcodedev/hdcodedev
+          token: ${{ secrets.OSS_CONTRIBUTIONS_TOKEN }}
+          path: profile
+
       - name: Run generation script
         env:
           OSS_CONTRIBUTIONS_TOKEN: ${{ secrets.OSS_CONTRIBUTIONS_TOKEN }}
+          PROFILE_README: profile/README.md
         run: |
           set -e
           python3 generate_readme.py
@@ -57,4 +67,17 @@ jobs:
             git push
           else
             echo "No changes to commit"
+          fi
+
+      - name: Commit and push profile README
+        working-directory: profile
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Update OSS contribution stats"
+            git push
+          else
+            echo "No profile changes to commit"
           fi
