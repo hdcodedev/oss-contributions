@@ -75,14 +75,3 @@
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
 | 🟣 | <a href="https://github.com/openai/codex"><img src="https://github.com/openai.png" width="24" height="24" style="vertical-align:middle;"/></a> | Rust | 🐛 [#8590: fix(core): require approval for force delete on Windows](https://github.com/openai/codex/pull/8590) |
-
-## Status
-
-- 🚧 **Draft**: The pull request is a work in progress.
-- 🟢 **Open**: The pull request is currently open and active.
-- 🟣 **Merged**: The pull request has been merged into the codebase.
-- 🔴 **Closed**: The pull request was closed without being merged.
-- 🟡 **Open issue**: The reported issue is still open.
-- ✅ **Fixed issue**: The reported issue was closed by a merged pull request.
-- ⚫ **Closed issue**: The reported issue was closed without a merged pull request.
-

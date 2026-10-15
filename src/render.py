@@ -54,12 +54,6 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
                 f.write("\n")
 
-        f.write("## Status\n\n")
-        for item in model['status_legend']:
-            f.write(f"- {item['icon']} **{item['label']}**: {item['description']}\n")
-        f.write("\n")
-
-
 def generate_json_snapshot(contributions_by_date, featured_repos, output_file="README_DATA.json", model=None):
     """Write a machine-readable snapshot of the same data shown in README."""
     if model is None:
