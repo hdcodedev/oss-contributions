@@ -2,7 +2,6 @@
 
 import json
 
-from .config import ISSUE_EMOJI
 from .model import build_readme_model
 
 
@@ -22,27 +21,6 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
     with open(output_file, "w") as f:
         f.write("# OSS Contributions\n\n")
-
-        stats = model['stats']
-        if stats['projects']:
-            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total Merged"]
-            f.write(f"| {' | '.join(header)} |\n")
-            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
-            for project in stats['projects']:
-                cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
-                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_merged']}** |\n")
-            f.write("\n")
-
-        issue_stats = model['issue_stats']
-        if issue_stats['projects']:
-            f.write(f"### {ISSUE_EMOJI} {issue_stats['title']}\n\n")
-            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in issue_stats['columns']), "Total Reported"]
-            f.write(f"| {' | '.join(header)} |\n")
-            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
-            for project in issue_stats['projects']:
-                cells = [str(project['statuses'].get(c['status'], 0)) for c in issue_stats['columns']]
-                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_reported']}** |\n")
-            f.write("\n")
 
         if model['featured_projects']:
             f.write("## Featured Projects\n\n")
