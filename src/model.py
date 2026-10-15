@@ -10,13 +10,17 @@ from .config import (
     CONVENTIONAL_EMOJI,
     DEFAULT_PR_EMOJI,
     DEFAULT_STATUS_ICON,
+    ISSUE_EMOJI,
+    ISSUE_STATUS_ICONS,
+    ISSUE_STATUS_LABELS,
+    ISSUE_STATUS_LEGEND,
     KEYWORD_EMOJI,
     OTHER_CATEGORY,
     STATUS_ICONS,
     STATUS_LEGEND,
     custom_logo,
 )
-from .github import fetch_authored_prs, get_repo_details
+from .github import fetch_authored_issues, fetch_authored_prs, get_repo_details
 
 
 def _conventional_prefix(title):
@@ -51,6 +55,14 @@ def query_states(allowed_statuses):
     return {'OPEN' if status == 'DRAFT' else status for status in allowed_statuses}
 
 
+def issue_status(issue):
+    """OPEN, FIXED (closed with a merged linked PR) or CLOSED."""
+    if issue['state'] == 'OPEN':
+        return 'OPEN'
+    linked = issue['closedByPullRequestsReferences']['nodes']
+    return 'FIXED' if any(pr['state'] == 'MERGED' for pr in linked) else 'CLOSED'
+
+
 def fetch_from_config(config):
     """Fetch the configured user's PRs and group them by year -> month.
 
@@ -75,6 +87,16 @@ def fetch_from_config(config):
     matched_repos = set()
     private_repos = set()
 
+    def add(item, kind, status):
+        repo_name = item['repository']['nameWithOwner']
+        created_at = datetime.strptime(item['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
+        item['kind'] = kind
+        item['status'] = status
+        item['repo_info'] = get_repo_details(repo_name)
+        # Store parsed datetime for reuse in build_readme_model
+        item['created_at'] = created_at
+        contributions_by_date[created_at.year][(created_at.month, created_at.strftime("%B"))].append(item)
+
     for pr in prs:
         repository = pr['repository']
         repo_name = repository['nameWithOwner']
@@ -91,14 +113,27 @@ def fetch_from_config(config):
         if allowed_statuses is not None and status not in allowed_statuses:
             continue
 
-        created_at = datetime.strptime(pr['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
-        pr['status'] = status
-        pr['repo_info'] = get_repo_details(repo_name)
-        # Store parsed datetime for reuse in build_readme_model
-        pr['created_at'] = created_at
         matched_repos.add(repo_name.lower())
+        add(pr, 'pr', status)
 
-        contributions_by_date[created_at.year][(created_at.month, created_at.strftime("%B"))].append(pr)
+    issue_config = config.get("issues", {})
+    issue_repos = {repo.lower() for repo in issue_config.get("repos", [])}
+    if issue_repos:
+        allowed_issue_statuses = set(issue_config.get("statuses", [])) or None
+        issues = fetch_authored_issues(username)
+        print(f"Fetched {len(issues)} authored issue(s); keeping those in {len(issue_repos)} tracked repo(s).")
+        for issue in issues:
+            repository = issue['repository']
+            repo_name = repository['nameWithOwner']
+            if repo_name.lower() not in issue_repos:
+                continue
+            if repository['isPrivate']:
+                private_repos.add(repo_name.lower())
+                continue
+            status = issue_status(issue)
+            if allowed_issue_statuses is not None and status not in allowed_issue_statuses:
+                continue
+            add(issue, 'issue', status)
 
     if private_repos:
         print(f"Skipped {len(private_repos)} private repo(s).")
@@ -117,43 +152,60 @@ def fetch_from_config(config):
     return contributions_by_date, featured_repos
 
 
-def build_stats(years, stats_projects):
-    """Count merged PRs per category for each opted-in project, in config order.
+def _project_counts(years, stats_projects, include, bucket):
+    """Tally contributions per opted-in project, in config order.
 
     An entry is either a repo name or ``{"name": ..., "repos": [...]}``,
     whose repos are summed into one row. Built from the rendered rows, so
-    private repos never reach the counts. Projects with no merged PRs are
-    left out.
+    private repos never reach the counts. Only rows passing ``include`` are
+    counted, each item under ``bucket(row, item)``. Projects with nothing
+    counted are left out. Yields ``(project, counts)`` pairs.
     """
     counts = defaultdict(lambda: defaultdict(int))
     rows_by_repo = {}
     for year in years:
         for month in year['months']:
             for row in month['rows']:
-                if row['status'] != 'MERGED':
+                if not include(row):
                     continue
                 key = row['repo_name'].lower()
                 rows_by_repo[key] = row
                 for item in row['contributions']:
-                    counts[key][item['category']] += 1
+                    counts[key][bucket(row, item)] += 1
 
-    category_order = [*CATEGORY_LABELS, OTHER_CATEGORY]
-    projects = []
     for entry in stats_projects:
         if isinstance(entry, str):
             entry = {'name': None, 'repos': [entry]}
         keys = [repo.lower() for repo in entry['repos'] if repo.lower() in counts]
         if not keys:
             continue
-        # Link and logo come from the first repo in the entry that has PRs.
+        # Link and logo come from the first repo in the entry that has rows.
         row = rows_by_repo[keys[0]]
-        merged = {c: sum(counts[key][c] for key in keys) for c in category_order}
-        projects.append({
+        summed = defaultdict(int)
+        for key in keys:
+            for bucket_key, n in counts[key].items():
+                summed[bucket_key] += n
+        project = {
             'name': entry['name'] or row['repo_name'],
             'repo_url': row['repo_url'],
             'logo_url': row['logo_url'],
+        }
+        yield project, summed
+
+
+def build_stats(years, stats_projects):
+    """Count merged PRs per category for each opted-in project."""
+    category_order = [*CATEGORY_LABELS, OTHER_CATEGORY]
+    projects = []
+    for project, merged in _project_counts(
+        years, stats_projects,
+        include=lambda row: row['kind'] == 'pr' and row['status'] == 'MERGED',
+        bucket=lambda row, item: item['category'],
+    ):
+        projects.append({
+            **project,
             'total_merged': sum(merged.values()),
-            'categories': {c: n for c, n in merged.items() if n},
+            'categories': {c: merged[c] for c in category_order if merged[c]},
         })
 
     used = {c for project in projects for c in project['categories']}
@@ -164,7 +216,40 @@ def build_stats(years, stats_projects):
     return {'columns': columns, 'projects': projects}
 
 
-def build_readme_model(contributions_by_date, featured_repos, stats_projects=(), stats_only_repos=()):
+def build_issue_stats(years, stats_projects):
+    """Count reported issues per status for each opted-in project."""
+    projects = []
+    for project, by_status in _project_counts(
+        years, stats_projects,
+        include=lambda row: row['kind'] == 'issue',
+        bucket=lambda row, item: row['status'],
+    ):
+        projects.append({
+            **project,
+            'total_reported': sum(by_status.values()),
+            'statuses': {s: by_status[s] for s in ISSUE_STATUS_ICONS if by_status[s]},
+        })
+
+    used = {s for project in projects for s in project['statuses']}
+    columns = [
+        {'status': s, 'label': ISSUE_STATUS_LABELS[s], 'emoji': icon}
+        for s, icon in ISSUE_STATUS_ICONS.items() if s in used
+    ]
+    return {'columns': columns, 'projects': projects}
+
+
+def _issue_markdown(issue, cell_title):
+    """Issue link plus links to its open or merged PRs."""
+    linked = [
+        f"[#{pr['number']}]({pr['url']})"
+        for pr in issue['closedByPullRequestsReferences']['nodes']
+        if pr['state'] in ('OPEN', 'MERGED')
+    ]
+    markdown = f"{ISSUE_EMOJI} [Issue #{issue['number']}: {cell_title}]({issue['url']})"
+    return f"{markdown} → {', '.join(linked)}" if linked else markdown
+
+
+def build_readme_model(contributions_by_date, featured_repos, stats_projects=(), stats_only_repos=(), username=None):
     featured_projects = []
     if featured_repos:
         sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
@@ -189,31 +274,44 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
             # created_at is already validated and stored in fetch_from_config
             prs.sort(key=lambda x: (
                 x['repository']['nameWithOwner'].lower(),
+                x.get('kind', 'pr'),
                 x.get('status', 'OPEN').upper(),
                 -x['created_at'].timestamp(),
             ))
 
             month_rows = []
             grouped = groupby(prs, key=lambda x: (
-                x['repository']['nameWithOwner'].lower(), x.get('status', 'OPEN').upper()
+                x['repository']['nameWithOwner'].lower(),
+                x.get('kind', 'pr'),
+                x.get('status', 'OPEN').upper(),
             ))
 
-            for (_repo_key, group_status), repo_prs in grouped:
+            for (_repo_key, kind, group_status), repo_prs in grouped:
                 repo_prs_list = list(repo_prs)
                 first_pr = repo_prs_list[0]
 
                 # Group/sort on the lowercased name, but display the canonical one.
                 repo_name = first_pr['repository']['nameWithOwner']
-                icon = STATUS_ICONS.get(group_status, DEFAULT_STATUS_ICON)
+                icons = ISSUE_STATUS_ICONS if kind == 'issue' else STATUS_ICONS
+                icon = icons.get(group_status, DEFAULT_STATUS_ICON)
                 tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
                 owner = repo_name.split('/')[0]
                 logo_url = custom_logo(repo_name) or f"https://github.com/{owner}.png"
 
                 contributions = []
                 for pr in repo_prs_list:
-                    emoji = get_pr_emoji(pr['title'])
                     # A '|' in a title would split the markdown table row.
                     cell_title = pr['title'].replace('|', '\\|')
+                    if kind == 'issue':
+                        contributions.append({
+                            'emoji': ISSUE_EMOJI,
+                            'number': pr['number'],
+                            'title': pr['title'],
+                            'url': pr['url'],
+                            'markdown': _issue_markdown(pr, cell_title),
+                        })
+                        continue
+                    emoji = get_pr_emoji(pr['title'])
                     contributions.append({
                         'emoji': emoji,
                         'category': get_pr_category(pr['title']),
@@ -224,6 +322,7 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
                     })
 
                 month_rows.append({
+                    'kind': kind,
                     'status': group_status,
                     'status_icon': icon,
                     'repo_name': repo_name,
@@ -250,6 +349,8 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
         years.append({'year': year, 'months': months})
 
     stats = build_stats(years, stats_projects)
+    issue_stats = build_issue_stats(years, stats_projects)
+    issue_stats['title'] = f"Issues reported by @{username}" if username else "Reported issues"
     stats_only = {repo.lower() for repo in stats_only_repos}
     if stats_only:
         for year in years:
@@ -268,6 +369,7 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
         'title': 'OSS Contributions',
         'featured_projects': featured_projects,
         'stats': stats,
+        'issue_stats': issue_stats,
         'years': years,
-        'status_legend': STATUS_LEGEND,
+        'status_legend': [*STATUS_LEGEND, *ISSUE_STATUS_LEGEND],
     }

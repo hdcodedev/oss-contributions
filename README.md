@@ -5,12 +5,19 @@
 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;" title="Kilo Code" alt="Kilo Code"/></a> | 19 | 2 | 1 | 0 | 2 | 0 | 0 | **24** |
 | <a href="https://github.com/HDCharts/charts"><img src="https://github.com/HDCharts.png" width="24" height="24" style="vertical-align:middle;" title="HDCharts" alt="HDCharts"/></a> | 116 | 88 | 38 | 2 | 82 | 60 | 58 | **522** |
 
+### 📋 Issues reported by @hdcodedev
+
+| Project | 🟡 Open | ✅ Fixed | Total Reported |
+| :--- | :---: | :---: | :---: |
+| <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;" title="Kilo Code" alt="Kilo Code"/></a> | 6 | 3 | **9** |
+
 # 2026
 
 ## October
 
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
+| 🟡 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 📋 [Issue #15066: [Bug] Text typed in a new chat is lost after opening History](https://github.com/Kilo-Org/kilocode/issues/15066)<br>📋 [Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds](https://github.com/Kilo-Org/kilocode/issues/15046) → [#15050](https://github.com/Kilo-Org/kilocode/pull/15050)<br>📋 [Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names](https://github.com/Kilo-Org/kilocode/issues/15044) → [#15045](https://github.com/Kilo-Org/kilocode/pull/15045)<br>📋 [Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History](https://github.com/Kilo-Org/kilocode/issues/15040) → [#15041](https://github.com/Kilo-Org/kilocode/pull/15041)<br>📋 [Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files](https://github.com/Kilo-Org/kilocode/issues/14949) → [#14982](https://github.com/Kilo-Org/kilocode/pull/14982)<br>📋 [Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository](https://github.com/Kilo-Org/kilocode/issues/14948) → [#14983](https://github.com/Kilo-Org/kilocode/pull/14983) |
 | 🟢 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree](https://github.com/Kilo-Org/kilocode/pull/15045)<br>🐛 [#15041: fix(vscode): send review comments from the Changes view while History is open](https://github.com/Kilo-Org/kilocode/pull/15041) |
 
 ## September
@@ -18,6 +25,7 @@
 | Status | Project | Tech Stack | Contribution |
 | :---: | :--- | :---: | :--- |
 | 🟣 | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 🐛 [#14590: fix(vscode): keep collapsed pastes when browsing prompt history](https://github.com/Kilo-Org/kilocode/pull/14590)<br>🐛 [#14536: fix(vscode): keep chat tabs for older History sessions open](https://github.com/Kilo-Org/kilocode/pull/14536)<br>🐛 [#14502: fix(cli): keep sub-agents of a chat in use during session cleanup](https://github.com/Kilo-Org/kilocode/pull/14502)<br>🐛 [#14491: fix(vscode): run editor actions when the sidebar shows History](https://github.com/Kilo-Org/kilocode/pull/14491)<br>🐛 [#14333: fix(vscode): keep the right backing when a paste chip is deleted](https://github.com/Kilo-Org/kilocode/pull/14333)<br>🐛 [#14324: fix(vscode): anchor markdown review comments to the right list item](https://github.com/Kilo-Org/kilocode/pull/14324)<br>🐛 [#14319: fix: report git errors when a revert or redo fails ](https://github.com/Kilo-Org/kilocode/pull/14319)<br>🐛 [#14236: fix(cli): recover shared board reads from invalid cursors](https://github.com/Kilo-Org/kilocode/pull/14236) |
+| ✅ | <a href="https://github.com/Kilo-Org/kilocode"><img src="https://github.com/Kilo-Org.png" width="24" height="24" style="vertical-align:middle;"/></a> | TypeScript | 📋 [Issue #14589: [Bug] Browsing prompt history turns a collapsed paste into literal `[Pasted ~N lines]` text](https://github.com/Kilo-Org/kilocode/issues/14589) → [#14590](https://github.com/Kilo-Org/kilocode/pull/14590)<br>📋 [Issue #14521: [Bug] Chat opened from History's "Load more" closes after reopening History or reloading](https://github.com/Kilo-Org/kilocode/issues/14521) → [#14536](https://github.com/Kilo-Org/kilocode/pull/14536)<br>📋 [Issue #14500: [Bug] Session cleanup deletes sub-agents of a chat that is still in use](https://github.com/Kilo-Org/kilocode/issues/14500) → [#14502](https://github.com/Kilo-Org/kilocode/pull/14502) |
 
 ## August
 
@@ -85,4 +93,7 @@
 - 🟢 **Open**: The pull request is currently open and active.
 - 🟣 **Merged**: The pull request has been merged into the codebase.
 - 🔴 **Closed**: The pull request was closed without being merged.
+- 🟡 **Open issue**: The reported issue is still open.
+- ✅ **Fixed issue**: The reported issue was closed by a merged pull request.
+- ⚫ **Closed issue**: The reported issue was closed without a merged pull request.
 

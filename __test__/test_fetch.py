@@ -22,8 +22,25 @@ def pr_node(number, repo, state='MERGED', is_draft=False, private=False,
     }
 
 
-def run_fetch(config, nodes):
+def issue_node(number, repo, state='OPEN', linked=(), private=False,
+               created='2026-01-01T00:00:00Z'):
+    return {
+        'number': number,
+        'title': f'Issue {number}',
+        'url': f'https://github.com/{repo}/issues/{number}',
+        'state': state,
+        'createdAt': created,
+        'repository': {'nameWithOwner': repo, 'isPrivate': private},
+        'closedByPullRequestsReferences': {'nodes': [
+            {'number': n, 'url': f'https://github.com/{repo}/pull/{n}', 'state': pr_state}
+            for n, pr_state in linked
+        ]},
+    }
+
+
+def run_fetch(config, nodes, issues=()):
     with patch('src.model.fetch_authored_prs', return_value=nodes), \
+         patch('src.model.fetch_authored_issues', return_value=list(issues)), \
          patch('src.model.get_repo_details', return_value={'description': '', 'tech_stack': 'Python'}):
         with contextlib.redirect_stdout(io.StringIO()):
             return model.fetch_from_config(config)
@@ -99,6 +116,50 @@ class TestFetchFromConfigFiltering(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         # The canonical casing from the API survives into the model.
         self.assertEqual(rows[0]['repository']['nameWithOwner'], 'Kilo-Org/kilocode')
+
+
+class TestFetchIssues(unittest.TestCase):
+    def config(self, statuses=()):
+        return {"repos": [], "statuses": [], "featured_projects": [], "username": None,
+                "issues": {"repos": ["kilo-org/kilocode"], "statuses": list(statuses)}}
+
+    def fetched(self, config, issues):
+        data, _ = run_fetch(config, [], issues)
+        return [(i['number'], i['status']) for i in data[2026][(1, 'January')]]
+
+    def test_status_comes_from_state_and_linked_prs(self):
+        issues = [
+            issue_node(1, 'Kilo-Org/kilocode', 'OPEN', [(9, 'OPEN')]),
+            issue_node(2, 'Kilo-Org/kilocode', 'CLOSED', [(8, 'CLOSED'), (7, 'MERGED')]),
+            issue_node(3, 'Kilo-Org/kilocode', 'CLOSED', [(6, 'CLOSED')]),
+        ]
+        self.assertEqual(self.fetched(self.config(), issues),
+                         [(1, 'OPEN'), (2, 'FIXED'), (3, 'CLOSED')])
+
+    def test_statuses_filter_issues(self):
+        issues = [
+            issue_node(1, 'Kilo-Org/kilocode', 'OPEN'),
+            issue_node(2, 'Kilo-Org/kilocode', 'CLOSED', [(7, 'MERGED')]),
+            issue_node(3, 'Kilo-Org/kilocode', 'CLOSED'),
+        ]
+        self.assertEqual(self.fetched(self.config(['OPEN', 'FIXED']), issues),
+                         [(1, 'OPEN'), (2, 'FIXED')])
+
+    def test_untracked_and_private_issues_are_dropped(self):
+        issues = [
+            issue_node(1, 'Kilo-Org/kilocode'),
+            issue_node(2, 'someone/else'),
+            issue_node(3, 'kilo-org/kilocode', private=True),
+        ]
+        self.assertEqual(self.fetched(self.config(), issues), [(1, 'OPEN')])
+
+    def test_issues_not_fetched_without_repos(self):
+        config = {"repos": ["o/r"], "statuses": [], "featured_projects": [], "username": None}
+        with patch('src.model.fetch_authored_prs', return_value=[]), \
+             patch('src.model.fetch_authored_issues') as fetch_issues, \
+             contextlib.redirect_stdout(io.StringIO()):
+            model.fetch_from_config(config)
+        fetch_issues.assert_not_called()
 
 
 class TestQueryStates(unittest.TestCase):

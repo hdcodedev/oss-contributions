@@ -2,7 +2,17 @@
 
 import json
 
+from .config import ISSUE_EMOJI
 from .model import build_readme_model
+
+
+def _project_cell(project):
+    return (
+        f"<a href=\"{project['repo_url']}\">"
+        f"<img src=\"{project['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
+        f"title=\"{project['name']}\" alt=\"{project['name']}\"/>"
+        "</a>"
+    )
 
 
 def generate_markdown(contributions_by_date, featured_repos, output_file="README.md", model=None):
@@ -19,14 +29,19 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
             f.write(f"| {' | '.join(header)} |\n")
             f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
             for project in stats['projects']:
-                repo_display = (
-                    f"<a href=\"{project['repo_url']}\">"
-                    f"<img src=\"{project['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
-                    f"title=\"{project['name']}\" alt=\"{project['name']}\"/>"
-                    "</a>"
-                )
                 cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
-                f.write(f"| {repo_display} | {' | '.join(cells)} | **{project['total_merged']}** |\n")
+                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_merged']}** |\n")
+            f.write("\n")
+
+        issue_stats = model['issue_stats']
+        if issue_stats['projects']:
+            f.write(f"### {ISSUE_EMOJI} {issue_stats['title']}\n\n")
+            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in issue_stats['columns']), "Total Reported"]
+            f.write(f"| {' | '.join(header)} |\n")
+            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
+            for project in issue_stats['projects']:
+                cells = [str(project['statuses'].get(c['status'], 0)) for c in issue_stats['columns']]
+                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_reported']}** |\n")
             f.write("\n")
 
         if model['featured_projects']:
@@ -75,6 +90,7 @@ def generate_json_snapshot(contributions_by_date, featured_repos, output_file="R
         'title': model['title'],
         'featured_projects': model['featured_projects'],
         'stats': model['stats'],
+        'issue_stats': model['issue_stats'],
         'years': [],
     }
 
@@ -90,15 +106,17 @@ def generate_json_snapshot(contributions_by_date, featured_repos, output_file="R
 
             for row in month_data['rows']:
                 plain_contributions = []
+                prefix = "Issue " if row['kind'] == 'issue' else ""
                 for item in row['contributions']:
                     plain_contributions.append({
                         'number': item['number'],
                         'title': item['title'],
                         'url': item['url'],
-                        'text': f"#{item['number']}: {item['title']}",
+                        'text': f"{prefix}#{item['number']}: {item['title']}",
                     })
 
                 json_month['rows'].append({
+                    'kind': row['kind'],
                     'status': row['status'],
                     'repo_name': row['repo_name'],
                     'repo_url': row['repo_url'],

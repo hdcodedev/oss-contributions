@@ -36,6 +36,30 @@ query($endCursor: String) {
 """
 
 
+# Authored-issue query, scoped to one author the same way as PRs. Linked PRs
+# (closed ones included) tell a fixed issue apart from one closed otherwise.
+_ISSUE_QUERY_TEMPLATE = """
+query($endCursor: String) {
+  __AUTHOR__ {
+    issues(first: __PAGE_SIZE__, after: $endCursor, orderBy: {field: CREATED_AT, direction: DESC}) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        number
+        title
+        url
+        state
+        createdAt
+        repository { nameWithOwner isPrivate }
+        closedByPullRequestsReferences(first: 10, includeClosedPrs: true) {
+          nodes { number url state }
+        }
+      }
+    }
+  }
+}
+"""
+
+
 def _gh(args):
     """Run a ``gh`` command and return stdout, surfacing gh's own error text.
 
@@ -97,6 +121,28 @@ def fetch_authored_prs(username: Optional[str] = None,
         node
         for page in parse_paginated_json(stdout)
         for node in page["data"][author_key]["pullRequests"]["nodes"]
+    ]
+
+
+def build_issue_query(username: Optional[str] = None) -> str:
+    """Build the authored-issue query for ``username`` (or the token owner)."""
+    author = f'user(login: "{username}")' if username else "viewer"
+    return (
+        _ISSUE_QUERY_TEMPLATE
+        .replace("__AUTHOR__", author)
+        .replace("__PAGE_SIZE__", str(PR_PAGE_SIZE))
+    )
+
+
+def fetch_authored_issues(username: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Fetch every issue opened by ``username``, newest first."""
+    stdout = _gh(["gh", "api", "graphql", "--paginate",
+                  "-f", f"query={build_issue_query(username)}"])
+    author_key = "user" if username else "viewer"
+    return [
+        node
+        for page in parse_paginated_json(stdout)
+        for node in page["data"][author_key]["issues"]["nodes"]
     ]
 
 

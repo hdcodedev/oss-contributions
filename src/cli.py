@@ -26,7 +26,8 @@ def main():
 
     data, featured_repos = fetch_from_config(config)
     model = build_readme_model(
-        data, featured_repos, config['stats_projects'], config['stats_only_repos']
+        data, featured_repos, config['stats_projects'], config['stats_only_repos'],
+        config['username'],
     )
 
     if _count_contributions(model) == 0 and not model['stats']['projects']:

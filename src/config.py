@@ -56,6 +56,35 @@ STATUS_LEGEND = [
     for label, desc in [_STATUS_LEGEND_DESC.get(status, (status.title(), ''))]
 ]
 
+# Reported issues use their own icons so an issue row never reads as a PR.
+# FIXED is not a GitHub state: it is a closed issue with a merged linked PR.
+ISSUE_STATUS_ICONS = {
+    'OPEN': '🟡',
+    'FIXED': '✅',
+    'CLOSED': '⚫',
+}
+
+ISSUE_STATUS_LABELS = {
+    'OPEN': 'Open',
+    'FIXED': 'Fixed',
+    'CLOSED': 'Closed',
+}
+
+_ISSUE_LEGEND_DESC = {
+    'OPEN': 'The reported issue is still open.',
+    'FIXED': 'The reported issue was closed by a merged pull request.',
+    'CLOSED': 'The reported issue was closed without a merged pull request.',
+}
+
+ISSUE_STATUS_LEGEND = [
+    {'status': status, 'icon': icon, 'label': f"{ISSUE_STATUS_LABELS[status]} issue",
+     'description': _ISSUE_LEGEND_DESC[status]}
+    for status, icon in ISSUE_STATUS_ICONS.items()
+]
+
+# Leads every issue item in the monthly tables.
+ISSUE_EMOJI = '📋'
+
 # Conventional-commit prefix -> emoji.
 CONVENTIONAL_EMOJI = {
     'feat': '✨',
@@ -124,6 +153,12 @@ def load_config(config_file=None):
             if isinstance(project, dict) and project.get("stats_only")
             for repo in project.get("repos", [])
         ],
+        # Repos whose issues reported by the user are listed and counted, and
+        # which issue statuses (OPEN, FIXED, CLOSED) to keep; empty keeps all.
+        "issues": {
+            "repos": data.get("issues", {}).get("repos", []),
+            "statuses": [status.upper() for status in data.get("issues", {}).get("statuses", [])],
+        },
         # None means "whoever the gh token belongs to".
         "username": data.get("username"),
     }
