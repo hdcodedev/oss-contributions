@@ -117,6 +117,12 @@
               "tech_stack": "TypeScript",
               "contributions": [
                 {
+                  "number": 15132,
+                  "title": "fix(jetbrains): keep unsent chat drafts during session navigation",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/15132",
+                  "text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation"
+                },
+                {
                   "number": 15127,
                   "title": "fix(vscode): allow copying full provider errors while retrying",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/15127",
@@ -135,7 +141,7 @@
                   "text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
                 }
               ],
-              "contribution_text": "#15127: fix(vscode): allow copying full provider errors while retrying | #15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree | #15041: fix(vscode): send review comments from the Changes view while History is open"
+              "contribution_text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation | #15127: fix(vscode): allow copying full provider errors while retrying | #15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree | #15041: fix(vscode): send review comments from the Changes view while History is open"
             },
             {
               "kind": "issue",
