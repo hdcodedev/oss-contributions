@@ -73,6 +73,32 @@
       }
     ]
   },
+  "issue_stats": {
+    "columns": [
+      {
+        "status": "OPEN",
+        "label": "Open",
+        "emoji": "🟡"
+      },
+      {
+        "status": "FIXED",
+        "label": "Fixed",
+        "emoji": "✅"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Kilo Code",
+        "repo_url": "https://github.com/Kilo-Org/kilocode",
+        "logo_url": "https://github.com/Kilo-Org.png",
+        "total_reported": 9,
+        "statuses": {
+          "OPEN": 6,
+          "FIXED": 3
+        }
+      }
+    ]
+  },
   "years": [
     {
       "year": 2026,
@@ -82,6 +108,54 @@
           "month_name": "October",
           "rows": [
             {
+              "kind": "issue",
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 15066,
+                  "title": "[Bug] Text typed in a new chat is lost after opening History",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15066",
+                  "text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History"
+                },
+                {
+                  "number": 15046,
+                  "title": "[Bug] kilo run silently drops piped output from a command that takes more than a few seconds",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15046",
+                  "text": "Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds"
+                },
+                {
+                  "number": 15044,
+                  "title": "[Bug] Move to Worktree silently skips new files with non-ASCII names",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15044",
+                  "text": "Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names"
+                },
+                {
+                  "number": 15040,
+                  "title": "[Bug] Review comment sent from the Changes view disappears while the sidebar shows History",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15040",
+                  "text": "Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History"
+                },
+                {
+                  "number": 14949,
+                  "title": "[Bug] Holding Backspace deletes a worktree and its uncommitted files",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14949",
+                  "text": "Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files"
+                },
+                {
+                  "number": 14948,
+                  "title": "[Bug] Move to Worktree sends a sidebar chat into another project's repository",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14948",
+                  "text": "Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+                }
+              ],
+              "contribution_text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History | Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds | Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names | Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History | Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files | Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+            },
+            {
+              "kind": "pr",
               "status": "OPEN",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -110,6 +184,7 @@
           "month_name": "September",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -166,6 +241,35 @@
                 }
               ],
               "contribution_text": "#14590: fix(vscode): keep collapsed pastes when browsing prompt history | #14536: fix(vscode): keep chat tabs for older History sessions open | #14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14319: fix: report git errors when a revert or redo fails  | #14236: fix(cli): recover shared board reads from invalid cursors"
+            },
+            {
+              "kind": "issue",
+              "status": "FIXED",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 14589,
+                  "title": "[Bug] Browsing prompt history turns a collapsed paste into literal `[Pasted ~N lines]` text",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14589",
+                  "text": "Issue #14589: [Bug] Browsing prompt history turns a collapsed paste into literal `[Pasted ~N lines]` text"
+                },
+                {
+                  "number": 14521,
+                  "title": "[Bug] Chat opened from History's \"Load more\" closes after reopening History or reloading",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14521",
+                  "text": "Issue #14521: [Bug] Chat opened from History's \"Load more\" closes after reopening History or reloading"
+                },
+                {
+                  "number": 14500,
+                  "title": "[Bug] Session cleanup deletes sub-agents of a chat that is still in use",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14500",
+                  "text": "Issue #14500: [Bug] Session cleanup deletes sub-agents of a chat that is still in use"
+                }
+              ],
+              "contribution_text": "Issue #14589: [Bug] Browsing prompt history turns a collapsed paste into literal `[Pasted ~N lines]` text | Issue #14521: [Bug] Chat opened from History's \"Load more\" closes after reopening History or reloading | Issue #14500: [Bug] Session cleanup deletes sub-agents of a chat that is still in use"
             }
           ]
         },
@@ -174,6 +278,7 @@
           "month_name": "August",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -196,6 +301,7 @@
           "month_name": "July",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -236,6 +342,7 @@
               "contribution_text": "#12608: chore(jetbrains): centralize test dependency versions | #12607: chore(jetbrains): remove unused compose compiler plugin | #12486: fix(vscode): ignore Enter when no list result is highlighted | #12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
             },
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "home-assistant/android",
               "repo_url": "https://github.com/home-assistant/android",
@@ -264,6 +371,7 @@
           "month_name": "June",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "home-assistant/android",
               "repo_url": "https://github.com/home-assistant/android",
@@ -286,6 +394,7 @@
           "month_name": "May",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode-legacy",
               "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
@@ -308,6 +417,7 @@
           "month_name": "April",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -336,6 +446,7 @@
           "month_name": "March",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -370,6 +481,7 @@
           "month_name": "February",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -392,6 +504,7 @@
           "month_name": "January",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "ImranR98/Obtainium",
               "repo_url": "https://github.com/ImranR98/Obtainium",
@@ -414,6 +527,7 @@
               "contribution_text": "#2742: feat: Detect GitHub repo renames | #2728: fix: ensure apps with unknown release dates sort to the bottom in descending order"
             },
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "home-assistant/android",
               "repo_url": "https://github.com/home-assistant/android",
@@ -442,6 +556,7 @@
               "contribution_text": "#6287: Refactor: reuse modifier and text styles in connectivity checks section | #6247: Add MIUI-specific DiskReadViolation ignore rules for FontSettings and… | #6237: Add connectivity check feature for troubleshooting server connections "
             },
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
@@ -470,6 +585,7 @@
               "contribution_text": "#5167: fix(extension): allow killing detached processes | #5162: fix: preserve images when editing messages with checkpoint | #5150: fix(core): implement deduplication of tool_use blocks to prevent API errors and add tests"
             },
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "metabrainz/listenbrainz-android",
               "repo_url": "https://github.com/metabrainz/listenbrainz-android",
@@ -497,6 +613,7 @@
           "month_name": "December",
           "rows": [
             {
+              "kind": "pr",
               "status": "MERGED",
               "repo_name": "openai/codex",
               "repo_url": "https://github.com/openai/codex",
