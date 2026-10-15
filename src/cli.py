@@ -1,10 +1,11 @@
 """Command-line entry point."""
 
+import os
 import sys
 
 from .config import load_config
 from .model import fetch_from_config, build_readme_model
-from .render import generate_json_snapshot, generate_markdown
+from .render import generate_json_snapshot, generate_markdown, update_profile_readme
 
 
 def _count_contributions(model):
@@ -36,6 +37,12 @@ def main():
 
     generate_markdown(data, featured_repos, model=model)
     generate_json_snapshot(data, featured_repos, model=model)
+
+    # Set by the workflow to a checkout of the GitHub profile repo.
+    profile_readme = os.environ.get("PROFILE_README")
+    if profile_readme:
+        update_profile_readme(profile_readme, model)
+        print("Profile README stats updated.")
 
     print("Done! README.md and README_DATA.json updated.")
     return 0

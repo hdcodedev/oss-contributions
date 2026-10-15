@@ -15,6 +15,55 @@ def _project_cell(project):
     )
 
 
+def render_stats(model):
+    """The merged-PR and reported-issue tables, shared by README and profile."""
+    lines = []
+
+    stats = model['stats']
+    if stats['projects']:
+        header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total Merged"]
+        lines.append(f"| {' | '.join(header)} |")
+        lines.append(f"| :--- |{' :---: |' * (len(header) - 1)}")
+        for project in stats['projects']:
+            cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
+            lines.append(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_merged']}** |")
+        lines.append("")
+
+    issue_stats = model['issue_stats']
+    if issue_stats['projects']:
+        lines.append(f"### {ISSUE_EMOJI} {issue_stats['title']}")
+        lines.append("")
+        header = ["Project", *(f"{c['emoji']} {c['label']}" for c in issue_stats['columns']), "Total Reported"]
+        lines.append(f"| {' | '.join(header)} |")
+        lines.append(f"| :--- |{' :---: |' * (len(header) - 1)}")
+        for project in issue_stats['projects']:
+            cells = [str(project['statuses'].get(c['status'], 0)) for c in issue_stats['columns']]
+            lines.append(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_reported']}** |")
+        lines.append("")
+
+    return "".join(f"{line}\n" for line in lines)
+
+
+PROFILE_START = "<!-- oss-stats:start -->"
+PROFILE_END = "<!-- oss-stats:end -->"
+
+
+def update_profile_readme(path, model):
+    """Replace the block between the oss-stats markers in ``path``.
+
+    Missing markers raise, so a profile README edited by hand fails the run
+    instead of silently losing its stats.
+    """
+    with open(path) as f:
+        text = f.read()
+    before, start, rest = text.partition(PROFILE_START)
+    _, end, after = rest.partition(PROFILE_END)
+    if not start or not end:
+        raise ValueError(f"{path} needs {PROFILE_START} and {PROFILE_END} markers")
+    with open(path, "w") as f:
+        f.write(f"{before}{PROFILE_START}\n{render_stats(model)}{PROFILE_END}{after}")
+
+
 def generate_markdown(contributions_by_date, featured_repos, output_file="README.md", model=None):
     """Render the grouped contributions into a Markdown README."""
     if model is None:
@@ -22,27 +71,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
     with open(output_file, "w") as f:
         f.write("# OSS Contributions\n\n")
-
-        stats = model['stats']
-        if stats['projects']:
-            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in stats['columns']), "Total Merged"]
-            f.write(f"| {' | '.join(header)} |\n")
-            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
-            for project in stats['projects']:
-                cells = [str(project['categories'].get(c['category'], 0)) for c in stats['columns']]
-                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_merged']}** |\n")
-            f.write("\n")
-
-        issue_stats = model['issue_stats']
-        if issue_stats['projects']:
-            f.write(f"### {ISSUE_EMOJI} {issue_stats['title']}\n\n")
-            header = ["Project", *(f"{c['emoji']} {c['label']}" for c in issue_stats['columns']), "Total Reported"]
-            f.write(f"| {' | '.join(header)} |\n")
-            f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
-            for project in issue_stats['projects']:
-                cells = [str(project['statuses'].get(c['status'], 0)) for c in issue_stats['columns']]
-                f.write(f"| {_project_cell(project)} | {' | '.join(cells)} | **{project['total_reported']}** |\n")
-            f.write("\n")
+        f.write(render_stats(model))
 
         if model['featured_projects']:
             f.write("## Featured Projects\n\n")
