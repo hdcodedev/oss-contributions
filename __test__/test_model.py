@@ -38,7 +38,10 @@ class TestBuildModel(unittest.TestCase):
         self.assertEqual(repo_b['contributions'][0]['emoji'], config.CONVENTIONAL_EMOJI['feat'])
 
     def test_status_legend_present(self):
-        self.assertEqual(len(self.m['status_legend']), len(config.STATUS_LEGEND))
+        self.assertEqual(
+            len(self.m['status_legend']),
+            len(config.STATUS_LEGEND) + len(config.ISSUE_STATUS_LEGEND),
+        )
 
     def test_prs_sorted_newest_first_within_group(self):
         url_data = [
@@ -148,6 +151,60 @@ class TestStats(unittest.TestCase):
         self.assertEqual(project['repo_url'], 'https://github.com/Org/proj')
         self.assertEqual(project['categories'], {'fix': 2, 'feat': 1, 'other': 1})
         self.assertEqual(project['total_merged'], 4)
+
+
+def mock_issue(number, repo, status, date, linked=()):
+    """An issue as fetch_from_config leaves it; ``linked`` is (number, state) pairs."""
+    issue = mock_pr(f"[Bug] issue {number}", f"https://github.com/{repo}/issues/{number}",
+                    number, 'OPEN' if status == 'OPEN' else 'CLOSED', repo, date)
+    issue['kind'] = 'issue'
+    issue['status'] = status
+    issue['closedByPullRequestsReferences'] = {'nodes': [
+        {'number': n, 'url': f"https://github.com/{repo}/pull/{n}", 'state': state}
+        for n, state in linked
+    ]}
+    return issue
+
+
+class TestIssues(unittest.TestCase):
+    def setUp(self):
+        self.data, self.featured = grouped_mock([
+            mock_pr("fix: a", "u1", 10, "MERGED", "Org/proj", "2026-01-03T00:00:00Z"),
+            mock_issue(1, "Org/proj", "FIXED", "2026-01-01T00:00:00Z", [(10, 'MERGED')]),
+            mock_issue(2, "Org/proj", "OPEN", "2026-01-02T00:00:00Z", [(11, 'OPEN'), (12, 'CLOSED')]),
+            mock_issue(3, "Org/proj", "OPEN", "2025-12-02T00:00:00Z"),
+        ])
+
+    def test_issues_get_their_own_rows(self):
+        m = model.build_readme_model(self.data, self.featured)
+        rows = m['years'][0]['months'][0]['rows']
+        kinds = sorted((r['kind'], r['status'], r['status_icon']) for r in rows)
+        self.assertEqual(kinds, [
+            ('issue', 'FIXED', config.ISSUE_STATUS_ICONS['FIXED']),
+            ('issue', 'OPEN', config.ISSUE_STATUS_ICONS['OPEN']),
+            ('pr', 'MERGED', config.STATUS_ICONS['MERGED']),
+        ])
+
+    def test_issue_links_open_and_merged_prs_only(self):
+        m = model.build_readme_model(self.data, self.featured)
+        row = next(r for r in m['years'][0]['months'][0]['rows'] if r['status'] == 'OPEN')
+        self.assertEqual(
+            row['contribution_markdown'],
+            f"{config.ISSUE_EMOJI} [Issue #2: [Bug] issue 2](https://github.com/Org/proj/issues/2)"
+            " → [#11](https://github.com/Org/proj/pull/11)",
+        )
+
+    def test_issue_stats_count_by_status(self):
+        m = model.build_readme_model(self.data, self.featured, ['org/proj'])
+        [project] = m['issue_stats']['projects']
+        self.assertEqual(project['statuses'], {'OPEN': 2, 'FIXED': 1})
+        self.assertEqual(project['total_reported'], 3)
+        self.assertEqual([c['status'] for c in m['issue_stats']['columns']], ['OPEN', 'FIXED'])
+
+    def test_issues_stay_out_of_pr_stats(self):
+        m = model.build_readme_model(self.data, self.featured, ['org/proj'])
+        [project] = m['stats']['projects']
+        self.assertEqual(project['total_merged'], 1)
 
 
 if __name__ == "__main__":

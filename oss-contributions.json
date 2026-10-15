@@ -13,6 +13,16 @@
     "OPEN"
   ],
   "featured_projects": [],
+  "issues": {
+    "repos": [
+      "Kilo-Org/kilocode",
+      "kilo-org/kilocode-legacy"
+    ],
+    "statuses": [
+      "OPEN",
+      "FIXED"
+    ]
+  },
   "stats_projects": [
     {
       "name": "Kilo Code",
