@@ -201,6 +201,12 @@ class TestIssues(unittest.TestCase):
         self.assertEqual(project['total_reported'], 3)
         self.assertEqual([c['status'] for c in m['issue_stats']['columns']], ['OPEN', 'FIXED'])
 
+    def test_issue_stats_title_names_the_reporter(self):
+        m = model.build_readme_model(self.data, self.featured, ['org/proj'], username='hdcodedev')
+        self.assertEqual(m['issue_stats']['title'], 'Issues reported by @hdcodedev')
+        m = model.build_readme_model(self.data, self.featured, ['org/proj'])
+        self.assertEqual(m['issue_stats']['title'], 'Reported issues')
+
     def test_issues_stay_out_of_pr_stats(self):
         m = model.build_readme_model(self.data, self.featured, ['org/proj'])
         [project] = m['stats']['projects']

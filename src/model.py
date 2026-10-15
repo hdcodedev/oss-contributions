@@ -249,7 +249,7 @@ def _issue_markdown(issue, cell_title):
     return f"{markdown} → {', '.join(linked)}" if linked else markdown
 
 
-def build_readme_model(contributions_by_date, featured_repos, stats_projects=(), stats_only_repos=()):
+def build_readme_model(contributions_by_date, featured_repos, stats_projects=(), stats_only_repos=(), username=None):
     featured_projects = []
     if featured_repos:
         sorted_featured = sorted(featured_repos.items(), key=lambda item: (item[1], item[0].lower()))
@@ -350,6 +350,7 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
 
     stats = build_stats(years, stats_projects)
     issue_stats = build_issue_stats(years, stats_projects)
+    issue_stats['title'] = f"Issues reported by @{username}" if username else "Reported issues"
     stats_only = {repo.lower() for repo in stats_only_repos}
     if stats_only:
         for year in years:

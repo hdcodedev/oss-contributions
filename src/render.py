@@ -2,6 +2,7 @@
 
 import json
 
+from .config import ISSUE_EMOJI
 from .model import build_readme_model
 
 
@@ -34,6 +35,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
 
         issue_stats = model['issue_stats']
         if issue_stats['projects']:
+            f.write(f"### {ISSUE_EMOJI} {issue_stats['title']}\n\n")
             header = ["Project", *(f"{c['emoji']} {c['label']}" for c in issue_stats['columns']), "Total Reported"]
             f.write(f"| {' | '.join(header)} |\n")
             f.write(f"| :--- |{' :---: |' * (len(header) - 1)}\n")
