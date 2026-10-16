@@ -44,9 +44,9 @@
         "name": "Kilo Code",
         "repo_url": "https://github.com/Kilo-Org/kilocode",
         "logo_url": "https://github.com/Kilo-Org.png",
-        "total_merged": 24,
+        "total_merged": 26,
         "categories": {
-          "fix": 19,
+          "fix": 21,
           "feat": 2,
           "refactor": 1,
           "chore": 2
@@ -93,8 +93,8 @@
         "logo_url": "https://github.com/Kilo-Org.png",
         "total_reported": 9,
         "statuses": {
-          "OPEN": 6,
-          "FIXED": 3
+          "OPEN": 4,
+          "FIXED": 5
         }
       }
     ],
@@ -127,21 +127,9 @@
                   "title": "fix(vscode): allow copying full provider errors while retrying",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/15127",
                   "text": "#15127: fix(vscode): allow copying full provider errors while retrying"
-                },
-                {
-                  "number": 15045,
-                  "title": "fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/15045",
-                  "text": "#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree"
-                },
-                {
-                  "number": 15041,
-                  "title": "fix(vscode): send review comments from the Changes view while History is open",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/15041",
-                  "text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
                 }
               ],
-              "contribution_text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation | #15127: fix(vscode): allow copying full provider errors while retrying | #15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree | #15041: fix(vscode): send review comments from the Changes view while History is open"
+              "contribution_text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation | #15127: fix(vscode): allow copying full provider errors while retrying"
             },
             {
               "kind": "issue",
@@ -164,18 +152,6 @@
                   "text": "Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds"
                 },
                 {
-                  "number": 15044,
-                  "title": "[Bug] Move to Worktree silently skips new files with non-ASCII names",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/15044",
-                  "text": "Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names"
-                },
-                {
-                  "number": 15040,
-                  "title": "[Bug] Review comment sent from the Changes view disappears while the sidebar shows History",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/15040",
-                  "text": "Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History"
-                },
-                {
                   "number": 14949,
                   "title": "[Bug] Holding Backspace deletes a worktree and its uncommitted files",
                   "url": "https://github.com/Kilo-Org/kilocode/issues/14949",
@@ -188,7 +164,53 @@
                   "text": "Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
                 }
               ],
-              "contribution_text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History | Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds | Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names | Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History | Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files | Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+              "contribution_text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History | Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds | Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files | Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+            },
+            {
+              "kind": "pr",
+              "status": "MERGED",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 15045,
+                  "title": "fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/15045",
+                  "text": "#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree"
+                },
+                {
+                  "number": 15041,
+                  "title": "fix(vscode): send review comments from the Changes view while History is open",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/15041",
+                  "text": "#15041: fix(vscode): send review comments from the Changes view while History is open"
+                }
+              ],
+              "contribution_text": "#15045: fix(agent-manager): keep new files with non-ASCII names when moving a chat to a worktree | #15041: fix(vscode): send review comments from the Changes view while History is open"
+            },
+            {
+              "kind": "issue",
+              "status": "FIXED",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 15044,
+                  "title": "[Bug] Move to Worktree silently skips new files with non-ASCII names",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15044",
+                  "text": "Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names"
+                },
+                {
+                  "number": 15040,
+                  "title": "[Bug] Review comment sent from the Changes view disappears while the sidebar shows History",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15040",
+                  "text": "Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History"
+                }
+              ],
+              "contribution_text": "Issue #15044: [Bug] Move to Worktree silently skips new files with non-ASCII names | Issue #15040: [Bug] Review comment sent from the Changes view disappears while the sidebar shows History"
             }
           ]
         },
