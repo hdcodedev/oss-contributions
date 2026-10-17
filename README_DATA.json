@@ -114,14 +114,25 @@
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
               "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
+              "tech_stack": "Kotlin",
               "contributions": [
                 {
                   "number": 15132,
                   "title": "fix(jetbrains): keep unsent chat drafts during session navigation",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/15132",
                   "text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation"
-                },
+                }
+              ],
+              "contribution_text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation"
+            },
+            {
+              "kind": "pr",
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
                 {
                   "number": 15127,
                   "title": "fix(vscode): allow copying full provider errors while retrying",
@@ -129,7 +140,7 @@
                   "text": "#15127: fix(vscode): allow copying full provider errors while retrying"
                 }
               ],
-              "contribution_text": "#15132: fix(jetbrains): keep unsent chat drafts during session navigation | #15127: fix(vscode): allow copying full provider errors while retrying"
+              "contribution_text": "#15127: fix(vscode): allow copying full provider errors while retrying"
             },
             {
               "kind": "issue",
@@ -263,19 +274,13 @@
                   "text": "#14324: fix(vscode): anchor markdown review comments to the right list item"
                 },
                 {
-                  "number": 14319,
-                  "title": "fix: report git errors when a revert or redo fails ",
-                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
-                  "text": "#14319: fix: report git errors when a revert or redo fails "
-                },
-                {
                   "number": 14236,
                   "title": "fix(cli): recover shared board reads from invalid cursors",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/14236",
                   "text": "#14236: fix(cli): recover shared board reads from invalid cursors"
                 }
               ],
-              "contribution_text": "#14590: fix(vscode): keep collapsed pastes when browsing prompt history | #14536: fix(vscode): keep chat tabs for older History sessions open | #14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14319: fix: report git errors when a revert or redo fails  | #14236: fix(cli): recover shared board reads from invalid cursors"
+              "contribution_text": "#14590: fix(vscode): keep collapsed pastes when browsing prompt history | #14536: fix(vscode): keep chat tabs for older History sessions open | #14502: fix(cli): keep sub-agents of a chat in use during session cleanup | #14491: fix(vscode): run editor actions when the sidebar shows History | #14333: fix(vscode): keep the right backing when a paste chip is deleted | #14324: fix(vscode): anchor markdown review comments to the right list item | #14236: fix(cli): recover shared board reads from invalid cursors"
             },
             {
               "kind": "issue",
@@ -305,6 +310,23 @@
                 }
               ],
               "contribution_text": "Issue #14589: [Bug] Browsing prompt history turns a collapsed paste into literal `[Pasted ~N lines]` text | Issue #14521: [Bug] Chat opened from History's \"Load more\" closes after reopening History or reloading | Issue #14500: [Bug] Session cleanup deletes sub-agents of a chat that is still in use"
+            },
+            {
+              "kind": "pr",
+              "status": "MERGED",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "JavaScript, TypeScript",
+              "contributions": [
+                {
+                  "number": 14319,
+                  "title": "fix: report git errors when a revert or redo fails ",
+                  "url": "https://github.com/Kilo-Org/kilocode/pull/14319",
+                  "text": "#14319: fix: report git errors when a revert or redo fails "
+                }
+              ],
+              "contribution_text": "#14319: fix: report git errors when a revert or redo fails "
             }
           ]
         },
@@ -341,7 +363,7 @@
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
               "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
+              "tech_stack": "Kotlin",
               "contributions": [
                 {
                   "number": 12608,
@@ -354,7 +376,18 @@
                   "title": "chore(jetbrains): remove unused compose compiler plugin",
                   "url": "https://github.com/Kilo-Org/kilocode/pull/12607",
                   "text": "#12607: chore(jetbrains): remove unused compose compiler plugin"
-                },
+                }
+              ],
+              "contribution_text": "#12608: chore(jetbrains): centralize test dependency versions | #12607: chore(jetbrains): remove unused compose compiler plugin"
+            },
+            {
+              "kind": "pr",
+              "status": "MERGED",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
                 {
                   "number": 12486,
                   "title": "fix(vscode): ignore Enter when no list result is highlighted",
@@ -374,7 +407,7 @@
                   "text": "#12370: feat(vscode): support deleting queued chat messages"
                 }
               ],
-              "contribution_text": "#12608: chore(jetbrains): centralize test dependency versions | #12607: chore(jetbrains): remove unused compose compiler plugin | #12486: fix(vscode): ignore Enter when no list result is highlighted | #12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
+              "contribution_text": "#12486: fix(vscode): ignore Enter when no list result is highlighted | #12462: feat(vscode): add searchable session tab switcher | #12370: feat(vscode): support deleting queued chat messages"
             },
             {
               "kind": "pr",
@@ -434,7 +467,7 @@
               "repo_name": "Kilo-Org/kilocode-legacy",
               "repo_url": "https://github.com/Kilo-Org/kilocode-legacy",
               "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
+              "tech_stack": "Kotlin",
               "contributions": [
                 {
                   "number": 140,

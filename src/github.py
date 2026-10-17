@@ -3,11 +3,21 @@
 import json
 import os
 import subprocess
+from pathlib import PurePosixPath
 from typing import Any, Dict, Iterable, List, Optional
 
 from .config import TOPIC_MAP
 
 repo_cache = {}
+
+SOURCE_LANGUAGES = {
+    '.kt': 'Kotlin', '.kts': 'Kotlin',
+    '.ts': 'TypeScript', '.tsx': 'TypeScript',
+    '.js': 'JavaScript', '.jsx': 'JavaScript', '.mjs': 'JavaScript', '.cjs': 'JavaScript',
+    '.py': 'Python', '.rs': 'Rust', '.go': 'Go', '.java': 'Java',
+    '.dart': 'Dart', '.swift': 'Swift', '.c': 'C', '.h': 'C',
+    '.cpp': 'C++', '.hpp': 'C++', '.cs': 'C#', '.rb': 'Ruby', '.php': 'PHP',
+}
 
 # GraphQL connections cap page size at 100.
 PR_PAGE_SIZE = 100
@@ -89,10 +99,10 @@ def build_pr_query(username: Optional[str] = None, states: Optional[Iterable[str
     )
 
 
-def parse_paginated_json(stdout: str) -> List[Dict[str, Any]]:
-    """Split ``gh api --paginate`` output into one dict per page.
+def parse_paginated_json(stdout: str) -> List[Any]:
+    """Split ``gh api --paginate`` output into one JSON value per page.
 
-    Pages arrive as concatenated top-level JSON objects rather than a list.
+    Pages arrive as concatenated top-level JSON objects or arrays.
     """
     decoder = json.JSONDecoder()
     pages = []
@@ -144,6 +154,23 @@ def fetch_authored_issues(username: Optional[str] = None) -> List[Dict[str, Any]
         for page in parse_paginated_json(stdout)
         for node in page["data"][author_key]["issues"]["nodes"]
     ]
+
+
+def get_pr_tech_stack(repo_name: str, number: int, fallback: str) -> str:
+    """Use changed source files; keep the repository stack for docs-only PRs."""
+    stdout = _gh([
+        'gh', 'api', '--paginate',
+        f'repos/{repo_name}/pulls/{number}/files?per_page=100',
+    ])
+    languages = {
+        SOURCE_LANGUAGES[suffix]
+        for page in parse_paginated_json(stdout)
+        for file in page
+        if (suffix := PurePosixPath(file['filename']).suffix.lower()) in SOURCE_LANGUAGES
+    }
+    if not languages or languages == {fallback.split(',')[0].strip()}:
+        return fallback
+    return ', '.join(sorted(languages))
 
 
 def get_repo_details(repo_name: str) -> Dict[str, str]:

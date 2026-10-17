@@ -79,6 +79,20 @@ class TestBuildModel(unittest.TestCase):
         rows = m['years'][0]['months'][0]['rows']
         self.assertEqual([r['repo_name'] for r in rows], ['o/y', 'o/x'])
 
+    def test_same_repo_and_status_split_by_contribution_language(self):
+        prs = [
+            mock_pr('fix: Kotlin', 'u1', 1, 'OPEN', 'o/r', '2026-01-03T00:00:00Z'),
+            mock_pr('fix: TypeScript', 'u2', 2, 'OPEN', 'o/r', '2026-01-02T00:00:00Z'),
+            mock_pr('fix: more Kotlin', 'u3', 3, 'OPEN', 'o/r', '2026-01-01T00:00:00Z'),
+        ]
+        for pr, stack in zip(prs, ['Kotlin', 'TypeScript', 'Kotlin']):
+            pr['tech_stack'] = stack
+        data, _ = grouped_mock(prs)
+        m = model.build_readme_model(data, {})
+        rows = m['years'][0]['months'][0]['rows']
+        self.assertEqual([(r['tech_stack'], [c['number'] for c in r['contributions']])
+                          for r in rows], [('Kotlin', [1, 3]), ('TypeScript', [2])])
+
 
 class TestRenderConsistency(unittest.TestCase):
     def test_markdown_and_json_agree_on_counts(self):

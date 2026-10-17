@@ -41,12 +41,37 @@ def issue_node(number, repo, state='OPEN', linked=(), private=False,
 def run_fetch(config, nodes, issues=()):
     with patch('src.model.fetch_authored_prs', return_value=nodes), \
          patch('src.model.fetch_authored_issues', return_value=list(issues)), \
+         patch('src.model.get_pr_tech_stack', return_value='Python'), \
          patch('src.model.get_repo_details', return_value={'description': '', 'tech_stack': 'Python'}):
         with contextlib.redirect_stdout(io.StringIO()):
             return model.fetch_from_config(config)
 
 
 class TestFetchFromConfigFiltering(unittest.TestCase):
+    def test_language_lookup_only_for_included_public_prs(self):
+        config = {"repos": ["o/r"], "statuses": ["OPEN"], "featured_projects": []}
+        nodes = [pr_node(1, 'o/r', state='OPEN'), pr_node(2, 'o/r'),
+                 pr_node(3, 'o/r', state='OPEN', private=True),
+                 pr_node(4, 'other/repo', state='OPEN')]
+        with patch('src.model.fetch_authored_prs', return_value=nodes), \
+             patch('src.model.get_repo_details', return_value={'tech_stack': 'TypeScript'}), \
+             patch('src.model.get_pr_tech_stack', return_value='Kotlin') as stack, \
+             contextlib.redirect_stdout(io.StringIO()):
+            data, _ = model.fetch_from_config(config)
+        stack.assert_called_once_with('o/r', 1, 'TypeScript')
+        self.assertEqual(data[2026][(1, 'January')][0]['tech_stack'], 'Kotlin')
+
+    def test_stats_only_prs_skip_language_lookup(self):
+        config = {"repos": [], "stats_only_repos": ["O/R"], "statuses": [],
+                  "featured_projects": []}
+        with patch('src.model.fetch_authored_prs', return_value=[pr_node(1, 'o/r')]), \
+             patch('src.model.get_repo_details', return_value={'tech_stack': 'Kotlin'}), \
+             patch('src.model.get_pr_tech_stack') as stack, \
+             contextlib.redirect_stdout(io.StringIO()):
+            data, _ = model.fetch_from_config(config)
+        stack.assert_not_called()
+        self.assertEqual(len(data[2026][(1, 'January')]), 1)
+
     def test_status_filtering_excludes_disallowed(self):
         config = {"repos": ["o/r"], "statuses": ["OPEN"], "featured_projects": [], "username": None}
         data, _ = run_fetch(config, [
@@ -189,6 +214,26 @@ class TestPrQuery(unittest.TestCase):
         query = github.build_pr_query()
         self.assertIn('$endCursor', query)
         self.assertIn('pageInfo { hasNextPage endCursor }', query)
+
+
+class TestPrTechStack(unittest.TestCase):
+    def stack(self, pages, fallback='TypeScript'):
+        stdout = '\n'.join(json.dumps([{'filename': path} for path in page]) for page in pages)
+        with patch('src.github._gh', return_value=stdout):
+            return github.get_pr_tech_stack('Kilo-Org/kilocode', 15132, fallback)
+
+    def test_kotlin_pr_in_typescript_repository(self):
+        self.assertEqual(self.stack([['src/SessionHost.kt', '.changeset/draft.md']]), 'Kotlin')
+
+    def test_all_pages_and_mixed_languages(self):
+        self.assertEqual(self.stack([['src/ui.tsx'], ['src/SessionHost.kt']]), 'Kotlin, TypeScript')
+
+    def test_docs_only_keeps_repository_stack(self):
+        self.assertEqual(self.stack([['README.md', 'image.png']]), 'TypeScript')
+
+    def test_matching_language_preserves_framework(self):
+        self.assertEqual(self.stack([['src/Button.kt']], 'Kotlin, Jetpack Compose'),
+                         'Kotlin, Jetpack Compose')
 
 
 class TestPaginatedJsonParsing(unittest.TestCase):

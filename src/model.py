@@ -20,7 +20,7 @@ from .config import (
     STATUS_LEGEND,
     custom_logo,
 )
-from .github import fetch_authored_issues, fetch_authored_prs, get_repo_details
+from .github import fetch_authored_issues, fetch_authored_prs, get_pr_tech_stack, get_repo_details
 
 
 def _conventional_prefix(title):
@@ -71,6 +71,7 @@ def fetch_from_config(config):
     """
     repos = config["repos"]
     stats_only_repos = config.get("stats_only_repos", [])
+    stats_only = {repo.lower() for repo in stats_only_repos}
     # Empty statuses list means no filtering (show all)
     allowed_statuses = set(config["statuses"]) or None
     featured = config["featured_projects"]
@@ -93,6 +94,10 @@ def fetch_from_config(config):
         item['kind'] = kind
         item['status'] = status
         item['repo_info'] = get_repo_details(repo_name)
+        if kind == 'pr' and repo_name.lower() not in stats_only:
+            item['tech_stack'] = get_pr_tech_stack(
+                repo_name, item['number'], item['repo_info']['tech_stack'],
+            )
         # Store parsed datetime for reuse in build_readme_model
         item['created_at'] = created_at
         contributions_by_date[created_at.year][(created_at.month, created_at.strftime("%B"))].append(item)
@@ -272,21 +277,23 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
         for month_sort, month_name in sorted_months:
             prs = list(contributions_by_date[year][(month_sort, month_name)])
             # created_at is already validated and stored in fetch_from_config
+            def group_key(item):
+                return (
+                    item['repository']['nameWithOwner'].lower(),
+                    item.get('kind', 'pr'),
+                    item.get('status', 'OPEN').upper(),
+                    item.get('tech_stack', item.get('repo_info', {}).get('tech_stack', '')),
+                )
+
             prs.sort(key=lambda x: (
-                x['repository']['nameWithOwner'].lower(),
-                x.get('kind', 'pr'),
-                x.get('status', 'OPEN').upper(),
+                *group_key(x),
                 -x['created_at'].timestamp(),
             ))
 
             month_rows = []
-            grouped = groupby(prs, key=lambda x: (
-                x['repository']['nameWithOwner'].lower(),
-                x.get('kind', 'pr'),
-                x.get('status', 'OPEN').upper(),
-            ))
+            grouped = groupby(prs, key=group_key)
 
-            for (_repo_key, kind, group_status), repo_prs in grouped:
+            for (_repo_key, kind, group_status, tech_stack), repo_prs in grouped:
                 repo_prs_list = list(repo_prs)
                 first_pr = repo_prs_list[0]
 
@@ -294,7 +301,6 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
                 repo_name = first_pr['repository']['nameWithOwner']
                 icons = ISSUE_STATUS_ICONS if kind == 'issue' else STATUS_ICONS
                 icon = icons.get(group_status, DEFAULT_STATUS_ICON)
-                tech_stack = first_pr.get('repo_info', {}).get('tech_stack', '')
                 owner = repo_name.split('/')[0]
                 logo_url = custom_logo(repo_name) or f"https://github.com/{owner}.png"
 
