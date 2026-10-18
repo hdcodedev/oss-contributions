@@ -56,19 +56,19 @@
         "name": "HDCharts",
         "repo_url": "https://github.com/HDCharts/charts",
         "logo_url": "https://github.com/HDCharts.png",
-        "total_merged": 522,
+        "total_merged": 536,
         "categories": {
-          "fix": 116,
-          "feat": 88,
+          "fix": 119,
+          "feat": 89,
           "refactor": 38,
           "perf": 2,
-          "docs": 71,
+          "docs": 78,
           "test": 4,
           "chore": 82,
           "build": 2,
           "ci": 60,
           "revert": 1,
-          "other": 58
+          "other": 61
         }
       }
     ]
