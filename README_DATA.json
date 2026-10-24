@@ -91,9 +91,9 @@
         "name": "Kilo Code",
         "repo_url": "https://github.com/Kilo-Org/kilocode",
         "logo_url": "https://github.com/Kilo-Org.png",
-        "total_reported": 9,
+        "total_reported": 10,
         "statuses": {
-          "OPEN": 4,
+          "OPEN": 5,
           "FIXED": 5
         }
       }
@@ -108,6 +108,64 @@
           "month_number": 10,
           "month_name": "October",
           "rows": [
+            {
+              "kind": "issue",
+              "status": "OPEN",
+              "repo_name": "Kilo-Org/kilocode",
+              "repo_url": "https://github.com/Kilo-Org/kilocode",
+              "logo_url": "https://github.com/Kilo-Org.png",
+              "tech_stack": "TypeScript",
+              "contributions": [
+                {
+                  "number": 15384,
+                  "title": "[Bug] Forking a chat inflates reported agent runs, tokens, and active time",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15384",
+                  "text": "Issue #15384: [Bug] Forking a chat inflates reported agent runs, tokens, and active time"
+                },
+                {
+                  "number": 15066,
+                  "title": "[Bug] Text typed in a new chat is lost after opening History",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15066",
+                  "text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History"
+                },
+                {
+                  "number": 15046,
+                  "title": "[Bug] kilo run silently drops piped output from a command that takes more than a few seconds",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/15046",
+                  "text": "Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds"
+                },
+                {
+                  "number": 14949,
+                  "title": "[Bug] Holding Backspace deletes a worktree and its uncommitted files",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14949",
+                  "text": "Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files"
+                },
+                {
+                  "number": 14948,
+                  "title": "[Bug] Move to Worktree sends a sidebar chat into another project's repository",
+                  "url": "https://github.com/Kilo-Org/kilocode/issues/14948",
+                  "text": "Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+                }
+              ],
+              "contribution_text": "Issue #15384: [Bug] Forking a chat inflates reported agent runs, tokens, and active time | Issue #15066: [Bug] Text typed in a new chat is lost after opening History | Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds | Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files | Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
+            },
+            {
+              "kind": "pr",
+              "status": "MERGED",
+              "repo_name": "ImranR98/Obtainium",
+              "repo_url": "https://github.com/ImranR98/Obtainium",
+              "logo_url": "https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png",
+              "tech_stack": "Dart",
+              "contributions": [
+                {
+                  "number": 3426,
+                  "title": "Apply the global APK filter when the app filter is blank",
+                  "url": "https://github.com/ImranR98/Obtainium/pull/3426",
+                  "text": "#3426: Apply the global APK filter when the app filter is blank"
+                }
+              ],
+              "contribution_text": "#3426: Apply the global APK filter when the app filter is blank"
+            },
             {
               "kind": "pr",
               "status": "OPEN",
@@ -141,41 +199,6 @@
                 }
               ],
               "contribution_text": "#15127: fix(vscode): allow copying full provider errors while retrying"
-            },
-            {
-              "kind": "issue",
-              "status": "OPEN",
-              "repo_name": "Kilo-Org/kilocode",
-              "repo_url": "https://github.com/Kilo-Org/kilocode",
-              "logo_url": "https://github.com/Kilo-Org.png",
-              "tech_stack": "TypeScript",
-              "contributions": [
-                {
-                  "number": 15066,
-                  "title": "[Bug] Text typed in a new chat is lost after opening History",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/15066",
-                  "text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History"
-                },
-                {
-                  "number": 15046,
-                  "title": "[Bug] kilo run silently drops piped output from a command that takes more than a few seconds",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/15046",
-                  "text": "Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds"
-                },
-                {
-                  "number": 14949,
-                  "title": "[Bug] Holding Backspace deletes a worktree and its uncommitted files",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/14949",
-                  "text": "Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files"
-                },
-                {
-                  "number": 14948,
-                  "title": "[Bug] Move to Worktree sends a sidebar chat into another project's repository",
-                  "url": "https://github.com/Kilo-Org/kilocode/issues/14948",
-                  "text": "Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
-                }
-              ],
-              "contribution_text": "Issue #15066: [Bug] Text typed in a new chat is lost after opening History | Issue #15046: [Bug] kilo run silently drops piped output from a command that takes more than a few seconds | Issue #14949: [Bug] Holding Backspace deletes a worktree and its uncommitted files | Issue #14948: [Bug] Move to Worktree sends a sidebar chat into another project's repository"
             },
             {
               "kind": "pr",
