@@ -42,7 +42,8 @@ class TestMarkdownRendering(unittest.TestCase):
         self.assertIn(
             '<td nowrap><a href="https://github.com/org/project">'
             '<img src="https://github.com/org.png" width="24" height="24" '
-            'style="vertical-align:middle;" title="org/project" alt="org/project"/> org/project</a></td>',
+            'style="vertical-align:middle;" title="org/project" alt="org/project"/> org/project</a>'
+            + '&nbsp;' * 8 + '</td>',
             markdown,
         )
 

@@ -63,7 +63,8 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                     repo_display = _project_cell(row['repo_url'], row['logo_url'], row['repo_name'])
                     f.write(
                         f'<tr><td align="center">{row["status_icon"]}</td>'
-                        f'<td nowrap>{repo_display}</td>'
+                        # GitHub can squeeze nowrap cells below their padded content width.
+                        f'<td nowrap>{repo_display}{"&nbsp;" * 8}</td>'
                         f'<td align="center">{escape(row["tech_stack"])}</td>'
                         f'<td>{_contribution_html(row)}</td></tr>\n'
                     )
