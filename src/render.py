@@ -5,11 +5,11 @@ import json
 from .model import build_readme_model
 
 
-def _project_cell(project):
+def _project_cell(repo_url, logo_url, name):
     return (
-        f"<a href=\"{project['repo_url']}\">"
-        f"<img src=\"{project['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
-        f"title=\"{project['name']}\" alt=\"{project['name']}\"/>"
+        f"<a href=\"{repo_url}\">"
+        f"<img src=\"{logo_url}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
+        f"title=\"{name}\" alt=\"{name}\"/> {name}"
         "</a>"
     )
 
@@ -43,11 +43,7 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
                 f.write("| :---: | :--- | :---: | :--- |\n")
 
                 for row in month_data['rows']:
-                    repo_display = (
-                        f"<a href=\"{row['repo_url']}\">"
-                        f"<img src=\"{row['logo_url']}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\"/>"
-                        "</a>"
-                    )
+                    repo_display = _project_cell(row['repo_url'], row['logo_url'], row['repo_name'])
                     f.write(
                         f"| {row['status_icon']} | {repo_display} | {row['tech_stack']} | {row['contribution_markdown']} |\n"
                     )
