@@ -7,7 +7,7 @@ from .model import build_readme_model
 
 def _project_cell(repo_url, logo_url, name):
     return (
-        f"<a href=\"{repo_url}\">"
+        f"<a href=\"{repo_url}\" style=\"display:inline-block;white-space:nowrap;\">"
         f"<img src=\"{logo_url}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
         f"title=\"{name}\" alt=\"{name}\"/> {name}"
         "</a>"

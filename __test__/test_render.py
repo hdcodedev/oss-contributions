@@ -24,6 +24,8 @@ class TestMarkdownRendering(unittest.TestCase):
             os.unlink(output_file)
 
         self.assertIn(
+            '<a href="https://github.com/org/project" '
+            'style="display:inline-block;white-space:nowrap;">'
             '<img src="https://github.com/org.png" width="24" height="24" '
             'style="vertical-align:middle;" title="org/project" alt="org/project"/> org/project</a>',
             markdown,
