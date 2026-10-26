@@ -17,7 +17,8 @@
   "issues": {
     "repos": [
       "Kilo-Org/kilocode",
-      "kilo-org/kilocode-legacy"
+      "kilo-org/kilocode-legacy",
+      "JetBrains/youtrack-cli"
     ],
     "statuses": [
       "OPEN",

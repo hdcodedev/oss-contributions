@@ -110,6 +110,29 @@
           "rows": [
             {
               "kind": "issue",
+              "status": "FIXED",
+              "repo_name": "JetBrains/youtrack-cli",
+              "repo_url": "https://github.com/JetBrains/youtrack-cli",
+              "logo_url": "https://github.com/JetBrains.png",
+              "tech_stack": "Go",
+              "contributions": [
+                {
+                  "number": 130,
+                  "title": "`skill update` skips other agents when one copy is current",
+                  "url": "https://github.com/JetBrains/youtrack-cli/issues/130",
+                  "text": "Issue #130: `skill update` skips other agents when one copy is current"
+                },
+                {
+                  "number": 114,
+                  "title": "`issue field set --type user` can report an existing user as missing",
+                  "url": "https://github.com/JetBrains/youtrack-cli/issues/114",
+                  "text": "Issue #114: `issue field set --type user` can report an existing user as missing"
+                }
+              ],
+              "contribution_text": "Issue #130: `skill update` skips other agents when one copy is current | Issue #114: `issue field set --type user` can report an existing user as missing"
+            },
+            {
+              "kind": "issue",
               "status": "OPEN",
               "repo_name": "Kilo-Org/kilocode",
               "repo_url": "https://github.com/Kilo-Org/kilocode",
