@@ -315,6 +315,10 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
                             'title': pr['title'],
                             'url': pr['url'],
                             'markdown': _issue_markdown(pr, cell_title),
+                            'linked_prs': [
+                                linked for linked in pr['closedByPullRequestsReferences']['nodes']
+                                if linked['state'] in ('OPEN', 'MERGED')
+                            ],
                         })
                         continue
                     emoji = get_pr_emoji(pr['title'])

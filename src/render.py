@@ -1,17 +1,34 @@
 """Renderers: markdown README and JSON snapshot."""
 
 import json
+from html import escape
 
 from .model import build_readme_model
 
 
 def _project_cell(repo_url, logo_url, name):
     return (
-        f"<a href=\"{repo_url}\" style=\"display:inline-block;white-space:nowrap;\">"
+        f"<a href=\"{repo_url}\">"
         f"<img src=\"{logo_url}\" width=\"24\" height=\"24\" style=\"vertical-align:middle;\" "
         f"title=\"{name}\" alt=\"{name}\"/> {name}"
         "</a>"
     )
+
+
+def _contribution_html(row):
+    links = []
+    for item in row['contributions']:
+        prefix = 'Issue ' if row['kind'] == 'issue' else ''
+        label = escape(f"{prefix}#{item['number']}: {item['title']}")
+        link = f"{item['emoji']} <a href=\"{escape(item['url'], quote=True)}\">{label}</a>"
+        linked = item.get('linked_prs', [])
+        if linked:
+            link += ' → ' + ', '.join(
+                f"<a href=\"{escape(pr['url'], quote=True)}\">#{pr['number']}</a>"
+                for pr in linked
+            )
+        links.append(link)
+    return '<br>'.join(links)
 
 
 def generate_markdown(contributions_by_date, featured_repos, output_file="README.md", model=None):
@@ -39,16 +56,19 @@ def generate_markdown(contributions_by_date, featured_repos, output_file="README
             for month_data in year_data['months']:
                 month_name = month_data['month_name']
                 f.write(f"## {month_name}\n\n")
-                f.write("| Status | Project | Tech Stack | Contribution |\n")
-                f.write("| :---: | :--- | :---: | :--- |\n")
+                f.write('<table>\n<thead><tr><th>Status</th><th>Project</th>'
+                        '<th>Tech Stack</th><th>Contribution</th></tr></thead>\n<tbody>\n')
 
                 for row in month_data['rows']:
                     repo_display = _project_cell(row['repo_url'], row['logo_url'], row['repo_name'])
                     f.write(
-                        f"| {row['status_icon']} | {repo_display} | {row['tech_stack']} | {row['contribution_markdown']} |\n"
+                        f'<tr><td align="center">{row["status_icon"]}</td>'
+                        f'<td nowrap>{repo_display}</td>'
+                        f'<td align="center">{escape(row["tech_stack"])}</td>'
+                        f'<td>{_contribution_html(row)}</td></tr>\n'
                     )
 
-                f.write("\n")
+                f.write('</tbody>\n</table>\n\n')
 
 def generate_json_snapshot(contributions_by_date, featured_repos, output_file="README_DATA.json", model=None):
     """Write a machine-readable snapshot of the same data shown in README."""
