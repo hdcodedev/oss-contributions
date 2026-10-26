@@ -6,7 +6,8 @@
     "home-assistant/android",
     "metabrainz/listenbrainz-android",
     "openai/codex",
-    "kilo-org/kilocode-legacy"
+    "kilo-org/kilocode-legacy",
+    "JetBrains/youtrack-cli"
   ],
   "statuses": [
     "MERGED",
