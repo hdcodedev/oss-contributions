@@ -15,6 +15,9 @@
   ],
   "featured_projects": [],
   "issues": {
+    "youtrack": [
+      "https://youtrack.jetbrains.com/projects/CMP"
+    ],
     "repos": [
       "Kilo-Org/kilocode",
       "kilo-org/kilocode-legacy",

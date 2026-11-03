@@ -21,6 +21,7 @@ from .config import (
     custom_logo,
 )
 from .github import fetch_authored_issues, fetch_authored_prs, get_pr_tech_stack, get_repo_details
+from .youtrack import fetch_authored_issues as fetch_youtrack_issues
 
 
 def _conventional_prefix(title):
@@ -93,7 +94,8 @@ def fetch_from_config(config):
         created_at = datetime.strptime(item['createdAt'], "%Y-%m-%dT%H:%M:%SZ")
         item['kind'] = kind
         item['status'] = status
-        item['repo_info'] = get_repo_details(repo_name)
+        if 'repo_info' not in item:
+            item['repo_info'] = get_repo_details(repo_name)
         if kind == 'pr' and repo_name.lower() not in stats_only:
             item['tech_stack'] = get_pr_tech_stack(
                 repo_name, item['number'], item['repo_info']['tech_stack'],
@@ -122,9 +124,9 @@ def fetch_from_config(config):
         add(pr, 'pr', status)
 
     issue_config = config.get("issues", {})
+    allowed_issue_statuses = set(issue_config.get("statuses", [])) or None
     issue_repos = {repo.lower() for repo in issue_config.get("repos", [])}
     if issue_repos:
-        allowed_issue_statuses = set(issue_config.get("statuses", [])) or None
         issues = fetch_authored_issues(username)
         print(f"Fetched {len(issues)} authored issue(s); keeping those in {len(issue_repos)} tracked repo(s).")
         for issue in issues:
@@ -139,6 +141,11 @@ def fetch_from_config(config):
             if allowed_issue_statuses is not None and status not in allowed_issue_statuses:
                 continue
             add(issue, 'issue', status)
+
+    for project_url in issue_config.get("youtrack", []):
+        for issue in fetch_youtrack_issues(project_url, username):
+            if allowed_issue_statuses is None or issue['status'] in allowed_issue_statuses:
+                add(issue, 'issue', issue['status'])
 
     if private_repos:
         print(f"Skipped {len(private_repos)} private repo(s).")
@@ -243,6 +250,10 @@ def build_issue_stats(years, stats_projects):
     return {'columns': columns, 'projects': projects}
 
 
+def format_reference(number):
+    return f'#{number}' if isinstance(number, int) else number
+
+
 def _issue_markdown(issue, cell_title):
     """Issue link plus links to its open or merged PRs."""
     linked = [
@@ -250,7 +261,7 @@ def _issue_markdown(issue, cell_title):
         for pr in issue['closedByPullRequestsReferences']['nodes']
         if pr['state'] in ('OPEN', 'MERGED')
     ]
-    markdown = f"{ISSUE_EMOJI} [Issue #{issue['number']}: {cell_title}]({issue['url']})"
+    markdown = f"{ISSUE_EMOJI} [Issue {format_reference(issue['number'])}: {cell_title}]({issue['url']})"
     return f"{markdown} → {', '.join(linked)}" if linked else markdown
 
 
@@ -302,7 +313,7 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
                 icons = ISSUE_STATUS_ICONS if kind == 'issue' else STATUS_ICONS
                 icon = icons.get(group_status, DEFAULT_STATUS_ICON)
                 owner = repo_name.split('/')[0]
-                logo_url = custom_logo(repo_name) or f"https://github.com/{owner}.png"
+                logo_url = first_pr['repository'].get('avatarUrl') or custom_logo(repo_name) or f"https://github.com/{owner}.png"
 
                 contributions = []
                 for pr in repo_prs_list:
@@ -336,7 +347,7 @@ def build_readme_model(contributions_by_date, featured_repos, stats_projects=(),
                     'status': group_status,
                     'status_icon': icon,
                     'repo_name': repo_name,
-                    'repo_url': f"https://github.com/{repo_name}",
+                    'repo_url': first_pr['repository'].get('url', f"https://github.com/{repo_name}"),
                     'logo_url': logo_url,
                     'tech_stack': tech_stack,
                     'contributions': contributions,
