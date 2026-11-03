@@ -47,6 +47,14 @@ class TestConfigLoad(unittest.TestCase):
         finally:
             os.unlink(path)
 
+    def test_youtrack_projects_are_kept(self):
+        projects = ['https://youtrack.jetbrains.com/projects/CMP']
+        path = write_config(issues={'youtrack': projects})
+        try:
+            self.assertEqual(config.load_config(path)['issues']['youtrack'], projects)
+        finally:
+            os.unlink(path)
+
 
 class TestCustomLogo(unittest.TestCase):
     def test_lookup_ignores_case(self):

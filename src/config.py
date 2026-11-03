@@ -153,10 +153,11 @@ def load_config(config_file=None):
             if isinstance(project, dict) and project.get("stats_only")
             for repo in project.get("repos", [])
         ],
-        # Repos whose issues reported by the user are listed and counted, and
+        # GitHub repos and YouTrack project URLs whose reported issues are tracked,
         # which issue statuses (OPEN, FIXED, CLOSED) to keep; empty keeps all.
         "issues": {
             "repos": data.get("issues", {}).get("repos", []),
+            "youtrack": data.get("issues", {}).get("youtrack", []),
             "statuses": [status.upper() for status in data.get("issues", {}).get("statuses", [])],
         },
         # None means "whoever the gh token belongs to".

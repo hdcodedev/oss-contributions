@@ -3,7 +3,7 @@
 import json
 from html import escape
 
-from .model import build_readme_model
+from .model import build_readme_model, format_reference
 
 
 def _project_cell(repo_url, logo_url, name):
@@ -19,7 +19,7 @@ def _contribution_html(row):
     links = []
     for item in row['contributions']:
         prefix = 'Issue ' if row['kind'] == 'issue' else ''
-        label = escape(f"{prefix}#{item['number']}: {item['title']}")
+        label = escape(f"{prefix}{format_reference(item['number'])}: {item['title']}")
         link = f"{item['emoji']} <a href=\"{escape(item['url'], quote=True)}\">{label}</a>"
         linked = item.get('linked_prs', [])
         if linked:
@@ -101,7 +101,7 @@ def generate_json_snapshot(contributions_by_date, featured_repos, output_file="R
                         'number': item['number'],
                         'title': item['title'],
                         'url': item['url'],
-                        'text': f"{prefix}#{item['number']}: {item['title']}",
+                        'text': f"{prefix}{format_reference(item['number'])}: {item['title']}",
                     })
 
                 json_month['rows'].append({
