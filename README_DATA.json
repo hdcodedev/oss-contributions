@@ -56,19 +56,19 @@
         "name": "HDCharts",
         "repo_url": "https://github.com/HDCharts/charts",
         "logo_url": "https://github.com/HDCharts.png",
-        "total_merged": 571,
+        "total_merged": 599,
         "categories": {
-          "fix": 123,
-          "feat": 92,
+          "fix": 125,
+          "feat": 94,
           "refactor": 41,
           "perf": 2,
-          "docs": 90,
-          "test": 6,
+          "docs": 106,
+          "test": 8,
           "chore": 85,
           "build": 2,
           "ci": 63,
           "revert": 1,
-          "other": 66
+          "other": 72
         }
       }
     ]
@@ -104,6 +104,29 @@
     {
       "year": 2026,
       "months": [
+        {
+          "month_number": 11,
+          "month_name": "November",
+          "rows": [
+            {
+              "kind": "issue",
+              "status": "OPEN",
+              "repo_name": "Compose Multiplatform",
+              "repo_url": "https://youtrack.jetbrains.com/projects/CMP",
+              "logo_url": "https://youtrack.jetbrains.com/favicon.ico",
+              "tech_stack": "",
+              "contributions": [
+                {
+                  "number": "CMP-11092",
+                  "title": "Allow resource-free KMP libraries to omit empty Compose resource archives",
+                  "url": "https://youtrack.jetbrains.com/issue/CMP-11092",
+                  "text": "Issue CMP-11092: Allow resource-free KMP libraries to omit empty Compose resource archives"
+                }
+              ],
+              "contribution_text": "Issue CMP-11092: Allow resource-free KMP libraries to omit empty Compose resource archives"
+            }
+          ]
+        },
         {
           "month_number": 10,
           "month_name": "October",
