@@ -2,15 +2,6 @@
 
 # 2026
 
-## November
-
-<table>
-<thead><tr><th>Status</th><th>Project</th><th>Tech Stack</th><th>Contribution</th></tr></thead>
-<tbody>
-<tr><td align="center">🟡</td><td nowrap><a href="https://youtrack.jetbrains.com/projects/CMP"><img src="https://youtrack.jetbrains.com/favicon.ico" width="24" height="24" style="vertical-align:middle;" title="Compose Multiplatform" alt="Compose Multiplatform"/> Compose Multiplatform</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"></td><td>📋 <a href="https://youtrack.jetbrains.com/issue/CMP-11092">Issue CMP-11092: Allow resource-free KMP libraries to omit empty Compose resource archives</a></td></tr>
-</tbody>
-</table>
-
 ## October
 
 <table>
